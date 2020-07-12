@@ -15,5 +15,10 @@
     "url": "https://seokju.me"
   },
   "dependencies": {
+  },
+  "mac": {
+    "extendInfo": {
+      "LSUIElement": 1
+    }
   }
 }
