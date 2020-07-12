@@ -1,0 +1,2 @@
+yarn.lock binary
+vendor/*.js binary linguist-generated=true
