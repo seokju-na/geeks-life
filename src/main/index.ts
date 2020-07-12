@@ -1,22 +1,57 @@
-import { app, BrowserWindow } from 'electron';
+import { app, globalShortcut, nativeImage, nativeTheme, Tray } from 'electron';
+import { globalShortcuts, windowBackgroundColors } from './constants';
+import { env } from './env';
+import { Storage } from './storage';
+import { encodePathAsUrl } from './util';
+import { Window, WindowEvents } from './window';
+
+const storage = new Storage();
+let tray: Tray | null = null;
+const window = new Window('web/index.html');
+
+type Theme = 'dark' | 'light';
 
 async function bootstrap() {
+  await storage.initialize();
   await app.whenReady();
 
-  // 브라우저 창을 생성합니다.
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-    },
+  app.dock.hide();
+
+  const theme = storage.get<Theme>('theme') ?? (nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
+  window.extendOptions({
+    show: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    // titleBarStyle: 'hidden',
+    backgroundColor: windowBackgroundColors[theme],
   });
 
-  // and load the index.html of the app.
-  win.loadFile('web/index.html');
+  window.on(WindowEvents.Blur, () => {
+    window.hide();
+  });
 
-  // 개발자 도구를 엽니다.
-  win.webContents.openDevTools();
+  tray = new Tray(nativeImage.createFromPath(encodePathAsUrl(__dirname, './assets/tray-icon.png')));
+  tray.on('click', () => {
+    window.open();
+  });
+
+  app.on('window-all-closed', () => {
+    if (!env.platform.darwin) {
+      app.quit();
+    }
+  });
+
+  /** Prevent links or window.open from opening new windows. */
+  app.on('web-contents-created', (_, contents) => {
+    contents.on('new-window', (event) => {
+      event.preventDefault();
+    });
+  });
+
+  globalShortcut.register(globalShortcuts.open, () => {
+    window.open();
+  });
 }
 
 bootstrap().catch((error) => {

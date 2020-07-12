@@ -1,0 +1,19 @@
+{
+  "name": "geeks-life",
+  "version": "0.0.0",
+  "productName": "Geeks Life",
+  "appId": "me.seokju.GeeksLife",
+  "description": "Geek's life",
+  "main": "./main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seokju-na/geeks-life.git"
+  },
+  "author": {
+    "name": "Seokju Na",
+    "email": "seokju.me@gmail.com",
+    "url": "https://seokju.me"
+  },
+  "dependencies": {
+  }
+}

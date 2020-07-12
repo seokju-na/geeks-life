@@ -1,4 +1,4 @@
-const { DefinePlugin, NoEmitOnErrorsPlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const TsConfigPathPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require('path');
 
@@ -33,7 +33,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new NoEmitOnErrorsPlugin(),
     new DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
