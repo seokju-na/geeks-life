@@ -1,4 +1,4 @@
-import { app, globalShortcut, nativeImage, nativeTheme, Tray } from 'electron';
+import { app, globalShortcut, ipcMain, nativeImage, nativeTheme, Tray } from 'electron';
 import { globalShortcuts, windowBackgroundColors } from './constants';
 import { env } from './env';
 import { Storage } from './storage';
@@ -7,7 +7,7 @@ import { Window, WindowEvents } from './window';
 
 const storage = new Storage();
 let tray: Tray | null = null;
-const window = new Window('web/index.html');
+let window: Window | null = null;
 
 type Theme = 'dark' | 'light';
 
@@ -18,6 +18,7 @@ async function bootstrap() {
   app.dock.hide();
 
   const theme = storage.get<Theme>('theme') ?? (nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
+  window = new Window(`${encodePathAsUrl(__dirname, 'web/index.html')}?theme=${theme}`);
   window.extendOptions({
     show: false,
     frame: false,
@@ -27,13 +28,19 @@ async function bootstrap() {
     backgroundColor: windowBackgroundColors[theme],
   });
 
+  window.on(WindowEvents.Focus, () => {
+    window?.sendEvent('window-focused');
+  });
+
   window.on(WindowEvents.Blur, () => {
-    window.hide();
+    if (env.prod) {
+      window?.hide();
+    }
   });
 
   tray = new Tray(nativeImage.createFromPath(encodePathAsUrl(__dirname, './assets/tray-icon.png')));
   tray.on('click', () => {
-    window.open();
+    window?.open();
   });
 
   app.on('window-all-closed', () => {
@@ -50,7 +57,11 @@ async function bootstrap() {
   });
 
   globalShortcut.register(globalShortcuts.open, () => {
-    window.open();
+    window?.toggle();
+  });
+
+  ipcMain.on('close-current-window', () => {
+    window?.hide();
   });
 }
 

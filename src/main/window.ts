@@ -2,7 +2,6 @@ import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { EventEmitter } from 'events';
 import path from 'path';
 import { env } from './env';
-import { encodePathAsUrl } from './util';
 
 export enum WindowEvents {
   Closed = 'window.closed',
@@ -18,7 +17,7 @@ export class Window extends EventEmitter {
   constructor(url: string) {
     super();
 
-    this.url = encodePathAsUrl(__dirname, url);
+    this.url = url;
     this.options = {
       webPreferences: {
         preload: path.join(__dirname, 'web/preload.js'),
@@ -42,14 +41,23 @@ export class Window extends EventEmitter {
   }
 
   async open() {
-    if (this.instance !== null && this.hide()) {
-      this.show();
+    if (this.instance !== null) {
+      if (!this.instance?.isVisible()) {
+        this.show();
+      }
+
       return;
     }
 
-    this.createWindowInstance();
-    await this.instance?.loadURL(this.url);
-    this.instance?.show();
+    await this.createAndOpen();
+  }
+
+  async toggle() {
+    if (this.instance?.isVisible() === true) {
+      this.hide();
+    } else {
+      await this.open();
+    }
   }
 
   show() {
@@ -65,7 +73,13 @@ export class Window extends EventEmitter {
     this.instance = null;
   }
 
-  private createWindowInstance() {
+  sendEvent(channel: string) {
+    this.instance?.webContents.send(channel);
+
+    return this;
+  }
+
+  private async createAndOpen() {
     if (this.instance !== null) {
       return;
     }
@@ -89,5 +103,8 @@ export class Window extends EventEmitter {
         this.instance?.webContents.setVisualZoomLevelLimits(1, 1);
       }
     });
+
+    await this.instance.loadURL(this.url);
+    this.instance.show();
   }
 }
