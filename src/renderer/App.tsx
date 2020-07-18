@@ -1,8 +1,8 @@
 import { ThemeProvider } from 'emotion-theming';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
 import { ipcChannels } from '../core';
-import { darkTheme, styled } from './colors/theming';
+import { darkTheme, lightTheme, styled } from './colors/theming';
 import { Button } from './components/Button';
 import { ButtonToggle, ButtonToggleGroup } from './components/ButtonToggle';
 import GlobalStyles from './components/GlobalStyles';
@@ -11,8 +11,10 @@ import useKeyboardCapture from './hooks/useKeyboardCapture';
 import useResizeObserver from './hooks/useResizeObserver';
 
 export default function App() {
-  const ref = useResizeObserver<HTMLDivElement>((entry) => {
-    console.log(entry);
+  const darkMode = useMemo(() => location.search.includes('?theme=dark'), []);
+
+  const ref = useResizeObserver<HTMLDivElement>(() => {
+    // console.log(entry);
   });
 
   const handleESCKeyPress = useCallback(
@@ -40,7 +42,7 @@ export default function App() {
 
   return (
     <ReakitProvider>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
         <Root ref={ref} tabIndex={0}>
           <Header>
