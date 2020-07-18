@@ -1,5 +1,3 @@
-import { ipcRenderer, Menu, MenuItem } from 'electron';
-
 /**
  * @license
  * Copyright 2020 Jason Strothmann
