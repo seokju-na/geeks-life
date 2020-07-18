@@ -1,9 +1,9 @@
 import DayLogsSection from 'components/DayLogsSection';
 import { ThemeProvider } from 'emotion-theming';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
 import { ipcChannels } from '../core';
-import { darkTheme, styled } from './colors/theming';
+import { darkTheme, lightTheme, styled } from './colors/theming';
 import DateNavigator from './components/DateNavigator';
 import DayScoreSection from './components/DayScoreSection';
 import FixedBottomToolbar from './components/FixedBottomToolbar';
@@ -16,6 +16,8 @@ import useResizeObserver from './hooks/useResizeObserver';
 const isHTMLElement = (elem: Node): elem is HTMLElement => elem.nodeType === Node.ELEMENT_NODE;
 
 export default function App() {
+  const darkMode = useMemo(() => location.search.includes('?theme=dark'), []);
+
   const ref = useResizeObserver<HTMLDivElement>(() => {
     // console.log(entry);
   });
@@ -48,7 +50,7 @@ export default function App() {
 
   return (
     <ReakitProvider>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
         <Root ref={ref} tabIndex={0}>
           <DateNavigator />
