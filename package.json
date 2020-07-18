@@ -12,8 +12,13 @@
   },
   "scripts": {
     "start": "electron dist/main.js",
+    "dev": "yarn dev & yarn dev:main",
     "dev:main": "webpack-cli --config webpack.main.config.js --watch",
-    "dev:renderer": "webpack-cli --config webpack.renderer.config.js --watch"
+    "dev:renderer": "webpack-cli --config webpack.renderer.config.js --watch",
+    "typecheck": "yarn typecheck:main && yarn typecheck:renderer",
+    "typecheck:main": "tsc -p src/main/tsconfig.json --noEmit",
+    "typecheck:renderer": "tsc -p src/renderer/tsconfig.json --noEmit",
+    "lint": "eslint -c .eslintrc.js 'src/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
