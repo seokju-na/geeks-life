@@ -16,10 +16,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    "types": ["./global-types.ts"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true
   },
   "include": ["./", "../core"]
 }

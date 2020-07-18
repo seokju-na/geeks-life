@@ -1,3 +1,5 @@
+import { ipcRenderer, Menu, MenuItem } from 'electron';
+
 /**
  * @license
  * Copyright 2020 Jason Strothmann
@@ -221,5 +223,13 @@ declare global {
      * [SVGElement](https://developer.mozilla.org/en-US/docs/Web/API/SVGElement).
      */
     unobserve: (target: Element) => void;
+  }
+
+  interface Window {
+    electronFeatures: {
+      readonly ipcRenderer: typeof ipcRenderer;
+      readonly Menu: typeof Menu;
+      readonly MenuItem: typeof MenuItem;
+    };
   }
 }

@@ -16,7 +16,8 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["es2017"],
     "outDir": "../../dist/out-tsc/main/",
-    "types": ["node", "electron"]
+    "types": ["node", "electron"],
+    "skipLibCheck": true
   },
   "include": ["./", "../core"]
 }
