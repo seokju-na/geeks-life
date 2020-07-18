@@ -1,8 +1,8 @@
-name: Builds
+name: CI
 on: [pull_request]
 jobs:
-  build:
-    name: Build
+  ci:
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
