@@ -30,7 +30,7 @@ module.exports = {
       {
         test: /\.(js|jsx|ts|tsx)$/,
         loader: 'babel-loader',
-        include: [path.join(__dirname, 'src/renderer/')],
+        include: [path.join(__dirname, 'src/renderer/'), path.join(__dirname, 'src/core/')],
         exclude: [/node_modules/, /dist/, /vendor/, path.join(__dirname, 'src/main/')],
       },
       {

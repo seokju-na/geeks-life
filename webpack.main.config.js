@@ -28,6 +28,7 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'ts-loader',
+        include: [path.join(__dirname, 'src/main/'), path.join(__dirname, 'src/core/')],
         exclude: [/node_modules/, /dist/, /vendor/, path.join(__dirname, 'src/renderer/')],
       },
     ],
