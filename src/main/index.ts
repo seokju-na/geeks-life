@@ -1,26 +1,23 @@
 import { app, globalShortcut, ipcMain, nativeImage, nativeTheme, Tray } from 'electron';
-import path from 'path';
 import { ipcChannels } from '../core';
 import { globalShortcuts, windowBackgroundColors } from './constants';
 import { env } from './env';
-import { Git } from './git';
 import { Storage } from './storage';
 import { encodePathAsUrl } from './util';
 import { Window, WindowEvents } from './window';
 
-const workspaceDir = path.resolve(app.getPath('userData'), 'workspace/');
 const windowUrl = encodePathAsUrl(__dirname, 'web/index.html');
 
 const storage = new Storage();
-const git = new Git(workspaceDir);
 let tray: Tray | null = null;
 let window: Window | null = null;
 
 type Theme = 'dark' | 'light';
 
 async function bootstrap() {
+  console.time('bootstrap');
+
   await storage.initialize();
-  await git.init();
   await app.whenReady();
 
   const theme = storage.get<Theme>('theme') ?? (nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
@@ -30,6 +27,8 @@ async function bootstrap() {
     frame: false,
     transparent: true,
     backgroundColor: windowBackgroundColors[theme],
+    width: 320,
+    height: 480,
   });
 
   window.on(WindowEvents.Focus, () => {
@@ -71,6 +70,8 @@ async function bootstrap() {
   ipcMain.on(ipcChannels.commitRequest, () => {
     //
   });
+
+  console.timeEnd('bootstrap');
 }
 
 bootstrap().catch((error) => {

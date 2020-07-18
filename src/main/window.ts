@@ -1,6 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { EventEmitter } from 'events';
 import path from 'path';
+import { serializePayload } from '../core';
 import { env } from './env';
 
 export enum WindowEvents {
@@ -20,6 +21,9 @@ export class Window extends EventEmitter {
     this.url = url;
     this.options = {
       webPreferences: {
+        nodeIntegration: false,
+        scrollBounce: true,
+        enableRemoteModule: true,
         preload: path.join(__dirname, 'web/preload.js'),
       },
     };
@@ -73,8 +77,11 @@ export class Window extends EventEmitter {
     this.instance = null;
   }
 
-  sendEvent(channel: string) {
-    this.instance?.webContents.send(channel);
+  sendEvent<T>(channel: string, payload?: T) {
+    this.instance?.webContents.send(
+      channel,
+      payload != null ? serializePayload(payload) : undefined,
+    );
 
     return this;
   }
