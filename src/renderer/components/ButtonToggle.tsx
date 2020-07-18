@@ -85,6 +85,7 @@ export function ButtonToggle({ children, value, ...props }: ButtonToggleProps) {
   );
 }
 
+// TODO: enhance focus style
 const ButtonToggleWrapper = styled.div<{ pressed: boolean }>`
   & + & {
     border-left: 1px solid ${selectForeground('divider')};
