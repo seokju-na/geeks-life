@@ -1,11 +1,18 @@
 import { app, globalShortcut, ipcMain, nativeImage, nativeTheme, Tray } from 'electron';
+import path from 'path';
+import { ipcChannels } from '../core';
 import { globalShortcuts, windowBackgroundColors } from './constants';
 import { env } from './env';
+import { Git } from './git';
 import { Storage } from './storage';
 import { encodePathAsUrl } from './util';
 import { Window, WindowEvents } from './window';
 
+const workspaceDir = path.resolve(app.getPath('userData'), 'workspace/');
+const windowUrl = encodePathAsUrl(__dirname, 'web/index.html');
+
 const storage = new Storage();
+const git = new Git(workspaceDir);
 let tray: Tray | null = null;
 let window: Window | null = null;
 
@@ -13,23 +20,20 @@ type Theme = 'dark' | 'light';
 
 async function bootstrap() {
   await storage.initialize();
+  await git.init();
   await app.whenReady();
 
-  app.dock.hide();
-
   const theme = storage.get<Theme>('theme') ?? (nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
-  window = new Window(`${encodePathAsUrl(__dirname, 'web/index.html')}?theme=${theme}`);
-  window.extendOptions({
+  window = new Window(`${windowUrl}?theme=${theme}`);
+  window.setOptions({
     show: false,
     frame: false,
     transparent: true,
-    alwaysOnTop: true,
-    // titleBarStyle: 'hidden',
     backgroundColor: windowBackgroundColors[theme],
   });
 
   window.on(WindowEvents.Focus, () => {
-    window?.sendEvent('window-focused');
+    window?.sendEvent(ipcChannels.windowFocused);
   });
 
   window.on(WindowEvents.Blur, () => {
@@ -40,7 +44,7 @@ async function bootstrap() {
 
   tray = new Tray(nativeImage.createFromPath(encodePathAsUrl(__dirname, './assets/tray-icon.png')));
   tray.on('click', () => {
-    window?.open();
+    window?.toggle();
   });
 
   app.on('window-all-closed', () => {
@@ -60,8 +64,12 @@ async function bootstrap() {
     window?.toggle();
   });
 
-  ipcMain.on('close-current-window', () => {
+  ipcMain.on(ipcChannels.closeCurrentWindow, () => {
     window?.hide();
+  });
+
+  ipcMain.on(ipcChannels.commitRequest, () => {
+    //
   });
 }
 

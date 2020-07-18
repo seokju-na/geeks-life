@@ -31,7 +31,7 @@ export class Window extends EventEmitter {
     return this;
   }
 
-  extendOptions(options?: BrowserWindowConstructorOptions) {
+  setOptions(options?: BrowserWindowConstructorOptions) {
     this.options = {
       ...this.options,
       ...options,
