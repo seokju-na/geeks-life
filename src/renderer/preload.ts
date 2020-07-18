@@ -1,4 +1,6 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
+
+const { Menu, MenuItem } = remote;
 
 /**
  * Since we disable node integration for browser window, require electron
@@ -9,4 +11,6 @@ import { ipcRenderer } from 'electron';
  */
 window.electronFeatures = {
   ipcRenderer,
+  Menu,
+  MenuItem,
 };

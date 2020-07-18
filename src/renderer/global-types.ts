@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, Menu, MenuItem } from 'electron';
 
 /**
  * @license
@@ -224,12 +224,12 @@ declare global {
      */
     unobserve: (target: Element) => void;
   }
-}
 
-declare global {
   interface Window {
-    electronFeatures?: {
+    electronFeatures: {
       readonly ipcRenderer: typeof ipcRenderer;
+      readonly Menu: typeof Menu;
+      readonly MenuItem: typeof MenuItem;
     };
   }
 }

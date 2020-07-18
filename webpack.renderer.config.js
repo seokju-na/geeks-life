@@ -57,4 +57,5 @@ module.exports = {
     }),
   ],
   target: 'electron-renderer',
+  stats: PROD ? 'detailed' : 'minimal',
 };

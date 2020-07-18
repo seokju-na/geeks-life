@@ -45,4 +45,5 @@ module.exports = {
     __filename: false,
   },
   target: 'electron-main',
+  stats: PROD ? 'detailed' : 'minimal',
 };

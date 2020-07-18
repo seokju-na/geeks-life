@@ -206,12 +206,46 @@ export const blueColorPalette: ColorPalette = {
   },
 };
 
+export const greenColorPalette: ColorPalette = {
+  50: '#E8F5E9',
+  100: '#C8E6C9',
+  200: '#A5D6A7',
+  300: '#81c784',
+  400: '#66bb6a',
+  500: '#4caf50',
+  600: '#43a047',
+  700: '#388e3c',
+  800: '#2e7d32',
+  900: '#1b5e20',
+  A100: '#b9f6ca',
+  A200: '#69f0ae',
+  A400: '#00e676',
+  A700: '#00c853',
+  contrast: {
+    50: commonColors.darkPrimaryText,
+    100: commonColors.darkPrimaryText,
+    200: commonColors.darkPrimaryText,
+    300: commonColors.darkPrimaryText,
+    400: commonColors.darkPrimaryText,
+    500: commonColors.darkPrimaryText,
+    600: commonColors.lightPrimaryText,
+    700: commonColors.lightPrimaryText,
+    800: commonColors.lightPrimaryText,
+    900: commonColors.lightPrimaryText,
+    A100: commonColors.darkPrimaryText,
+    A200: commonColors.darkPrimaryText,
+    A400: commonColors.darkPrimaryText,
+    A700: commonColors.darkPrimaryText,
+  },
+};
+
 export const colorPalettes = {
   grey: greyColorPalette,
   red: redColorPalette,
   pink: pinkColorPalette,
   purple: purpleColorPalette,
   blue: blueColorPalette,
+  green: greenColorPalette,
 } as const;
 
 export interface BackgroundPalette {

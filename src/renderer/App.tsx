@@ -1,18 +1,23 @@
+import DayLogsSection from 'components/DayLogsSection';
 import { ThemeProvider } from 'emotion-theming';
 import React, { useCallback, useEffect } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
 import { ipcChannels } from '../core';
 import { darkTheme, styled } from './colors/theming';
-import { Button } from './components/Button';
-import { ButtonToggle, ButtonToggleGroup } from './components/ButtonToggle';
+import DateNavigator from './components/DateNavigator';
+import DayScoreSection from './components/DayScoreSection';
+import FixedBottomToolbar from './components/FixedBottomToolbar';
 import GlobalStyles from './components/GlobalStyles';
 import { eventKeys } from './constants/event-keys';
+import { sendIpcMessage } from './hooks/useIpcListener';
 import useKeyboardCapture from './hooks/useKeyboardCapture';
 import useResizeObserver from './hooks/useResizeObserver';
 
+const isHTMLElement = (elem: Node): elem is HTMLElement => elem.nodeType === Node.ELEMENT_NODE;
+
 export default function App() {
-  const ref = useResizeObserver<HTMLDivElement>((entry) => {
-    console.log(entry);
+  const ref = useResizeObserver<HTMLDivElement>(() => {
+    // console.log(entry);
   });
 
   const handleESCKeyPress = useCallback(
@@ -26,7 +31,10 @@ export default function App() {
         activeElement === document.body
       ) {
         event.preventDefault();
-        window.electronFeatures?.ipcRenderer.send(ipcChannels.closeCurrentWindow);
+        sendIpcMessage(ipcChannels.closeCurrentWindow);
+      } else if (activeElement != null && isHTMLElement(activeElement)) {
+        event.preventDefault();
+        activeElement.blur();
       }
     },
     [ref],
@@ -43,18 +51,10 @@ export default function App() {
       <ThemeProvider theme={darkTheme}>
         <GlobalStyles />
         <Root ref={ref} tabIndex={0}>
-          <Header>
-            <div>1st Week July, 2020</div>
-            <ButtonToggleGroup name="보기" aria-label="보기" size="small" value="week">
-              <ButtonToggle value="week">Week</ButtonToggle>
-              <ButtonToggle value="month">Month</ButtonToggle>
-            </ButtonToggleGroup>
-          </Header>
-          <Content>
-            <div>
-              <Button color="primary">Button</Button>
-            </div>
-          </Content>
+          <DateNavigator />
+          <DayScoreSection />
+          <DayLogsSection />
+          <FixedBottomToolbar />
         </Root>
       </ThemeProvider>
     </ReakitProvider>
@@ -65,16 +65,4 @@ const Root = styled.div`
   outline: 0;
   overflow: visible;
   width: 100%;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Content = styled.main`
-  padding: 12px 16px;
 `;

@@ -23,7 +23,7 @@ export type ButtonToggleGroupProps = Omit<ComponentProps<typeof Group>, 'tabInde
 export function ButtonToggleGroup({
   name,
   value,
-  size = 'regular',
+  size = 'default',
   children,
   ...props
 }: ButtonToggleGroupProps) {
@@ -72,7 +72,7 @@ export function ButtonToggle({ children, value, ...props }: ButtonToggleProps) {
   return (
     <ButtonToggleWrapper pressed={context?.state === value} tabIndex={-1} {...props}>
       <Button
-        size={context?.size ?? 'regular'}
+        size={context?.size}
         name={context?.name}
         tabIndex={0}
         type="button"
