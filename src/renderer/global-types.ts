@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, Menu, MenuItem } from 'electron';
 
 /**
  * @license
@@ -223,13 +223,5 @@ declare global {
      * [SVGElement](https://developer.mozilla.org/en-US/docs/Web/API/SVGElement).
      */
     unobserve: (target: Element) => void;
-  }
-}
-
-declare global {
-  interface Window {
-    electronFeatures?: {
-      readonly ipcRenderer: typeof ipcRenderer;
-    };
   }
 }

@@ -1,28 +1,35 @@
-import { IpcRendererEvent } from 'electron';
 import { useObservable, useSubscription } from 'observable-hooks';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { parsePayload, serializePayload } from '../../core';
+import { getElectronFeatures } from '../electron-features';
 
-function listenIpc(channel: string) {
-  return new Observable<IpcRendererEvent>((subscriber) => {
-    const listener = (event: IpcRendererEvent) => {
-      subscriber.next(event);
+const { ipcRenderer } = getElectronFeatures();
+
+export function sendIpcMessage<T>(channel: string, payload?: T) {
+  ipcRenderer.send(channel, payload != null ? serializePayload(payload) : undefined);
+}
+
+export function listenIpc<T>(channel: string) {
+  return new Observable<T | null | undefined>((subscriber) => {
+    const listener = (_: unknown, payload?: string) => {
+      subscriber.next(payload != null ? parsePayload<T>(payload) : undefined);
     };
 
-    window.electronFeatures?.ipcRenderer.on(channel, listener);
+    ipcRenderer.on(channel, listener);
 
     return () => {
-      window.electronFeatures?.ipcRenderer.off(channel, listener);
+      ipcRenderer.off(channel, listener);
     };
   });
 }
 
-export default function useIpcListener(
+export default function useIpcListener<T = undefined>(
   channel: string,
-  onEvent?: (event: IpcRendererEvent) => void,
+  onEvent?: (payload: T | null | undefined) => void,
 ) {
   const ipc$ = useObservable(
-    (input$) => input$.pipe(switchMap(([channel]) => listenIpc(channel))),
+    (input$) => input$.pipe(switchMap(([channel]) => listenIpc<T>(channel))),
     [channel] as const,
   );
 
