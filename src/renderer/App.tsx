@@ -1,6 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
+import { ipcChannels } from '../core';
 import { darkTheme, styled } from './colors/theming';
 import { Button } from './components/Button';
 import { ButtonToggle, ButtonToggleGroup } from './components/ButtonToggle';
@@ -14,19 +15,24 @@ export default function App() {
     console.log(entry);
   });
 
-  useKeyboardCapture(eventKeys.ESC, (event) => {
-    const { activeElement } = document;
-    console.log(activeElement);
+  const handleESCKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      const { activeElement } = document;
 
-    if (
-      activeElement === null ||
-      activeElement === ref.current ||
-      activeElement === document.body
-    ) {
-      event.preventDefault();
-      window.electronFeatures?.ipcRenderer.send('close-current-window');
-    }
-  });
+      // Close current window when focus lost.
+      if (
+        activeElement === null ||
+        activeElement === ref.current ||
+        activeElement === document.body
+      ) {
+        event.preventDefault();
+        window.electronFeatures?.ipcRenderer.send(ipcChannels.closeCurrentWindow);
+      }
+    },
+    [ref],
+  );
+
+  useKeyboardCapture(eventKeys.ESC, handleESCKeyPress);
 
   useEffect(() => {
     ref.current?.focus();
@@ -36,7 +42,7 @@ export default function App() {
     <ReakitProvider>
       <ThemeProvider theme={darkTheme}>
         <GlobalStyles />
-        <Root ref={ref} tabIndex={-1}>
+        <Root ref={ref} tabIndex={0}>
           <Header>
             <div>1st Week July, 2020</div>
             <ButtonToggleGroup name="보기" aria-label="보기" size="small" value="week">
