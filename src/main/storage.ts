@@ -14,13 +14,13 @@ export class Storage {
   private readonly filename: string;
   private storage: StorageData | null = null;
 
-  private readonly saveStream = new Subject<void>();
+  private readonly save$ = new Subject<void>();
   private readonly saveSubscription = Subscription.EMPTY;
   private readonly destroyed = new Subject();
 
   constructor(filename = defaultFilename) {
     this.filename = filename;
-    this.saveSubscription = this.saveStream
+    this.saveSubscription = this.save$
       .asObservable()
       .pipe(
         debounceTime(50),
@@ -62,7 +62,7 @@ export class Storage {
   }
 
   save() {
-    this.saveStream.next();
+    this.save$.next();
   }
 
   private async _save() {
