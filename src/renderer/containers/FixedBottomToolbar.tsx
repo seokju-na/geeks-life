@@ -1,13 +1,17 @@
 import { css } from '@emotion/core';
+import { format } from 'date-fns';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Toolbar, ToolbarItem, unstable_useId as useId, useToolbarState } from 'reakit';
 import { selectForeground, styled, useTheme } from '../colors/theming';
-import { Button } from './Button';
+import { Button } from '../components/Button';
+import { selectors } from '../store/selectors';
 
 export default function FixedBottomToolbar() {
   const { id } = useId({
     baseId: 'gl-select-day-toolbar',
   });
+  const date = useSelector(selectors.date);
   const theme = useTheme();
   const toolbar = useToolbarState({ loop: true });
 
@@ -20,8 +24,8 @@ export default function FixedBottomToolbar() {
         background-color: ${theme.background.backgroundHighlighted};
       `}
     >
-      <Title id={id}>Changes at 23 July, 2020</Title>
-      <ToolbarItem {...toolbar} as={Button} size="tiny" color="primary">
+      <Title id={id}>No Changes at {format(new Date(date), 'd MMM, yyyy')}</Title>
+      <ToolbarItem {...toolbar} as={Button} size="tiny" color="primary" disabled={true}>
         Commit (⌘+S)
       </ToolbarItem>
     </Toolbar>
