@@ -4,18 +4,19 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
 import { ipcChannels } from '../core';
 import { darkTheme, lightTheme, styled } from './colors/theming';
-import DateNavigator from './components/DateNavigator';
+import DateSelect from './containers/DateSelect';
 import DayScoreSection from './components/DayScoreSection';
-import FixedBottomToolbar from './components/FixedBottomToolbar';
+import FixedBottomToolbar from './containers/FixedBottomToolbar';
 import GlobalStyles from './components/GlobalStyles';
 import { eventKeys } from './constants/event-keys';
 import { sendIpcMessage } from './hooks/useIpcListener';
 import useKeyboardCapture from './hooks/useKeyboardCapture';
 import useResizeObserver from './hooks/useResizeObserver';
+import { withStore } from './store/connection';
 
 const isHTMLElement = (elem: Node): elem is HTMLElement => elem.nodeType === Node.ELEMENT_NODE;
 
-export default function App() {
+function App() {
   const darkMode = useMemo(() => location.search.includes('?theme=dark'), []);
 
   const ref = useResizeObserver<HTMLDivElement>(() => {
@@ -53,7 +54,7 @@ export default function App() {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
         <Root ref={ref} tabIndex={0}>
-          <DateNavigator />
+          <DateSelect />
           <DayScoreSection />
           <DayLogsSection />
           <FixedBottomToolbar />
@@ -62,6 +63,8 @@ export default function App() {
     </ReakitProvider>
   );
 }
+
+export default withStore(App);
 
 const Root = styled.div`
   outline: 0;

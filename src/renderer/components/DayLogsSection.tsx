@@ -1,9 +1,8 @@
 import { css } from '@emotion/core';
 import React from 'react';
 import { Toolbar, ToolbarItem, useToolbarState } from 'reakit';
-import { styled } from '../colors/theming';
+import { selectForeground, styled } from '../colors/theming';
 import { Button } from './Button';
-import DayLogsList from './DayLogList';
 import { Icon } from './Icon';
 
 export default function DayLogsSection() {
@@ -20,7 +19,7 @@ export default function DayLogsSection() {
         </Toolbar>
       </Top>
       <Content>
-        <DayLogsList />
+        <Empty>No Logs</Empty>
       </Content>
     </Section>
   );
@@ -48,4 +47,13 @@ const toolbarCss = css`
 
 const Content = styled.div`
   padding: 8px 12px;
+`;
+
+const Empty = styled.p`
+  margin: 0;
+  padding: 32px 0;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  color: ${selectForeground('disabledText')};
 `;
