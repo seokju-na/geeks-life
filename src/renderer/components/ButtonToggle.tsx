@@ -9,15 +9,17 @@ type RadioState = ReturnType<typeof useRadioState>;
 type ButtonGroupContextValue = RadioState & {
   size: ButtonSize;
   name: string;
+  onChange(value: string): void;
 };
 
 const ButtonGroupContext = createContext<ButtonGroupContextValue | undefined>(undefined);
 
-export type ButtonToggleGroupProps = Omit<ComponentProps<typeof Group>, 'tabIndex'> & {
+export type ButtonToggleGroupProps = Omit<ComponentProps<typeof Group>, 'tabIndex' | 'onChange'> & {
   name: string;
   ['aria-label']: string;
   value?: string;
   size?: ButtonSize;
+  onChange?(value: string): void;
 };
 
 export function ButtonToggleGroup({
@@ -25,10 +27,18 @@ export function ButtonToggleGroup({
   value,
   size = 'default',
   children,
+  onChange,
   ...props
 }: ButtonToggleGroupProps) {
   const theme = useTheme();
   const radio = useRadioState({ state: value });
+  const handleChange = useCallback(
+    (value: string) => {
+      radio.setState(value);
+      onChange?.(value);
+    },
+    [radio, onChange],
+  );
 
   return (
     <ButtonGroupContext.Provider
@@ -36,6 +46,7 @@ export function ButtonToggleGroup({
         name,
         size,
         ...radio,
+        onChange: handleChange,
       }}
     >
       <Group
@@ -66,7 +77,7 @@ export type ButtonToggleProps = Omit<HTMLProps<HTMLDivElement>, 'tabIndex' | 'on
 export function ButtonToggle({ children, value, ...props }: ButtonToggleProps) {
   const context = useContext(ButtonGroupContext);
   const handleClick = useCallback(() => {
-    context?.setState(value);
+    context?.onChange(value);
   }, [value, context]);
 
   return (
