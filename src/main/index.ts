@@ -1,6 +1,8 @@
 import { app, globalShortcut, ipcMain, nativeImage, nativeTheme, Tray } from 'electron';
-import { ipcChannels } from '../core';
+import { EmojiResponse, ipcChannels, serializePayload } from '../core';
+import { sort, SortingType } from '../core/sorting';
 import { globalShortcuts, windowBackgroundColors } from './constants';
+import { EmojiManager } from './emoji-manager';
 import { env } from './env';
 import { Storage } from './storage';
 import { encodePathAsUrl } from './util';
@@ -9,6 +11,7 @@ import { Window, WindowEvents } from './window';
 const windowUrl = encodePathAsUrl(__dirname, 'web/index.html');
 
 const storage = new Storage();
+const emojiManager = new EmojiManager();
 let tray: Tray | null = null;
 let window: Window | null = null;
 
@@ -69,6 +72,19 @@ async function bootstrap() {
 
   ipcMain.on(ipcChannels.commitRequest, () => {
     //
+  });
+
+  ipcMain.on(ipcChannels.emojiRequest, async (event) => {
+    const { native } = await emojiManager.readEmojis();
+    const emojis = [...native];
+
+    sort(emojis, SortingType.Asc, (emoji) => emoji.key);
+
+    const payload: EmojiResponse = {
+      emojis,
+    };
+
+    event.reply(ipcChannels.emojiResponse, serializePayload(payload));
   });
 
   console.timeEnd('bootstrap');

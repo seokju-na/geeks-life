@@ -16,6 +16,7 @@ export const defaultDailyLogCategories: DailyLogCategory[] = [
   {
     id: 'love-category',
     emoji: {
+      key: 'heart',
       type: 'native',
       char: '❤️',
     },
@@ -24,6 +25,7 @@ export const defaultDailyLogCategories: DailyLogCategory[] = [
   {
     id: 'working-category',
     emoji: {
+      key: 'fire',
       type: 'native',
       char: '🔥',
     },
@@ -32,6 +34,7 @@ export const defaultDailyLogCategories: DailyLogCategory[] = [
   {
     id: 'coding-category',
     emoji: {
+      key: 'computer',
       type: 'native',
       char: '💻',
     },
@@ -40,6 +43,7 @@ export const defaultDailyLogCategories: DailyLogCategory[] = [
   {
     id: 'beer-category',
     emoji: {
+      key: 'beer',
       type: 'native',
       char: '🍺',
     },

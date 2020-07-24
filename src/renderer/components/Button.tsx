@@ -107,7 +107,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           padding: 0 0.75em;
           border-radius: 0.25rem;
           height: ${buttonSizes[size]}px;
+          will-change: box-shadow;
           transition: box-shadow 0.15s ease-in-out 0s;
+          pointer-events: auto;
 
           & * {
             cursor: inherit;

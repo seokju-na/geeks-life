@@ -1,14 +1,16 @@
 import DayLogsSection from 'components/DayLogsSection';
+import EmojiDialog from 'components/EmojiDialog';
 import { ThemeProvider } from 'emotion-theming';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Provider as ReakitProvider } from 'reakit';
 import { ipcChannels } from '../core';
 import { darkTheme, lightTheme, styled } from './colors/theming';
-import DateSelect from './containers/DateSelect';
+import { Button } from './components/Button';
 import DayScoreSection from './components/DayScoreSection';
-import FixedBottomToolbar from './containers/FixedBottomToolbar';
 import GlobalStyles from './components/GlobalStyles';
 import { eventKeys } from './constants/event-keys';
+import DateSelect from './containers/DateSelect';
+import FixedBottomToolbar from './containers/FixedBottomToolbar';
 import { sendIpcMessage } from './hooks/useIpcListener';
 import useKeyboardCapture from './hooks/useKeyboardCapture';
 import useResizeObserver from './hooks/useResizeObserver';
@@ -57,6 +59,7 @@ function App() {
           <DateSelect />
           <DayScoreSection />
           <DayLogsSection />
+          <EmojiDialog disclosure={<Button>Open</Button>} aria-label="Hello" />
           <FixedBottomToolbar />
         </Root>
       </ThemeProvider>
