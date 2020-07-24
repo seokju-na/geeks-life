@@ -18,7 +18,7 @@ export interface IconProps
 }
 
 export const Icon = forwardRef<HTMLElement, IconProps>(
-  ({ name, size = '1em', color = 'default', ...props }, ref) => {
+  ({ name, size = '1.25em', color = 'default', ...props }, ref) => {
     const theme = useTheme();
     const source$ = useIconSource(name);
     const [html, setHtml] = useState('');

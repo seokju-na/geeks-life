@@ -14,7 +14,7 @@ export default function DayLogsSection() {
         <Title>Today{"'"}s Logs</Title>
         <Toolbar {...toolbar} aria-label="Log toolbar" css={toolbarCss}>
           <ToolbarItem {...toolbar} as={Button} variant="icon" size="tiny" aria-label="Add log">
-            <Icon name="plus" aria-hidden={true} />
+            <Icon name="plus" size="1em" aria-hidden={true} />
           </ToolbarItem>
         </Toolbar>
       </Top>
