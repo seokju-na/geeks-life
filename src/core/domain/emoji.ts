@@ -1,9 +1,13 @@
-interface NativeEmoji {
+interface EmojiBase {
+  key: string;
+}
+
+export interface NativeEmoji extends EmojiBase {
   type: 'native';
   char: string;
 }
 
-interface CustomEmoji {
+export interface CustomEmoji extends EmojiBase {
   type: 'custom';
   fileUrl: string;
 }
