@@ -1,33 +1,51 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { css } from '@emotion/core';
 import React, {
+  Children,
   cloneElement,
   ComponentElement,
+  ComponentProps,
+  createContext,
   FunctionComponentElement,
   HTMLProps,
-  useEffect,
+  useMemo,
 } from 'react';
-import { Dialog as BaseDialog, DialogBackdrop, DialogDisclosure, useDialogState } from 'reakit';
+import {
+  Box,
+  Dialog as BaseDialog,
+  DialogBackdrop,
+  DialogDisclosure,
+  unstable_useId as useId,
+  useDialogState,
+  VisuallyHidden,
+} from 'reakit';
 import { useTheme } from '../colors/theming';
+
+interface DialogContextValue {
+  titleId?: string;
+}
+
+const DialogContext = createContext<DialogContextValue>({});
 
 export type DialogProps = Omit<HTMLProps<HTMLDivElement>, 'as'> & {
   role?: 'alertdialog' | 'dialog';
+  dialog: ReturnType<typeof useDialogState>;
   disclosure: FunctionComponentElement<any> | ComponentElement<any, any>;
-  onVisible?(): void;
 };
 
-export default function Dialog({ disclosure, children, onVisible, ...props }: DialogProps) {
-  const dialog = useDialogState({ animated: true });
+export default function Dialog({
+  disclosure,
+  dialog,
+  children,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
+  ...props
+}: DialogProps) {
   const theme = useTheme();
-
-  useEffect(() => {
-    if (dialog.visible) {
-      onVisible?.();
-    }
-  }, [dialog.visible, onVisible]);
+  const { id: titleId } = useId({ baseId: 'dialog-title' });
 
   return (
-    <>
+    <DialogContext.Provider value={{ titleId }}>
       <DialogDisclosure {...dialog} ref={disclosure.ref} {...disclosure.props}>
         {(disclosureProps) => cloneElement(disclosure, disclosureProps)}
       </DialogDisclosure>
@@ -76,10 +94,110 @@ export default function Dialog({ disclosure, children, onVisible, ...props }: Di
           `}
           {...dialog}
           {...props}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabel == null ? titleId : undefined}
         >
           {children}
         </BaseDialog>
       </DialogBackdrop>
-    </>
+    </DialogContext.Provider>
+  );
+}
+
+export type DialogTitleProps = Omit<ComponentProps<typeof Box>, 'as'> & {
+  /** @default h1 */
+  as?: keyof JSX.IntrinsicElements;
+  hidden?: boolean;
+};
+
+export function DialogTitle({ as = 'h1', children, hidden, ...props }: DialogTitleProps) {
+  const Elem = hidden ? VisuallyHidden : Box;
+
+  return (
+    <Elem
+      as={as}
+      css={css`
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.25;
+        font-weight: 700;
+      `}
+      {...props}
+    >
+      {children}
+    </Elem>
+  );
+}
+
+export type DialogHeadProps = ComponentProps<typeof Box>;
+
+export function DialogHead({ children, ...props }: DialogHeadProps) {
+  return (
+    <Box
+      css={css`
+        padding: 12px 12px 8px 12px;
+        display: flex;
+        align-items: center;
+      `}
+      {...props}
+    >
+      {children}
+    </Box>
+  );
+}
+
+export type DialogContentProps = ComponentProps<typeof Box>;
+
+export function DialogContent({ children, ...props }: DialogContentProps) {
+  return (
+    <Box
+      css={css`
+        padding: 8px 12px;
+      `}
+      {...props}
+    >
+      {children}
+    </Box>
+  );
+}
+
+export type DialogActionsProps = Omit<ComponentProps<typeof Box>, 'align'> & {
+  align?: 'left' | 'right' | 'full';
+};
+
+export function DialogActions({ align = 'full', children, ...props }: DialogActionsProps) {
+  const childrenCount = useMemo(() => (align === 'full' ? Children.count(children) : undefined), [
+    align,
+    children,
+  ]);
+
+  return (
+    <Box
+      css={css`
+        display: flex;
+        align-items: center;
+        ${align === 'left'
+          ? 'justify-content: flex-start'
+          : align === 'right'
+          ? 'justify-content: flex-end'
+          : ''};
+        padding: 8px 12px 12px 12px;
+
+        & > * + * {
+          margin-left: 8px;
+        }
+
+        ${align === 'full' && childrenCount != null
+          ? css`
+              & > * {
+                flex: 1 1 ${100 / childrenCount}%;
+              }
+            `
+          : ''};
+      `}
+      {...props}
+    >
+      {children}
+    </Box>
   );
 }
