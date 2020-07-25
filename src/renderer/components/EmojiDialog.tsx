@@ -1,34 +1,35 @@
 import { css } from '@emotion/core';
 import chunk from 'lodash.chunk';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { KeyboardEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Composite,
   CompositeGroup,
   CompositeItem,
   unstable_useId as useId,
   useCompositeState,
-  VisuallyHidden,
+  useDialogState,
 } from 'reakit';
 import { EmojiResponse, ipcChannels } from '../../core';
 import { Emoji } from '../../core/domain';
 import { selectBackground, selectPrimary, styled } from '../colors/theming';
+import { eventKeys } from '../constants/event-keys';
 import useIpcListener, { sendIpcMessage } from '../hooks/useIpcListener';
-import Dialog, { DialogProps } from './Dialog';
+import Dialog, { DialogContent, DialogHead, DialogProps, DialogTitle } from './Dialog';
 import { FormField, FormFieldInput } from './Form';
 import { Icon } from './Icon';
 import { VirtualScroll, VirtualScrollItem } from './VirtualScroll';
 
-type Props = Omit<DialogProps, 'children' | 'aria-label'> & {
-  children?: never;
-};
+type Props = Pick<DialogProps, 'disclosure'>;
 
 export default function EmojiDialog(props: Props) {
-  const { id: titleId } = useId({ baseId: 'emoji-dialog-title' });
+  const dialog = useDialogState({ animated: true });
   const [emojis, setEmojis] = useState<Emoji[]>([]);
 
-  const requestEmojisWhenDialogVisible = useCallback(() => {
-    sendIpcMessage(ipcChannels.emojiRequest);
-  }, []);
+  useEffect(() => {
+    if (dialog.visible) {
+      sendIpcMessage(ipcChannels.emojiRequest);
+    }
+  }, [dialog]);
 
   useIpcListener<EmojiResponse>(ipcChannels.emojiResponse, (payload) => {
     if (payload != null) {
@@ -36,37 +37,61 @@ export default function EmojiDialog(props: Props) {
     }
   });
 
-  const composite = useCompositeState({ wrap: true });
-  const emojiGrid = useMemo(() => chunk(emojis, 10), [emojis]);
-
   return (
     <Dialog
       {...props}
+      dialog={dialog}
       css={css`
         width: 85vw;
         max-width: 320px;
       `}
-      aria-labelledby={titleId}
-      onVisible={requestEmojisWhenDialogVisible}
     >
-      <Head>
-        <VisuallyHidden as="h1" id={titleId}>
-          Emoji Select
-        </VisuallyHidden>
-        <FormField left={<Icon name="search" />}>
-          <FormFieldInput placeholder="Search icons..." />
+      <SelectView emojis={emojis} />
+    </Dialog>
+  );
+}
+
+const SelectView = memo<{
+  emojis: Emoji[];
+}>((props) => {
+  const { emojis } = props;
+
+  const composite = useCompositeState({ wrap: true });
+  const emojiGrid = useMemo(() => chunk(emojis, 10), [emojis]);
+  const { id: boxId } = useId({ baseId: 'emoji-select-box' });
+
+  const handleSearchKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      switch (event.key) {
+        case eventKeys.ArrowDown:
+          if (composite.currentId != null) {
+            composite.move(composite.currentId);
+          } else {
+            composite.first();
+          }
+          event.preventDefault();
+          break;
+      }
+    },
+    [composite],
+  );
+
+  return (
+    <>
+      <DialogHead>
+        <DialogTitle hidden={true}>Select Emoji</DialogTitle>
+        <FormField left={<Icon name="search" aria-hidden={true} />}>
+          <FormFieldInput
+            placeholder="Search icons..."
+            aria-owns={boxId}
+            aria-activedescendant={composite.currentId ?? undefined}
+            onKeyDown={handleSearchKeyDown}
+          />
         </FormField>
-      </Head>
-      <Body>
-        <Composite {...composite} role="grid">
-          <VirtualScroll
-            itemSize={24}
-            width={240}
-            height={200}
-            style={{
-              overflowX: 'visible',
-            }}
-          >
+      </DialogHead>
+      <DialogContent>
+        <Composite {...composite} role="grid" id={boxId}>
+          <VirtualScroll itemSize={24} width={240} height={200}>
             {emojiGrid.map((emojiRow, index) => (
               <VirtualScrollItem key={index}>
                 <CompositeGroup role="row" {...composite}>
@@ -86,20 +111,47 @@ export default function EmojiDialog(props: Props) {
             ))}
           </VirtualScroll>
         </Composite>
-      </Body>
-    </Dialog>
+      </DialogContent>
+      {/*<DialogActions>*/}
+      {/*  <Button onClick={onAddButtonClick}>*/}
+      {/*    <Icon name="plus" aria-hidden={true} />*/}
+      {/*    Add Emoji*/}
+      {/*  </Button>*/}
+      {/*</DialogActions>*/}
+    </>
   );
-}
+});
 
-const Head = styled.div`
-  display: block;
-  padding: 8px 12px;
-`;
-
-const Body = styled.div`
-  display: block;
-  padding: 8px 12px;
-`;
+// TODO
+// const AddView = memo<{
+//   onCancelButtonClick(): void;
+// }>((props) => {
+//   const { onCancelButtonClick } = props;
+//
+//   return (
+//     <>
+//       <DialogHead>
+//         <DialogTitle>Add Emoji</DialogTitle>
+//       </DialogHead>
+//       <DialogContent>
+//         <div>
+//           <FormField>
+//             <FormFieldLabel>Emoji Name</FormFieldLabel>
+//             <FormFieldInput placeholder="Input emoji name" maxLength={100} />
+//           </FormField>
+//         </div>
+//       </DialogContent>
+//       <DialogActions>
+//         <Button size="small" onClick={onCancelButtonClick}>
+//           Cancel
+//         </Button>
+//         <Button size="small" color="primary">
+//           Add
+//         </Button>
+//       </DialogActions>
+//     </>
+//   );
+// });
 
 const EmojiItem = styled.button`
   width: 24px;

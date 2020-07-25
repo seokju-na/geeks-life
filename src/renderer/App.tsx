@@ -59,7 +59,7 @@ function App() {
           <DateSelect />
           <DayScoreSection />
           <DayLogsSection />
-          <EmojiDialog disclosure={<Button>Open</Button>} aria-label="Hello" />
+          <EmojiDialog disclosure={<Button>Open</Button>} />
           <FixedBottomToolbar />
         </Root>
       </ThemeProvider>

@@ -20,3 +20,5 @@ export function createEnumKeyFind<T extends Record<string, unknown>>(obj: T) {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return (value: ValueOf<T>) => keys.find((key) => obj[key] === value)!;
 }
+
+export type Nullable<T> = T | null | undefined;

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { parsePayload, serializePayload } from '../../core';
 import { getElectronFeatures } from '../electron-features';
+import { Nullable } from '../utils/typing';
 
 const { ipcRenderer } = getElectronFeatures();
 
@@ -11,7 +12,7 @@ export function sendIpcMessage<T>(channel: string, payload?: T) {
 }
 
 export function listenIpc<T>(channel: string) {
-  return new Observable<T | null | undefined>((subscriber) => {
+  return new Observable<Nullable<T>>((subscriber) => {
     const listener = (_: unknown, payload?: string) => {
       subscriber.next(payload != null ? parsePayload<T>(payload) : undefined);
     };
