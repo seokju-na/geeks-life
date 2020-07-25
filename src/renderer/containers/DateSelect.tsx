@@ -3,14 +3,19 @@ import { isFuture, isSameDay } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeGroup, useCompositeState } from 'reakit';
-import { CalendarDay, getCalendarMonth, getCalendarWeek } from '../../core';
+import {
+  CalendarDay,
+  dateFormattings,
+  dateParsing,
+  getCalendarMonth,
+  getCalendarWeek,
+} from '../../core';
 import { selectForeground, styled } from '../colors/theming';
 import { ButtonToggle, ButtonToggleGroup } from '../components/ButtonToggle';
 import DateSelectDayItem from '../components/DateSelectDayItem';
 import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
 import { DateDisplayType, dateDisplayTypes, getDateDisplayTypeName } from '../store/state';
-import { dateFormattings, dateParsing } from '../utils/date';
 
 const dateDisplayTypeOptions = dateDisplayTypes.map((type) => ({
   name: getDateDisplayTypeName(type),

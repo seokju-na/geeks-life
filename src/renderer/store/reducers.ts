@@ -1,6 +1,6 @@
 import { addWeeks, subWeeks } from 'date-fns';
 import produce from 'immer';
-import { dateFormattings, dateParsing } from '../utils/date';
+import { dateFormattings, dateParsing } from '../../core';
 import { actions } from './actions';
 import { Action, createReducer, on } from './core';
 import { initialState, State } from './state';
