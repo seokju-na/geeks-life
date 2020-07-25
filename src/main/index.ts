@@ -2,8 +2,8 @@ import { app, globalShortcut, ipcMain, nativeImage, nativeTheme, Tray } from 'el
 import { EmojiResponse, ipcChannels, serializePayload } from '../core';
 import { sort, SortingType } from '../core/sorting';
 import { globalShortcuts, windowBackgroundColors } from './constants';
-import { EmojiManager } from './emoji-manager';
 import { env } from './env';
+import { EmojiService } from './services';
 import { Storage } from './storage';
 import { encodePathAsUrl } from './util';
 import { Window, WindowEvents } from './window';
@@ -11,7 +11,7 @@ import { Window, WindowEvents } from './window';
 const windowUrl = encodePathAsUrl(__dirname, 'web/index.html');
 
 const storage = new Storage();
-const emojiManager = new EmojiManager();
+const emojiManager = new EmojiService();
 let tray: Tray | null = null;
 let window: Window | null = null;
 
