@@ -1,7 +1,6 @@
 export type ValueOf<T> = T[keyof T];
 
 /**
- * Enum의 키를 찾아주는 함수를 만듭니다.
  * Create function that find enum key.
  *
  * @example
