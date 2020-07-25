@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { css, Interpolation } from '@emotion/core';
 import React, {
   Children,
@@ -19,20 +20,41 @@ export type FormFieldInputProps = Omit<InputProps, '_noStyle'>;
 
 export const FormFieldInput = forwardRef<HTMLInputElement, FormFieldInputProps>((props, ref) => {
   const { id: idFromProp, ...otherProps } = props;
-  const { id } = useId({ baseId: 'form-field-input' });
+  const { id } = useId({ baseId: 'form-field-input-standalone' });
 
   return <Input ref={ref} id={idFromProp ?? id} {...otherProps} />;
 });
+
+export type FormFieldLabelProps = HTMLProps<HTMLLabelElement>;
+
+export function FormFieldLabel({ children, ...props }: FormFieldLabelProps) {
+  return (
+    <label
+      css={css`
+        padding: 0 2px;
+        margin-bottom: 8px;
+        font-size: 0.875em;
+        font-weight: 500;
+        line-height: 1.25;
+        display: block;
+      `}
+      {...props}
+    >
+      {children}
+    </label>
+  );
+}
 
 export type FormFieldProps = Omit<HTMLProps<HTMLDivElement>, 'as'> & {
   left?: ReactNode;
   right?: ReactNode;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getTypeOf = (node: ReactNode): symbol => (node as any)?.type?.$$typeof;
+const getTypeOf = (node: ReactNode) => (node as any)?.type;
 const isFormFieldInput = (node: ReactNode): node is ReactElement<InputProps> =>
-  getTypeOf(node) === FormFieldInput.$$typeof;
+  getTypeOf(node) === FormFieldInput;
+const isFormFieldLabel = (node: ReactNode): node is ReactElement<FormFieldLabelProps> =>
+  getTypeOf(node) === FormFieldLabel;
 
 export const FormField = forwardRef<HTMLDivElement, FormFieldProps>((props, ref) => {
   const { left, right, children, onFocus, onBlur, ...otherProps } = props;
@@ -49,9 +71,28 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>((props, ref)
 
   const theme = useTheme();
   const [focused, setFocused] = useState(false);
+  const { id: inputId } = useId({ baseId: 'form-field-input' });
 
-  if (childrenArr.filter((child) => getTypeOf(child) === FormFieldInput.$$typeof).length !== 1) {
-    throw new Error('"FormField" should take only one of "Input" or "FormFieldInput" in children.');
+  const childrenCounts = childrenArr.reduce<{ input: number; label: number }>(
+    (counts, child) => {
+      if (isFormFieldInput(child)) {
+        counts.input += 1;
+      }
+      if (isFormFieldLabel(child)) {
+        counts.label += 1;
+      }
+
+      return counts;
+    },
+    { input: 0, label: 0 },
+  );
+
+  if (childrenCounts.input !== 1) {
+    throw new Error('"FormField" should take only one of "FormFieldInput" in children.');
+  }
+
+  if (childrenCounts.label > 1) {
+    throw new Error('"FormField" should take 0 or 1 "FormFieldLabel" in children.');
   }
 
   return (
@@ -64,67 +105,79 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>((props, ref)
       `}
       {...otherProps}
     >
-      {Children.map(children, (child) =>
-        isFormFieldInput(child) ? (
-          <FormFieldInputWrapper
-            css={css`
-              border-radius: 0.25rem;
-              border: 1px solid ${theme.foreground.divider};
-              background-color: rgba(255, 255, 255, ${theme.isDark ? '0.1' : '0.04'});
-              padding: 0.25em 0.5em;
-              font-size: 0.875em;
-              font-weight: 500;
-              transition: box-shadow 0.15s ease-in-out 0s;
-              box-shadow: ${focused ? `${theme.primary['300']} 0px 0px 0px 0.15rem` : 'none'};
-            `}
-            style={{
-              paddingLeft: coerceCssPixelValue(leftSize),
-              paddingRight: coerceCssPixelValue(rightSize),
-            }}
-          >
-            {left != null ? (
-              <FormFieldAddon ref={leftRef} type="left">
-                {left}
-              </FormFieldAddon>
-            ) : null}
-            {cloneElement(child, {
-              onFocus(event: FocusEvent<HTMLInputElement>) {
-                setFocused(true);
-                onFocus?.(event);
-                child.props.onFocus?.(event);
-              },
-              onBlur(event: FocusEvent<HTMLInputElement>) {
-                setFocused(false);
-                onBlur?.(event);
-                child.props.onBlur?.(event);
-              },
-              // _noStyle: true,
-              css: css`
-                border-radius: 0;
-                border: 0;
-                background: transparent;
-                padding: 0.25em;
-                font-size: 1em;
-                transition: none;
+      {Children.map(children, (child) => {
+        const labelExists = childrenCounts.label > 0;
 
-                &:focus {
-                  outline: 0;
-                  box-shadow: none;
-                }
+        if (isFormFieldInput(child)) {
+          return (
+            <FormFieldInputWrapper
+              css={css`
+                border-radius: 0.25rem;
+                border: 1px solid ${theme.foreground.divider};
+                background-color: rgba(255, 255, 255, ${theme.isDark ? '0.1' : '0.04'});
+                padding: 0.25em 0.5em;
+                font-size: 0.875em;
+                font-weight: 500;
+                transition: box-shadow 0.15s ease-in-out 0s;
+                box-shadow: ${focused ? `${theme.primary['300']} 0px 0px 0px 0.15rem` : 'none'};
+              `}
+              style={{
+                paddingLeft: coerceCssPixelValue(leftSize),
+                paddingRight: coerceCssPixelValue(rightSize),
+              }}
+            >
+              {left != null ? (
+                <FormFieldAddon ref={leftRef} type="left">
+                  {left}
+                </FormFieldAddon>
+              ) : null}
+              {cloneElement(child, {
+                id: child.props.id != null ? child.props.id : labelExists ? inputId : undefined,
+                onFocus(event: FocusEvent<HTMLInputElement>) {
+                  setFocused(true);
+                  onFocus?.(event);
+                  child.props.onFocus?.(event);
+                },
+                onBlur(event: FocusEvent<HTMLInputElement>) {
+                  setFocused(false);
+                  onBlur?.(event);
+                  child.props.onBlur?.(event);
+                },
+                css: css`
+                  flex: 1 1 auto;
+                  border-radius: 0;
+                  border: 0;
+                  background: transparent;
+                  ${left != null ? 'padding-left: 0.25em' : ''};
+                  ${right != null ? 'padding-right: 0.25em' : ''};
+                  font-size: 1em;
+                  transition: none;
 
-                ${child.props.css as Interpolation};
-              `,
-            })}
-            {right != null ? (
-              <FormFieldAddon ref={rightRef} type="right">
-                {right}
-              </FormFieldAddon>
-            ) : null}
-          </FormFieldInputWrapper>
-        ) : (
-          child
-        ),
-      )}
+                  &:focus {
+                    outline: 0;
+                    box-shadow: none;
+                  }
+
+                  ${child.props.css as Interpolation};
+                `,
+              })}
+              {right != null ? (
+                <FormFieldAddon ref={rightRef} type="right">
+                  {right}
+                </FormFieldAddon>
+              ) : null}
+            </FormFieldInputWrapper>
+          );
+        }
+
+        if (isFormFieldLabel(child)) {
+          return cloneElement(child, {
+            htmlFor: child.props.htmlFor ?? inputId,
+          });
+        }
+
+        return child;
+      })}
     </Box>
   );
 });
