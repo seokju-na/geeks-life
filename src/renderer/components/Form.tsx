@@ -3,6 +3,7 @@ import { css, Interpolation } from '@emotion/core';
 import React, {
   Children,
   cloneElement,
+  ComponentProps,
   FocusEvent,
   forwardRef,
   HTMLProps,
@@ -42,6 +43,31 @@ export function FormFieldLabel({ children, ...props }: FormFieldLabelProps) {
     >
       {children}
     </label>
+  );
+}
+
+export type FormFieldErrorProps = Omit<ComponentProps<typeof Box>, 'as'> & {
+  show?: boolean;
+};
+
+export function FormFieldError({ show = false, children, ...props }: FormFieldErrorProps) {
+  const theme = useTheme();
+
+  return (
+    <Box
+      css={css`
+        display: ${show ? 'block' : 'none'};
+        padding: 0 2px;
+        margin-top: 4px;
+        font-size: 0.85em;
+        font-weight: 500;
+        line-height: 1.25;
+        color: ${theme.warn['500']};
+      `}
+      {...props}
+    >
+      {children}
+    </Box>
   );
 }
 
@@ -102,6 +128,10 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>((props, ref)
         display: block;
         width: 100%;
         font-size: 1rem;
+
+        & + & {
+          margin-top: 12px;
+        }
       `}
       {...otherProps}
     >
@@ -148,6 +178,8 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>((props, ref)
                   border-radius: 0;
                   border: 0;
                   background: transparent;
+                  padding-top: 0;
+                  padding-bottom: 0;
                   ${left != null ? 'padding-left: 0.25em' : ''};
                   ${right != null ? 'padding-right: 0.25em' : ''};
                   font-size: 1em;
