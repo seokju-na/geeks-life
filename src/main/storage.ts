@@ -39,11 +39,13 @@ export class Storage {
     }
   }
 
-  destroy() {
+  async destroy() {
     this.destroyed.next();
     this.destroyed.complete();
+    this.saveSubscription.unsubscribe();
 
-    this.saveSubscription?.unsubscribe();
+    // Ensure save
+    await this._save();
   }
 
   has(key: string) {

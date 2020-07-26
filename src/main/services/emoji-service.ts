@@ -1,8 +1,8 @@
 import fse from 'fs-extra';
 import path from 'path';
-import { NativeEmoji } from '../core/domain';
+import { NativeEmoji } from '../../core/domain';
 
-export class EmojiManager {
+export class EmojiService {
   public readonly nativeEmojiUrl = path.join(__dirname, 'assets/native-emojis.json');
   private nativeEmoji: NativeEmoji[] | null = null;
 

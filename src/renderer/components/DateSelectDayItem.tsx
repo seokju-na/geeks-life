@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import { CompositeItem, CompositeStateReturn } from 'reakit';
-import { DailyScoreLevels } from '../../core/domain';
+import { DailyScore } from '../../core/domain';
 import { dailyScoreColorMap } from '../colors/daily-score-colors';
 import { selectBackground, selectForeground, selectPrimary, styled } from '../colors/theming';
 import { Button } from './Button';
@@ -8,7 +8,7 @@ import { Button } from './Button';
 type Props = Omit<ComponentProps<typeof Button>, 'size' | 'variant' | 'color'> &
   CompositeStateReturn & {
     'aria-label': string;
-    scoreLevel?: DailyScoreLevels;
+    scoreLevel?: DailyScore;
     selected?: boolean;
   };
 
@@ -16,7 +16,7 @@ export default function DateSelectDayItem({ scoreLevel, onClick, selected, ...pr
   return (
     <CompositeItem
       as={Item}
-      style={{ backgroundColor: dailyScoreColorMap[scoreLevel ?? DailyScoreLevels.None] }}
+      style={{ backgroundColor: dailyScoreColorMap[scoreLevel ?? DailyScore.None] }}
       aria-current={selected}
       onClick={onClick}
       {...props}
@@ -33,7 +33,7 @@ const Item = styled(Button)`
     background-color: transparent;
   }
 
-  &[aria-current='true'] {
+  &:not(:disabled)[aria-current='true'] {
     box-shadow: ${selectPrimary()} 0px 0px 0px 0.175em;
 
     &:focus {

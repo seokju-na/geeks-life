@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css, Interpolation } from '@emotion/core';
 import React, { ComponentProps, forwardRef } from 'react';
 import { Button as ReakitButton } from 'reakit';
 import { Theme, useTheme } from '../colors/theming';
@@ -83,10 +83,14 @@ export type ButtonProps = Omit<ComponentProps<typeof ReakitButton>, 'color'> & {
   color?: ButtonColor;
   /** @default regular */
   size?: ButtonSize;
+  css?: Interpolation;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'flat', color = 'default', size = 'default', children, ...props }, ref) => {
+  (
+    { variant = 'flat', color = 'default', size = 'default', css: cssFormProp, children, ...props },
+    ref,
+  ) => {
     const theme = useTheme();
 
     return (
@@ -126,6 +130,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             background-color: ${theme.background.disabledButton};
             color: ${theme.foreground.disabledButton};
           }
+
+          ${cssFormProp};
         `}
         {...props}
       >

@@ -1,8 +1,8 @@
 import { css } from '@emotion/core';
-import React, { ComponentProps, createContext, HTMLProps, useCallback, useContext } from 'react';
+import React, { ComponentProps, createContext, useCallback, useContext } from 'react';
 import { Group, useRadioState } from 'reakit';
-import { selectBackground, selectForeground, styled, useTheme } from '../colors/theming';
-import { Button, buttonFontSizes, ButtonSize } from './Button';
+import { useTheme } from '../colors/theming';
+import { Button, buttonFontSizes, ButtonProps, ButtonSize } from './Button';
 
 type RadioState = ReturnType<typeof useRadioState>;
 
@@ -61,7 +61,6 @@ export function ButtonToggleGroup({
           font-size: ${buttonFontSizes[size]};
           border: 1px solid ${theme.foreground.divider};
         `}
-        tabIndex={-1}
         {...props}
       >
         {children}
@@ -70,59 +69,54 @@ export function ButtonToggleGroup({
   );
 }
 
-export type ButtonToggleProps = Omit<HTMLProps<HTMLDivElement>, 'tabIndex' | 'onClick'> & {
+export type ButtonToggleProps = Omit<ButtonProps, 'ref' | 'size' | 'variant' | 'color'> & {
   value: string;
 };
 
 export function ButtonToggle({ children, value, ...props }: ButtonToggleProps) {
+  const theme = useTheme();
   const context = useContext(ButtonGroupContext);
   const handleClick = useCallback(() => {
     context?.onChange(value);
   }, [value, context]);
 
   return (
-    <ButtonToggleWrapper pressed={context?.state === value} tabIndex={-1} {...props}>
-      <Button
-        size={context?.size}
-        name={context?.name}
-        tabIndex={0}
-        type="button"
-        aria-pressed={context?.state === value}
-        onClick={handleClick}
-      >
-        {children}
-      </Button>
-    </ButtonToggleWrapper>
+    <Button
+      size={context?.size}
+      name={context?.name}
+      aria-pressed={context?.state === value}
+      onClick={handleClick}
+      // TODO: enhance focus style
+      css={css`
+        & + & {
+          border-left: 1px solid ${theme.foreground.divider};
+        }
+
+        border: 0;
+        margin: 0;
+        font: inherit;
+        color: ${theme.foreground.text};
+        outline: none;
+        cursor: pointer;
+        border-radius: 0;
+        transition: background-color 0.15s ease-in-out 0s;
+        background-color: ${theme.background.raisedButton};
+
+        &[aria-pressed='true'] {
+          background-color: ${theme.background.selectedButton};
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &:not([aria-pressed='true']):focus {
+          background-color: ${theme.background.focusedButton};
+        }
+      `}
+      {...props}
+    >
+      {children}
+    </Button>
   );
 }
-
-// TODO: enhance focus style
-const ButtonToggleWrapper = styled.div<{ pressed: boolean }>`
-  & + & {
-    border-left: 1px solid ${selectForeground('divider')};
-  }
-
-  > button {
-    border: 0;
-    margin: 0;
-    font: inherit;
-    color: ${selectForeground('text')};
-    outline: none;
-    cursor: pointer;
-    border-radius: 0;
-    transition: background-color 0.15s ease-in-out 0s;
-    background-color: ${selectBackground('raisedButton')};
-
-    &[aria-pressed='true'] {
-      background-color: ${selectBackground('selectedButton')};
-    }
-
-    &:focus {
-      box-shadow: none;
-    }
-
-    &:not([aria-pressed='true']):focus {
-      background-color: ${selectBackground('focusedButton')};
-    }
-  }
-`;

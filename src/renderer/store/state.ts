@@ -1,5 +1,5 @@
-import { dateFormattings } from '../utils/date';
-import { createEnumKeyFind } from '../utils/typing';
+import { CommitDailyLifeErrorCode, createEnumKeyFind, dateFormattings } from '../../core';
+import { createUniqueId, DailyLife, DailyScore } from '../../core/domain';
 
 export enum DateDisplayType {
   Weekly = 'weekly',
@@ -13,10 +13,29 @@ export const getDateDisplayTypeName = createEnumKeyFind(DateDisplayType);
 export interface State {
   dateDisplayType: DateDisplayType;
   date: string;
+  modifiedAtDate: boolean | null;
+  weeklyLives: Array<DailyLife | null> | null;
+  monthlyLives: Array<Array<DailyLife | null>> | null;
+  committing: boolean;
+  commitErrorCode: CommitDailyLifeErrorCode | null;
+}
+
+export function createDailyLifeAt(date: string): DailyLife {
+  return {
+    id: createUniqueId(),
+    date,
+    score: DailyScore.None,
+    logs: [],
+  };
 }
 
 // TODO: get initial state from storage (can save for next)
 export const initialState: Readonly<State> = {
   dateDisplayType: DateDisplayType.Weekly,
   date: dateFormattings['yyyy-MM-dd'](new Date()),
+  modifiedAtDate: null,
+  weeklyLives: null,
+  monthlyLives: null,
+  committing: false,
+  commitErrorCode: null,
 };

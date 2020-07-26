@@ -1,9 +1,8 @@
 import { useObservable, useSubscription } from 'observable-hooks';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { parsePayload, serializePayload } from '../../core';
+import { Nullable, parsePayload, serializePayload } from '../../core';
 import { getElectronFeatures } from '../electron-features';
-import { Nullable } from '../utils/typing';
 
 const { ipcRenderer } = getElectronFeatures();
 
