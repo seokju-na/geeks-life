@@ -30,7 +30,7 @@ const DialogContext = createContext<DialogContextValue>({});
 export type DialogProps = Omit<HTMLProps<HTMLDivElement>, 'as'> & {
   role?: 'alertdialog' | 'dialog';
   dialog: ReturnType<typeof useDialogState>;
-  disclosure: FunctionComponentElement<any> | ComponentElement<any, any>;
+  disclosure?: FunctionComponentElement<any> | ComponentElement<any, any>;
 };
 
 export default function Dialog({
@@ -46,9 +46,11 @@ export default function Dialog({
 
   return (
     <DialogContext.Provider value={{ titleId }}>
-      <DialogDisclosure {...dialog} ref={disclosure.ref} {...disclosure.props}>
-        {(disclosureProps) => cloneElement(disclosure, disclosureProps)}
-      </DialogDisclosure>
+      {disclosure != null ? (
+        <DialogDisclosure {...dialog} ref={disclosure.ref} {...disclosure.props}>
+          {(disclosureProps) => cloneElement(disclosure, disclosureProps)}
+        </DialogDisclosure>
+      ) : null}
       <DialogBackdrop
         css={css`
           position: fixed;
