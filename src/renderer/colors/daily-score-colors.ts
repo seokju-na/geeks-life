@@ -1,10 +1,10 @@
-import { DailyScoreLevels } from '../../core/domain';
+import { DailyScore } from '../../core/domain';
 
 // colors from github
-export const dailyScoreColorMap: Readonly<Record<DailyScoreLevels, string | undefined>> = {
-  [DailyScoreLevels.None]: undefined,
-  [DailyScoreLevels.Low]: '#9be9a8',
-  [DailyScoreLevels.Medium]: '#40c463',
-  [DailyScoreLevels.High]: '#30a14e',
-  [DailyScoreLevels.Excellent]: '#216e39',
+export const dailyScoreColorMap: Readonly<Record<DailyScore, string | undefined>> = {
+  [DailyScore.None]: undefined,
+  [DailyScore.Low]: '#9be9a8',
+  [DailyScore.Medium]: '#40c463',
+  [DailyScore.High]: '#30a14e',
+  [DailyScore.Excellent]: '#216e39',
 };

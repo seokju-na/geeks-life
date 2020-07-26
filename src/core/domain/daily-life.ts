@@ -6,10 +6,25 @@ export interface DailyLogCategory {
   title: string;
 }
 
+export enum DailyScore {
+  None,
+  Low,
+  Medium,
+  High,
+  Excellent,
+}
+
 export interface DailyLog {
   id: string;
-  category: DailyLogCategory;
+  categoryId: string;
   content: string;
+}
+
+export interface DailyLife {
+  id: string;
+  date: string;
+  score?: DailyScore;
+  logs?: DailyLog[];
 }
 
 export const defaultDailyLogCategories: DailyLogCategory[] = [

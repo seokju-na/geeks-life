@@ -1,4 +1,3 @@
 export * from './id';
-export * from './daily-log';
+export * from './daily-life';
 export * from './emoji';
-export * from './daily-score';
