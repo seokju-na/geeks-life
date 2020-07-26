@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
-import { isFuture, isSameDay } from 'date-fns';
-import React, { useCallback, useMemo } from 'react';
+import { isAfter, isSameDay, isToday } from 'date-fns';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeGroup, useCompositeState } from 'reakit';
 import {
@@ -9,38 +9,98 @@ import {
   dateParsing,
   getCalendarMonth,
   getCalendarWeek,
+  ipcChannels,
+  LoadDailyLifeResponse,
+  Nullable,
 } from '../../core';
 import { selectForeground, styled } from '../colors/theming';
 import { ButtonToggle, ButtonToggleGroup } from '../components/ButtonToggle';
 import DateSelectDayItem from '../components/DateSelectDayItem';
+import useIpcListener from '../hooks/useIpcListener';
 import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
-import { DateDisplayType, dateDisplayTypes, getDateDisplayTypeName } from '../store/state';
+import { DateDisplayType, dateDisplayTypes, getDateDisplayTypeName, State } from '../store/state';
 
 const dateDisplayTypeOptions = dateDisplayTypes.map((type) => ({
   name: getDateDisplayTypeName(type),
   value: type,
 }));
 
-const MonthView = React.memo((props: { date: string; onDayClick(day: CalendarDay): void }) => {
-  const { date, onDayClick } = props;
+const isFuture = (date: Date) => {
+  return !isToday(date) && isAfter(date, new Date());
+};
 
-  const composite = useCompositeState({
-    loop: true,
-    currentId: date,
-  });
+const MonthView = React.memo(
+  (props: {
+    date: string;
+    monthlyLives: State['monthlyLives'];
+    onDayClick(day: CalendarDay): void;
+  }) => {
+    const { date, monthlyLives, onDayClick } = props;
 
-  const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
-  const month = useMemo(() => getCalendarMonth(parsedDate), [parsedDate]);
-  const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
-    parsedDate,
-  ]);
+    const composite = useCompositeState({
+      loop: true,
+      currentId: date,
+    });
 
-  return (
-    <Composite {...composite} role="grid" aria-label="Month Navigation" css={gridCss}>
-      {month.weeks.map((week, index) => (
-        <CompositeGroup key={index} {...composite} role="row" css={rowCss}>
-          {week.days.map((day) => {
+    const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
+    const month = useMemo(() => getCalendarMonth(parsedDate), [parsedDate]);
+    const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
+      parsedDate,
+    ]);
+
+    return (
+      <Composite {...composite} role="grid" aria-label="Month Navigation" css={gridCss}>
+        {month.weeks.map((week, i) => (
+          <CompositeGroup key={i} {...composite} role="row" css={rowCss}>
+            {week.days.map((day, j) => {
+              const id = dateFormattings['yyyy-MM-dd'](day.date);
+              const future = isFuture(day.date);
+
+              return (
+                <DateSelectDayItem
+                  {...composite}
+                  key={id}
+                  id={id}
+                  aria-label=""
+                  scoreLevel={monthlyLives?.[i][j]?.score}
+                  selected={isSelectedDate(day)}
+                  onClick={() => onDayClick?.(day)}
+                  disabled={future || monthlyLives == null}
+                  css={cellCss}
+                />
+              );
+            })}
+          </CompositeGroup>
+        ))}
+      </Composite>
+    );
+  },
+);
+
+const WeekView = React.memo(
+  (props: {
+    date: string;
+    weeklyLives: State['weeklyLives'];
+    onDayClick(day: CalendarDay): void;
+  }) => {
+    const { date, weeklyLives, onDayClick } = props;
+
+    const composite = useCompositeState({
+      loop: true,
+      currentId: date,
+    });
+
+    const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
+    const week = useMemo(() => getCalendarWeek(parsedDate), [parsedDate]);
+    const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
+      parsedDate,
+    ]);
+
+    return (
+      <Composite {...composite} role="grid" aria-label="Week Navigation" css={gridCss}>
+        <CompositeGroup {...composite} role="row" css={rowCss}>
+          {week.days.map((day, index) => {
             const id = dateFormattings['yyyy-MM-dd'](day.date);
             const future = isFuture(day.date);
 
@@ -50,63 +110,28 @@ const MonthView = React.memo((props: { date: string; onDayClick(day: CalendarDay
                 key={id}
                 id={id}
                 aria-label=""
+                scoreLevel={weeklyLives?.[index]?.score}
                 selected={isSelectedDate(day)}
                 onClick={() => onDayClick?.(day)}
-                disabled={future}
+                disabled={future || weeklyLives == null}
                 css={cellCss}
               />
             );
           })}
         </CompositeGroup>
-      ))}
-    </Composite>
-  );
-});
-
-const WeekView = React.memo((props: { date: string; onDayClick(day: CalendarDay): void }) => {
-  const { date, onDayClick } = props;
-
-  const composite = useCompositeState({
-    loop: true,
-    currentId: date,
-  });
-
-  const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
-  const week = useMemo(() => getCalendarWeek(parsedDate), [parsedDate]);
-  const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
-    parsedDate,
-  ]);
-
-  return (
-    <Composite {...composite} role="grid" aria-label="Week Navigation" css={gridCss}>
-      <CompositeGroup {...composite} role="row" css={rowCss}>
-        {week.days.map((day) => {
-          const id = dateFormattings['yyyy-MM-dd'](day.date);
-          const future = isFuture(day.date);
-
-          return (
-            <DateSelectDayItem
-              {...composite}
-              key={id}
-              id={id}
-              aria-label=""
-              selected={isSelectedDate(day)}
-              onClick={() => onDayClick?.(day)}
-              disabled={future}
-              css={cellCss}
-            />
-          );
-        })}
-      </CompositeGroup>
-    </Composite>
-  );
-});
+      </Composite>
+    );
+  },
+);
 
 export default function DateSelect() {
   const dispatch = useDispatch();
   const date = useSelector(selectors.date);
   const dateAsFormatted = useSelector(selectors.dateAsFormatted);
   const dateDisplayType = useSelector(selectors.dateDisplayType);
+  const weeklyLives = useSelector(selectors.weeklyLives);
+  const monthlyLives = useSelector(selectors.monthlyLives);
+
   const handleDateDisplayTypeChange = useCallback(
     (value: DateDisplayType) => {
       dispatch(actions.changeDateDisplayType({ value }));
@@ -124,11 +149,26 @@ export default function DateSelect() {
   const content = useMemo(() => {
     switch (dateDisplayType) {
       case DateDisplayType.Weekly:
-        return <WeekView date={date} onDayClick={handleDayClick} />;
+        return <WeekView date={date} weeklyLives={weeklyLives} onDayClick={handleDayClick} />;
       case DateDisplayType.Monthly:
-        return <MonthView date={date} onDayClick={handleDayClick} />;
+        return <MonthView date={date} monthlyLives={monthlyLives} onDayClick={handleDayClick} />;
     }
-  }, [dateDisplayType, date, handleDayClick]);
+  }, [dateDisplayType, date, handleDayClick, weeklyLives, monthlyLives]);
+
+  const handleDailyLogResponse = useCallback(
+    (payload: Nullable<LoadDailyLifeResponse>) => {
+      if (payload != null) {
+        dispatch(actions.updateDailyLife({ payload }));
+      }
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    dispatch(actions.requestDailyLife());
+  }, [dispatch]);
+
+  useIpcListener<LoadDailyLifeResponse>(ipcChannels.loadDailyLifeResponse, handleDailyLogResponse);
 
   return (
     <Wrapper>

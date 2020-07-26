@@ -21,3 +21,8 @@ export function createEnumKeyFind<T extends Record<string, unknown>>(obj: T) {
 }
 
 export type Nullable<T> = T | null | undefined;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function match<T extends string | number | symbol, R = any>(matchCase: Record<T, R>) {
+  return (value: T): R => matchCase[value];
+}

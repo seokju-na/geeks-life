@@ -1,23 +1,22 @@
 import { css } from '@emotion/core';
 import React, { useCallback, useRef, useState } from 'react';
 import { unstable_useId as useId } from 'reakit';
-import { colorPalettes } from '../colors/palette';
+import { createEnumKeyFind } from '../../core';
+import { DailyScore } from '../../core/domain';
+import { dailyScoreColorMap } from '../colors/daily-score-colors';
 import { selectBackground, styled, useTheme } from '../colors/theming';
 import { getElectronFeatures } from '../electron-features';
 import { Button } from './Button';
 import { Icon } from './Icon';
 
 interface Props {
-  score?: number;
-  onScoreChange?(score: number): void;
+  score: DailyScore;
+  onScoreChange?(score: DailyScore): void;
 }
 
 const { Menu, MenuItem } = getElectronFeatures();
-const colorByScore = {
-  1: colorPalettes.green['50'],
-  2: colorPalettes.green['200'],
-  3: colorPalettes.green['500'],
-} as any;
+const scores = [DailyScore.Low, DailyScore.Medium, DailyScore.High, DailyScore.Excellent];
+const getScoreKey = createEnumKeyFind(DailyScore);
 
 export default function ScoreMenuButton({ score, onScoreChange }: Props) {
   const { id } = useId({
@@ -34,32 +33,16 @@ export default function ScoreMenuButton({ score, onScoreChange }: Props) {
 
     const menu = new Menu();
 
-    menu.append(
-      new MenuItem({
-        type: 'checkbox',
-        click: () => onScoreChange?.(1),
-        checked: score === 1,
-        label: 'Low',
-      }),
-    );
-
-    menu.append(
-      new MenuItem({
-        type: 'checkbox',
-        click: () => onScoreChange?.(2),
-        checked: score === 2,
-        label: 'Medium',
-      }),
-    );
-
-    menu.append(
-      new MenuItem({
-        type: 'checkbox',
-        click: () => onScoreChange?.(3),
-        checked: score === 3,
-        label: 'High',
-      }),
-    );
+    scores.forEach((value) => {
+      menu.append(
+        new MenuItem({
+          type: 'checkbox',
+          click: () => onScoreChange?.(value),
+          checked: score === value,
+          label: getScoreKey(value),
+        }),
+      );
+    });
 
     const rect = button.getBoundingClientRect();
 
@@ -67,7 +50,7 @@ export default function ScoreMenuButton({ score, onScoreChange }: Props) {
     menu.popup({
       x: Math.floor(rect.x),
       y: Math.floor(rect.y),
-      positioningItem: score != null ? score - 1 : undefined,
+      positioningItem: score > 0 ? score - 1 : undefined,
       callback() {
         setOpened(false);
       },
@@ -90,8 +73,10 @@ export default function ScoreMenuButton({ score, onScoreChange }: Props) {
       onClick={openMenu}
     >
       <Text id={id}>
-        {score != null ? <ColorBox backgroundColor={colorByScore[score]} /> : null}
-        {score == null ? `Not Selected` : 'Low'}
+        {score !== DailyScore.None ? (
+          <ColorBox backgroundColor={dailyScoreColorMap[score]} />
+        ) : null}
+        {score === DailyScore.None ? `Not Selected` : getScoreKey(score)}
       </Text>
       <Right>
         <Icon name="direction" size="1.5em" aria-hidden={true} />
@@ -107,7 +92,7 @@ const Text = styled.span`
   align-items: center;
 `;
 
-const ColorBox = styled.div<{ backgroundColor: string }>`
+const ColorBox = styled.div<{ backgroundColor?: string }>`
   width: 1.5em;
   height: 1em;
   background-color: ${(p) => p.backgroundColor};
