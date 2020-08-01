@@ -1,5 +1,5 @@
 import { CommitDailyLifeErrorCode, createEnumKeyFind, dateFormattings } from '../../core';
-import { createUniqueId, DailyLife, DailyScore } from '../../core/domain';
+import { createUniqueId, DailyLife, DailyLogCategory, DailyScore, Emoji } from '../../core/domain';
 
 export enum DateDisplayType {
   Weekly = 'weekly',
@@ -18,6 +18,8 @@ export interface State {
   monthlyLives: Array<Array<DailyLife | null>> | null;
   committing: boolean;
   commitErrorCode: CommitDailyLifeErrorCode | null;
+  emojis: Emoji[];
+  dailyLogCategories: DailyLogCategory[];
 }
 
 export function createDailyLifeAt(date: string): DailyLife {
@@ -38,4 +40,6 @@ export const initialState: Readonly<State> = {
   monthlyLives: null,
   committing: false,
   commitErrorCode: null,
+  emojis: [],
+  dailyLogCategories: [],
 };

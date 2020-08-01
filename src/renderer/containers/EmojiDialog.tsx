@@ -1,6 +1,7 @@
 import { css } from '@emotion/core';
 import chunk from 'lodash.chunk';
-import React, { KeyboardEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { KeyboardEvent, memo, useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Composite,
   CompositeGroup,
@@ -9,33 +10,20 @@ import {
   useCompositeState,
   useDialogState,
 } from 'reakit';
-import { EmojiResponse, ipcChannels } from '../../core';
 import { Emoji } from '../../core/domain';
 import { selectBackground, selectPrimary, styled } from '../colors/theming';
 import { eventKeys } from '../constants/event-keys';
-import useIpcListener, { sendIpcMessage } from '../hooks/useIpcListener';
-import Dialog, { DialogContent, DialogHead, DialogProps, DialogTitle } from './Dialog';
-import { FormField, FormFieldInput } from './Form';
-import { Icon } from './Icon';
-import { VirtualScroll, VirtualScrollItem } from './VirtualScroll';
+import { selectors } from '../store/selectors';
+import Dialog, { DialogContent, DialogHead, DialogProps, DialogTitle } from '../components/Dialog';
+import { FormField, FormFieldInput } from '../components/Form';
+import { Icon } from '../components/Icon';
+import { VirtualScroll, VirtualScrollItem } from '../components/VirtualScroll';
 
 type Props = Pick<DialogProps, 'disclosure'>;
 
 export default function EmojiDialog(props: Props) {
+  const emojis = useSelector(selectors.emojis);
   const dialog = useDialogState({ animated: true });
-  const [emojis, setEmojis] = useState<Emoji[]>([]);
-
-  useEffect(() => {
-    if (dialog.visible) {
-      sendIpcMessage(ipcChannels.emojiRequest);
-    }
-  }, [dialog]);
-
-  useIpcListener<EmojiResponse>(ipcChannels.emojiResponse, (payload) => {
-    if (payload != null) {
-      setEmojis(payload.emojis);
-    }
-  });
 
   return (
     <Dialog

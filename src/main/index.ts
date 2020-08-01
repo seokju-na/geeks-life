@@ -4,7 +4,7 @@ import {
   CommitDailyLifeErrorCode,
   CommitDailyLifeRequest,
   CommitDailyLifeResponse,
-  EmojiResponse,
+  EmojisResponse,
   GitUserConfigSetRequest,
   GitUserConfigSetResponse,
   ipcChannels,
@@ -12,9 +12,11 @@ import {
   LoadDailyLifeModifiedFlagResponse,
   LoadDailyLifeRequest,
   LoadDailyLifeResponse,
+  LoadDailyLogCategoriesResponse,
   parsePayload,
   SaveDailyLifeRequest,
   serializePayload,
+  WindowSizeChangedPayload,
 } from '../core';
 import { sort, SortingType } from '../core/sorting';
 import { globalShortcuts, windowBackgroundColors } from './constants';
@@ -102,13 +104,21 @@ async function bootstrap() {
     window?.hide();
   });
 
+  ipcMain.on(ipcChannels.windowSizeChanged, (_, arg) => {
+    const payload = parsePayload<WindowSizeChangedPayload>(arg);
+
+    if (payload != null) {
+      window?.updateHeight(payload.height);
+    }
+  });
+
   ipcMain.on(ipcChannels.emojiRequest, async (event) => {
     const { native } = await emojiService.readEmojis();
     const emojis = [...native];
 
     sort(emojis, SortingType.Asc, (emoji) => emoji.key);
 
-    const payload: EmojiResponse = {
+    const payload: EmojisResponse = {
       emojis,
     };
 
@@ -204,6 +214,14 @@ async function bootstrap() {
     };
 
     window?.sendEvent(ipcChannels.gitUserConfigSetResponse, responsePayload);
+  });
+
+  ipcMain.on(ipcChannels.loadDailyLogCategoriesRequest, async () => {
+    const payload: LoadDailyLogCategoriesResponse = {
+      categories: await dailyLogService.getDailyLogCategories(),
+    };
+
+    window?.sendEvent(ipcChannels.loadDailyLogCategoriesResponse, payload);
   });
 
   console.timeEnd('bootstrap');

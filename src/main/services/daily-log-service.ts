@@ -23,13 +23,17 @@ export class DailyLogService {
     await this.gitService.initializeRepository(this.workspaceDir);
   }
 
-  getDailyLogCategories() {
+  async getDailyLogCategories() {
     // TODO: Custom category
     return defaultDailyLogCategories;
   }
 
   async saveDailyLife(dateStr: string, life: DailyLife) {
     const filePath = this.getDailyLifeFilePath(dateStr);
+
+    if (!(await fse.pathExists(filePath))) {
+      await fse.ensureFile(filePath);
+    }
 
     await fse.writeJson(filePath, life, {
       spaces: 2,

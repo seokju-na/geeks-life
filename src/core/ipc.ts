@@ -1,8 +1,10 @@
-import { DailyLife, Emoji } from './domain';
+import { DailyLife, DailyLogCategory, Emoji } from './domain';
 
 export const ipcChannels = {
   closeCurrentWindow: 'close-current-window',
   windowFocused: 'window-focused',
+  windowSizeChanged: 'window-size-changed',
+  restoreWindowSize: 'restore-window-size',
   emojiRequest: 'emoji-request',
   emojiResponse: 'emoji-response',
   loadDailyLifeRequest: 'load-daily-life-request',
@@ -15,7 +17,13 @@ export const ipcChannels = {
   commitDailyLifeResponse: 'commit-daily-life-response',
   gitUserConfigSetRequest: 'git-user-config-set-request',
   gitUserConfigSetResponse: 'git-user-config-set-response',
+  loadDailyLogCategoriesRequest: 'load-daily-log-categories-request',
+  loadDailyLogCategoriesResponse: 'load-daily-log-categories-response',
 } as const;
+
+export interface WindowSizeChangedPayload {
+  height: number;
+}
 
 type DailyLifeRequestType = 'week' | 'month';
 type DailyLivesResponseByDay = DailyLife | null;
@@ -73,8 +81,12 @@ export interface GitUserConfigSetResponse {
   errorCode?: string; // TODO
 }
 
-export interface EmojiResponse {
+export interface EmojisResponse {
   emojis: Emoji[];
+}
+
+export interface LoadDailyLogCategoriesResponse {
+  categories: DailyLogCategory[];
 }
 
 export function serializePayload<T>(payload: T) {
