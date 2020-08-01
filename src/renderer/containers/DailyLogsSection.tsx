@@ -1,19 +1,25 @@
 import { css } from '@emotion/core';
-import React, { HTMLProps, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Toolbar, ToolbarItem, useToolbarState } from 'reakit';
-import { selectForeground, styled } from '../colors/theming';
+import React, { HTMLProps, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Toolbar, ToolbarItem, usePopoverState, useToolbarState } from 'reakit';
+import { styled } from '../colors/theming';
 import { Button } from '../components/Button';
-import DailyLogList from '../components/DailyLogList';
+import DailyLogModifyPopover, {
+  DailyLogModifyFormValue,
+} from '../components/DailyLogModifyPopover';
 import { Icon } from '../components/Icon';
+import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
+import DailyLogList from './DailyLogList';
 
 export default function DailyLogsSection(props: HTMLProps<HTMLDivElement>) {
+  const dispatch = useDispatch();
   const isDateToday = useSelector(selectors.isDateToday);
-  const logs = useSelector(selectors.currentDailyLifeLogs);
   const categories = useSelector(selectors.dailyLogCategories);
   const emojis = useSelector(selectors.emojis);
+
   const toolbar = useToolbarState({ loop: true });
+  const popover = usePopoverState({ animated: true, placement: 'bottom-end' });
 
   const title = useMemo(() => {
     if (isDateToday) {
@@ -23,24 +29,41 @@ export default function DailyLogsSection(props: HTMLProps<HTMLDivElement>) {
     return 'Logs';
   }, [isDateToday]);
 
+  const handleAddDailyLog = useCallback(
+    ({ categoryId, content }: DailyLogModifyFormValue) => {
+      dispatch(
+        actions.dailyLifeLogs.add({
+          payload: {
+            categoryId,
+            content,
+          },
+        }),
+      );
+      popover.hide();
+    },
+    [dispatch, popover],
+  );
+
   return (
     <Section {...props}>
       <Top>
         <Title>{title}</Title>
         <Toolbar {...toolbar} aria-label="Log toolbar" css={toolbarCss}>
-          <ToolbarItem {...toolbar} as={Button} variant="icon" size="tiny" aria-label="Add log">
-            <Icon name="plus" size="1em" aria-hidden={true} />
-          </ToolbarItem>
+          <DailyLogModifyPopover
+            categories={categories}
+            emojis={emojis}
+            popover={popover}
+            disclosure={
+              <ToolbarItem {...toolbar} as={Button} variant="icon" size="tiny" aria-label="Add log">
+                <Icon name="plus" size="1em" aria-hidden={true} />
+              </ToolbarItem>
+            }
+            onSubmit={handleAddDailyLog}
+          />
         </Toolbar>
       </Top>
       <Content>
-        {logs.length === 0 ? (
-          <Empty>No Logs</Empty>
-        ) : (
-          <ListWrapper>
-            <DailyLogList logs={logs} categories={categories} emojis={emojis} />
-          </ListWrapper>
-        )}
+        <DailyLogList />
       </Content>
     </Section>
   );
@@ -74,21 +97,4 @@ const Content = styled.div`
   flex: 1 1 auto;
   max-height: 360px;
   overflow-y: auto;
-`;
-
-const Empty = styled.p`
-  margin: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 0;
-  font-size: 1rem;
-  font-weight: 400;
-  text-align: center;
-  color: ${selectForeground('disabledText')};
-`;
-
-const ListWrapper = styled.div`
-  padding: 8px 12px;
 `;

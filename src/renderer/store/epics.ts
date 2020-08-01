@@ -83,7 +83,12 @@ const requestDailyLifeModifiedFlagEpic: Epic = (action$, state$) =>
 
 const saveDailyLifeEpic: Epic = (action$, state$) =>
   action$.pipe(
-    ofType(actions.changeDailyLifeScore),
+    ofType(
+      actions.changeDailyLifeScore,
+      actions.dailyLifeLogs.add,
+      actions.dailyLifeLogs.edit,
+      actions.dailyLifeLogs.delete,
+    ),
     withLatestFrom(state$),
     map(([, state]) => state),
     tap((state) => {

@@ -1,7 +1,7 @@
 import { addWeeks, getDay, getWeekOfMonth, subWeeks } from 'date-fns';
 import produce from 'immer';
 import { CommitDailyLifeErrorCode, dateFormattings, dateParsing } from '../../core';
-import { DailyLife } from '../../core/domain';
+import { createUniqueId, DailyLife } from '../../core/domain';
 import { actions } from './actions';
 import { Action, createReducer, on } from './core';
 import { createDailyLifeAt, DateDisplayType, initialState, State } from './state';
@@ -123,6 +123,45 @@ export const reducer = createReducer<Readonly<State>, Action>(
   on(actions.dailyLogCategories.response, (state, action) =>
     produce(state, (draft) => {
       draft.dailyLogCategories = action.categories;
+    }),
+  ),
+  on(actions.dailyLifeLogs.add, (state, action) =>
+    produce(state, (draft) => {
+      updateCurrentDailyLife(draft, (dailyLife) => {
+        if (dailyLife.logs == null) {
+          dailyLife.logs = [];
+        }
+
+        dailyLife.logs.push({
+          id: createUniqueId(),
+          ...action.payload,
+        });
+      });
+    }),
+  ),
+  on(actions.dailyLifeLogs.edit, (state, action) =>
+    produce(state, (draft) => {
+      updateCurrentDailyLife(draft, (dailyLife) => {
+        const index = dailyLife.logs?.findIndex((log) => log.id === action.id) ?? -1;
+
+        if (dailyLife.logs != null && index > -1) {
+          dailyLife.logs[index] = {
+            ...dailyLife.logs[index],
+            ...action.payload,
+          };
+        }
+      });
+    }),
+  ),
+  on(actions.dailyLifeLogs.delete, (state, action) =>
+    produce(state, (draft) => {
+      updateCurrentDailyLife(draft, (dailyLife) => {
+        const index = dailyLife.logs?.findIndex((log) => log.id === action.id) ?? -1;
+
+        if (index > -1) {
+          dailyLife.logs?.splice(index, 1);
+        }
+      });
     }),
   ),
 );
