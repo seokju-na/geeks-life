@@ -13,11 +13,13 @@ import {
 import {
   CommitDailyLifeRequest,
   CommitDailyLifeResponse,
+  EmojisResponse,
   GitUserConfigSetRequest,
   GitUserConfigSetResponse,
   ipcChannels,
   LoadDailyLifeModifiedFlagRequest,
   LoadDailyLifeRequest,
+  LoadDailyLogCategoriesResponse,
   match,
   SaveDailyLifeRequest,
 } from '../../core';
@@ -175,10 +177,68 @@ const gitUserConfigSettingEpic: Epic = (action$) =>
     }),
   );
 
+const emojisResponse$ = listenIpc<EmojisResponse>(ipcChannels.emojiResponse).pipe(share());
+
+const requestEmojiEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.emojis.request),
+    exhaustMap(() => {
+      const request$ = of(null).pipe(
+        tap(() => {
+          sendIpcMessage(ipcChannels.emojiRequest);
+        }),
+        ignoreElements(),
+      );
+
+      const response$ = emojisResponse$.pipe(
+        mergeMap((payload) => {
+          if (payload == null) {
+            return EMPTY;
+          }
+
+          return of(actions.emojis.response({ emojis: payload.emojis }));
+        }),
+      );
+
+      return concat(request$, response$);
+    }),
+  );
+
+const dailyLogCategoriesResponse$ = listenIpc<LoadDailyLogCategoriesResponse>(
+  ipcChannels.loadDailyLogCategoriesResponse,
+).pipe(share());
+
+const requestDailyLogCategoriesEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.dailyLogCategories.request),
+    exhaustMap(() => {
+      const request$ = of(null).pipe(
+        tap(() => {
+          sendIpcMessage(ipcChannels.loadDailyLogCategoriesRequest);
+        }),
+        ignoreElements(),
+      );
+
+      const response$ = dailyLogCategoriesResponse$.pipe(
+        mergeMap((payload) => {
+          if (payload == null) {
+            return EMPTY;
+          }
+
+          return of(actions.dailyLogCategories.response({ categories: payload.categories }));
+        }),
+      );
+
+      return concat(request$, response$);
+    }),
+  );
+
 export const epic = combineEpics(
   requestDailyLivesEpic,
   requestDailyLifeModifiedFlagEpic,
   saveDailyLifeEpic,
   commitDailyLifeEpic,
   gitUserConfigSettingEpic,
+  requestEmojiEpic,
+  requestDailyLogCategoriesEpic,
 );

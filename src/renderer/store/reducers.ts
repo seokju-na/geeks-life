@@ -115,4 +115,14 @@ export const reducer = createReducer<Readonly<State>, Action>(
       }
     }),
   ),
+  on(actions.emojis.response, (state, action) =>
+    produce(state, (draft) => {
+      draft.emojis = action.emojis;
+    }),
+  ),
+  on(actions.dailyLogCategories.response, (state, action) =>
+    produce(state, (draft) => {
+      draft.dailyLogCategories = action.categories;
+    }),
+  ),
 );

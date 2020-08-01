@@ -1,11 +1,17 @@
 import { css } from '@emotion/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Toolbar, ToolbarItem, useToolbarState } from 'reakit';
 import { selectForeground, styled } from '../colors/theming';
-import { Button } from './Button';
-import { Icon } from './Icon';
+import { Button } from '../components/Button';
+import DailyLogList from '../components/DailyLogList';
+import { Icon } from '../components/Icon';
+import { selectors } from '../store/selectors';
 
-export default function DayLogsSection() {
+export default function DailyLogsSection() {
+  const logs = useSelector(selectors.currentDailyLifeLogs);
+  const categories = useSelector(selectors.dailyLogCategories);
+  const emojis = useSelector(selectors.emojis);
   const toolbar = useToolbarState({ loop: true });
 
   return (
@@ -19,7 +25,11 @@ export default function DayLogsSection() {
         </Toolbar>
       </Top>
       <Content>
-        <Empty>No Logs</Empty>
+        {logs.length === 0 ? (
+          <Empty>No Logs</Empty>
+        ) : (
+          <DailyLogList logs={logs} categories={categories} emojis={emojis} />
+        )}
       </Content>
     </Section>
   );

@@ -1,12 +1,10 @@
 import { css } from '@emotion/core';
 import { format } from 'date-fns';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toolbar, ToolbarItem, unstable_useId as useId, useToolbarState } from 'reakit';
-import { ipcChannels, LoadDailyLifeModifiedFlagResponse, Nullable } from '../../core';
 import { selectForeground, styled, useTheme } from '../colors/theming';
 import { Button } from '../components/Button';
-import useIpcListener from '../hooks/useIpcListener';
 import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
 
@@ -30,30 +28,6 @@ export default function FixedBottomToolbar() {
       ? `No Changes at ${dateStr}`
       : dateStr;
   }, [date, modified]);
-
-  const handleDailyLifeModifiedFlagResponse = useCallback(
-    (payload: Nullable<LoadDailyLifeModifiedFlagResponse>) => {
-      if (payload != null) {
-        dispatch(actions.updateDailyLifeModifiedFlag(payload));
-      }
-    },
-    [dispatch],
-  );
-
-  useIpcListener<LoadDailyLifeModifiedFlagResponse>(
-    ipcChannels.loadDailyLifeModifiedFlagResponse,
-    handleDailyLifeModifiedFlagResponse,
-  );
-
-  const handleDailyLifeSaveResponse = useCallback(() => {
-    dispatch(actions.requestDailyLifeModifiedFlag());
-  }, [dispatch]);
-
-  useIpcListener(ipcChannels.saveDailyLifeResponse, handleDailyLifeSaveResponse);
-
-  useEffect(() => {
-    dispatch(actions.requestDailyLifeModifiedFlag());
-  }, [dispatch]);
 
   const handleCommitButtonClick = useCallback(() => {
     dispatch(actions.commitDailyLife.request());

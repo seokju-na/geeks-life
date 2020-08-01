@@ -1,8 +1,6 @@
-import { Emoji } from './emoji';
-
 export interface DailyLogCategory {
   id: string;
-  emoji?: Emoji;
+  emojiKey?: string;
   title: string;
 }
 
@@ -30,38 +28,22 @@ export interface DailyLife {
 export const defaultDailyLogCategories: DailyLogCategory[] = [
   {
     id: 'love-category',
-    emoji: {
-      key: 'heart',
-      type: 'native',
-      char: '❤️',
-    },
+    emojiKey: 'heart', // ❤️
     title: `Today's love`,
   },
   {
     id: 'working-category',
-    emoji: {
-      key: 'fire',
-      type: 'native',
-      char: '🔥',
-    },
+    emojiKey: 'fire', // 🔥
     title: `Today's working`,
   },
   {
     id: 'coding-category',
-    emoji: {
-      key: 'computer',
-      type: 'native',
-      char: '💻',
-    },
+    emojiKey: 'computer', // 💻
     title: `Today's coding`,
   },
   {
     id: 'beer-category',
-    emoji: {
-      key: 'beer',
-      type: 'native',
-      char: '🍺',
-    },
+    emojiKey: 'beer', // 🍺
     title: `Today's best beer`,
   },
 ];

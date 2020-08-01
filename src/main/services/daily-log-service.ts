@@ -23,7 +23,7 @@ export class DailyLogService {
     await this.gitService.initializeRepository(this.workspaceDir);
   }
 
-  getDailyLogCategories() {
+  async getDailyLogCategories() {
     // TODO: Custom category
     return defaultDailyLogCategories;
   }

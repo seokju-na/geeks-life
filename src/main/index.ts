@@ -4,7 +4,7 @@ import {
   CommitDailyLifeErrorCode,
   CommitDailyLifeRequest,
   CommitDailyLifeResponse,
-  EmojiResponse,
+  EmojisResponse,
   GitUserConfigSetRequest,
   GitUserConfigSetResponse,
   ipcChannels,
@@ -12,6 +12,7 @@ import {
   LoadDailyLifeModifiedFlagResponse,
   LoadDailyLifeRequest,
   LoadDailyLifeResponse,
+  LoadDailyLogCategoriesResponse,
   parsePayload,
   SaveDailyLifeRequest,
   serializePayload,
@@ -108,7 +109,7 @@ async function bootstrap() {
 
     sort(emojis, SortingType.Asc, (emoji) => emoji.key);
 
-    const payload: EmojiResponse = {
+    const payload: EmojisResponse = {
       emojis,
     };
 
@@ -204,6 +205,14 @@ async function bootstrap() {
     };
 
     window?.sendEvent(ipcChannels.gitUserConfigSetResponse, responsePayload);
+  });
+
+  ipcMain.on(ipcChannels.loadDailyLogCategoriesRequest, async () => {
+    const payload: LoadDailyLogCategoriesResponse = {
+      categories: await dailyLogService.getDailyLogCategories(),
+    };
+
+    window?.sendEvent(ipcChannels.loadDailyLogCategoriesResponse, payload);
   });
 
   console.timeEnd('bootstrap');

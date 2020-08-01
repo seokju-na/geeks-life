@@ -1,5 +1,5 @@
 import { CommitDailyLifeErrorCode, LoadDailyLifeResponse } from '../../core';
-import { DailyScore } from '../../core/domain';
+import { DailyLogCategory, DailyScore, Emoji } from '../../core/domain';
 import { createAction, props } from './core';
 import { DateDisplayType } from './state';
 
@@ -25,6 +25,17 @@ export const actions = {
     'updateDailyLifeModifiedFlag',
     props<{ modified: boolean }>(),
   ),
+  emojis: {
+    request: createAction('emojis.request'),
+    response: createAction('emojis.response', props<{ emojis: Emoji[] }>()),
+  },
+  dailyLogCategories: {
+    request: createAction('dailyLogCategories.request'),
+    response: createAction(
+      'dailyLogCategories.response',
+      props<{ categories: DailyLogCategory[] }>(),
+    ),
+  },
   changeDailyLifeScore: createAction('changeDailyLifeScore', props<{ score: DailyScore }>()),
   commitDailyLife: {
     request: createAction('commitDailyLife.request'),

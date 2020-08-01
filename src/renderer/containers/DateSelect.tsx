@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { isAfter, isSameDay, isToday } from 'date-fns';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeGroup, useCompositeState } from 'reakit';
 import {
@@ -9,14 +9,10 @@ import {
   dateParsing,
   getCalendarMonth,
   getCalendarWeek,
-  ipcChannels,
-  LoadDailyLifeResponse,
-  Nullable,
 } from '../../core';
 import { selectForeground, styled } from '../colors/theming';
 import { ButtonToggle, ButtonToggleGroup } from '../components/ButtonToggle';
 import DateSelectDayItem from '../components/DateSelectDayItem';
-import useIpcListener from '../hooks/useIpcListener';
 import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
 import { DateDisplayType, dateDisplayTypes, getDateDisplayTypeName, State } from '../store/state';
@@ -154,21 +150,6 @@ export default function DateSelect() {
         return <MonthView date={date} monthlyLives={monthlyLives} onDayClick={handleDayClick} />;
     }
   }, [dateDisplayType, date, handleDayClick, weeklyLives, monthlyLives]);
-
-  const handleDailyLogResponse = useCallback(
-    (payload: Nullable<LoadDailyLifeResponse>) => {
-      if (payload != null) {
-        dispatch(actions.updateDailyLife({ payload }));
-      }
-    },
-    [dispatch],
-  );
-
-  useEffect(() => {
-    dispatch(actions.requestDailyLife());
-  }, [dispatch]);
-
-  useIpcListener<LoadDailyLifeResponse>(ipcChannels.loadDailyLifeResponse, handleDailyLogResponse);
 
   return (
     <Wrapper>
