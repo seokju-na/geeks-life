@@ -31,6 +31,10 @@ export class DailyLogService {
   async saveDailyLife(dateStr: string, life: DailyLife) {
     const filePath = this.getDailyLifeFilePath(dateStr);
 
+    if (!(await fse.pathExists(filePath))) {
+      await fse.ensureFile(filePath);
+    }
+
     await fse.writeJson(filePath, life, {
       spaces: 2,
     });
