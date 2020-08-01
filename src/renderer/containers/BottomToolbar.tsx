@@ -8,7 +8,7 @@ import { Button } from '../components/Button';
 import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
 
-export default function FixedBottomToolbar() {
+export default function BottomToolbar() {
   const dispatch = useDispatch();
   const modified = useSelector(selectors.modifiedAtDate);
   const committing = useSelector(selectors.committing);
@@ -58,11 +58,6 @@ export default function FixedBottomToolbar() {
 }
 
 const toolbarCss = css`
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
   display: flex;
   align-items: center;
   padding: 4px 4px 4px 12px;

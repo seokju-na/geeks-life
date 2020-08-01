@@ -16,7 +16,7 @@ import GlobalStyles from './components/GlobalStyles';
 import { eventKeys } from './constants/event-keys';
 import DateSelect from './containers/DateSelect';
 import DayScoreSection from './containers/DayScoreSection';
-import FixedBottomToolbar from './containers/FixedBottomToolbar';
+import BottomToolbar from './containers/BottomToolbar';
 import GitUserSettingDialog from './containers/GitUserSettingDialog';
 import useIpcListener, { sendIpcMessage } from './hooks/useIpcListener';
 import useKeyboardCapture from './hooks/useKeyboardCapture';
@@ -130,7 +130,7 @@ function App() {
             <>
               <DayScoreSection css={flexNone} />
               <DailyLogsSection css={flexFull} />
-              <FixedBottomToolbar />
+              <BottomToolbar />
             </>
           ) : null}
         </Main>
