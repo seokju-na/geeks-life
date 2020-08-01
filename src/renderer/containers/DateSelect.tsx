@@ -36,9 +36,6 @@ const MonthView = React.memo((props: { date: string; monthlyLives: State['monthl
 
   const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
   const month = useMemo(() => getCalendarMonth(parsedDate), [parsedDate]);
-  const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
-    parsedDate,
-  ]);
 
   return (
     <Composite {...composite} role="grid" aria-label="Month Navigation" css={gridCss}>
@@ -57,7 +54,6 @@ const MonthView = React.memo((props: { date: string; monthlyLives: State['monthl
                 readOnly={true}
                 aria-label=""
                 scoreLevel={monthlyLives?.[i][j]?.score}
-                selected={isSelectedDate(day)}
                 disabled={future || monthlyLives == null}
                 css={cellCss}
               />
