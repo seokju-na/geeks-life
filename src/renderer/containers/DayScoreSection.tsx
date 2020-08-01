@@ -1,4 +1,4 @@
-import React, { HTMLProps, useCallback } from 'react';
+import React, { HTMLProps, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DailyScore } from '../../core/domain';
 import { selectForeground, styled } from '../colors/theming';
@@ -7,8 +7,17 @@ import { actions } from '../store/actions';
 import { selectors } from '../store/selectors';
 
 export default function DayScoreSection(props: HTMLProps<HTMLDivElement>) {
+  const isDateToday = useSelector(selectors.isDateToday);
   const dispatch = useDispatch();
   const dailyLife = useSelector(selectors.currentDailyLife);
+
+  const title = useMemo(() => {
+    if (isDateToday) {
+      return `Today's Score`;
+    }
+
+    return 'Score';
+  }, [isDateToday]);
 
   const handleDailyLifeScoreChange = useCallback(
     (score: DailyScore) => {
@@ -19,7 +28,7 @@ export default function DayScoreSection(props: HTMLProps<HTMLDivElement>) {
 
   return (
     <Section {...props}>
-      <Title>Today{"'"}s Score</Title>
+      <Title>{title}</Title>
       <ScoreMenuButton
         score={dailyLife?.score ?? DailyScore.None}
         onScoreChange={handleDailyLifeScoreChange}

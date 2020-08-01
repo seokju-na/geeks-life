@@ -1,4 +1,4 @@
-import { format, getDay, getWeekOfMonth } from 'date-fns';
+import { format, getDay, getWeekOfMonth, isToday } from 'date-fns';
 import { createSelector } from 'reselect';
 import { dateParsing } from '../../core';
 import { DateDisplayType, State } from './state';
@@ -23,6 +23,10 @@ const selectDateAsFormatted = createSelector(
         return format(new Date(date), 'MMM, yyyy');
     }
   },
+);
+
+const selectIsDateToday = createSelector([selectDate], (date) =>
+  isToday(dateParsing['yyyy-MM-dd'](date)),
 );
 
 const selectCurrentDailyLife = createSelector(
@@ -52,6 +56,7 @@ const selectCurrentDailyLifeLogs = createSelector(
 export const selectors = {
   date: selectDate,
   dateAsFormatted: selectDateAsFormatted,
+  isDateToday: selectIsDateToday,
   modifiedAtDate: selectModifiedAtDate,
   dateDisplayType: selectDateDisplayType,
   weeklyLives: selectWeeklyLives,
