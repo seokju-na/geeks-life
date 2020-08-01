@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React from 'react';
+import React, { HTMLProps } from 'react';
 import { useSelector } from 'react-redux';
 import { Toolbar, ToolbarItem, useToolbarState } from 'reakit';
 import { selectForeground, styled } from '../colors/theming';
@@ -8,14 +8,14 @@ import DailyLogList from '../components/DailyLogList';
 import { Icon } from '../components/Icon';
 import { selectors } from '../store/selectors';
 
-export default function DailyLogsSection() {
+export default function DailyLogsSection(props: HTMLProps<HTMLDivElement>) {
   const logs = useSelector(selectors.currentDailyLifeLogs);
   const categories = useSelector(selectors.dailyLogCategories);
   const emojis = useSelector(selectors.emojis);
   const toolbar = useToolbarState({ loop: true });
 
   return (
-    <Section>
+    <Section {...props}>
       <Top>
         <Title>Today{"'"}s Logs</Title>
         <Toolbar {...toolbar} aria-label="Log toolbar" css={toolbarCss}>

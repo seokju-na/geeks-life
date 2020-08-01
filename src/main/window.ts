@@ -86,6 +86,16 @@ export class Window extends EventEmitter {
     return this;
   }
 
+  updateHeight(height: number) {
+    const [width] = this.instance?.getSize() ?? [];
+
+    if (width != null) {
+      this.instance?.setSize(width, height, true);
+    }
+
+    return this;
+  }
+
   private async createAndOpen() {
     if (this.instance !== null) {
       return;

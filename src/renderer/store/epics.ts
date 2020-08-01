@@ -70,7 +70,6 @@ const requestDailyLifeModifiedFlagEpic: Epic = (action$, state$) =>
     map(([, state]) => state),
     tap((state) => {
       const { date } = state;
-      console.log('modified flag request', date);
 
       sendIpcMessage<LoadDailyLifeModifiedFlagRequest>(
         ipcChannels.loadDailyLifeModifiedFlagRequest,

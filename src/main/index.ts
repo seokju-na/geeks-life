@@ -16,6 +16,7 @@ import {
   parsePayload,
   SaveDailyLifeRequest,
   serializePayload,
+  WindowSizeChangedPayload,
 } from '../core';
 import { sort, SortingType } from '../core/sorting';
 import { globalShortcuts, windowBackgroundColors } from './constants';
@@ -101,6 +102,14 @@ async function bootstrap() {
 
   ipcMain.on(ipcChannels.closeCurrentWindow, () => {
     window?.hide();
+  });
+
+  ipcMain.on(ipcChannels.windowSizeChanged, (_, arg) => {
+    const payload = parsePayload<WindowSizeChangedPayload>(arg);
+
+    if (payload != null) {
+      window?.updateHeight(payload.height);
+    }
   });
 
   ipcMain.on(ipcChannels.emojiRequest, async (event) => {

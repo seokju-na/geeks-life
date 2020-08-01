@@ -1,13 +1,15 @@
+import { css } from '@emotion/core';
 import DailyLogsSection from 'containers/DailyLogsSection';
 import { ThemeProvider } from 'emotion-theming';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Provider as ReakitProvider } from 'reakit';
 import {
   ipcChannels,
   LoadDailyLifeModifiedFlagResponse,
   LoadDailyLifeResponse,
   Nullable,
+  WindowSizeChangedPayload,
 } from '../core';
 import { darkTheme, lightTheme, styled } from './colors/theming';
 import GlobalStyles from './components/GlobalStyles';
@@ -21,16 +23,38 @@ import useKeyboardCapture from './hooks/useKeyboardCapture';
 import useResizeObserver from './hooks/useResizeObserver';
 import { actions } from './store/actions';
 import { withStore } from './store/connection';
+import { selectors } from './store/selectors';
+import { DateDisplayType } from './store/state';
 
 const isHTMLElement = (elem: Node): elem is HTMLElement => elem.nodeType === Node.ELEMENT_NODE;
 
 function App() {
   const dispatch = useDispatch();
+  const dateDisplayType = useSelector(selectors.dateDisplayType);
   const darkMode = useMemo(() => location.search.includes('?theme=dark'), []);
+  const handleResize = useCallback(
+    (entry: ResizeObserverEntry) => {
+      const { height } = entry.target.getBoundingClientRect();
 
-  const ref = useResizeObserver<HTMLDivElement>(() => {
-    // console.log(entry);
-  });
+      if (dateDisplayType === DateDisplayType.Monthly) {
+        sendIpcMessage<WindowSizeChangedPayload>(ipcChannels.windowSizeChanged, {
+          height,
+        });
+      }
+    },
+    [dateDisplayType],
+  );
+
+  const ref = useResizeObserver<HTMLDivElement>(handleResize);
+
+  useEffect(() => {
+    if (ref.current !== null && dateDisplayType === DateDisplayType.Weekly) {
+      // FIXME LATER
+      sendIpcMessage<WindowSizeChangedPayload>(ipcChannels.windowSizeChanged, {
+        height: 480,
+      });
+    }
+  }, [ref, dateDisplayType]);
 
   const handleESCKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -94,16 +118,22 @@ function App() {
   );
   useIpcListener(ipcChannels.saveDailyLifeResponse, handleDailyLifeSaveResponse);
 
+  const showOnlyDateSelect = dateDisplayType !== DateDisplayType.Monthly;
+
   return (
     <ReakitProvider>
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
-        <Root ref={ref} tabIndex={0}>
-          <DateSelect />
-          <DayScoreSection />
-          <DailyLogsSection />
-          <FixedBottomToolbar />
-        </Root>
+        <Main ref={ref} tabIndex={0} fitWindowSize={showOnlyDateSelect}>
+          <DateSelect css={flexNone} showBorder={!showOnlyDateSelect} />
+          {showOnlyDateSelect ? (
+            <>
+              <DayScoreSection css={flexNone} />
+              <DailyLogsSection css={flexFull} />
+              <FixedBottomToolbar />
+            </>
+          ) : null}
+        </Main>
         <GitUserSettingDialog />
       </ThemeProvider>
     </ReakitProvider>
@@ -112,8 +142,19 @@ function App() {
 
 export default withStore(App);
 
-const Root = styled.div`
+const Main = styled.div<{ fitWindowSize: boolean }>`
   outline: 0;
   overflow: visible;
   width: 100%;
+  ${({ fitWindowSize }) => (fitWindowSize ? `height: 100%` : '')};
+  display: flex;
+  flex-direction: column;
+`;
+
+const flexNone = css`
+  flex: none;
+`;
+
+const flexFull = css`
+  flex: 1 1 auto;
 `;

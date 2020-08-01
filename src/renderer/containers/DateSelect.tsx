@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { isAfter, isSameDay, isToday } from 'date-fns';
-import React, { useCallback, useMemo } from 'react';
+import React, { HTMLProps, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeGroup, useCompositeState } from 'reakit';
 import {
@@ -26,53 +26,48 @@ const isFuture = (date: Date) => {
   return !isToday(date) && isAfter(date, new Date());
 };
 
-const MonthView = React.memo(
-  (props: {
-    date: string;
-    monthlyLives: State['monthlyLives'];
-    onDayClick(day: CalendarDay): void;
-  }) => {
-    const { date, monthlyLives, onDayClick } = props;
+const MonthView = React.memo((props: { date: string; monthlyLives: State['monthlyLives'] }) => {
+  const { date, monthlyLives } = props;
 
-    const composite = useCompositeState({
-      loop: true,
-      currentId: date,
-    });
+  const composite = useCompositeState({
+    loop: true,
+    currentId: date,
+  });
 
-    const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
-    const month = useMemo(() => getCalendarMonth(parsedDate), [parsedDate]);
-    const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
-      parsedDate,
-    ]);
+  const parsedDate = useMemo(() => dateParsing['yyyy-MM-dd'](date), [date]);
+  const month = useMemo(() => getCalendarMonth(parsedDate), [parsedDate]);
+  const isSelectedDate = useCallback((day: CalendarDay) => isSameDay(parsedDate, day.date), [
+    parsedDate,
+  ]);
 
-    return (
-      <Composite {...composite} role="grid" aria-label="Month Navigation" css={gridCss}>
-        {month.weeks.map((week, i) => (
-          <CompositeGroup key={i} {...composite} role="row" css={rowCss}>
-            {week.days.map((day, j) => {
-              const id = dateFormattings['yyyy-MM-dd'](day.date);
-              const future = isFuture(day.date);
+  return (
+    <Composite {...composite} role="grid" aria-label="Month Navigation" css={gridCss}>
+      {month.weeks.map((week, i) => (
+        <CompositeGroup key={i} {...composite} role="row" css={rowCss}>
+          {week.days.map((day, j) => {
+            const id = dateFormattings['yyyy-MM-dd'](day.date);
+            const future = isFuture(day.date);
 
-              return (
-                <DateSelectDayItem
-                  {...composite}
-                  key={id}
-                  id={id}
-                  aria-label=""
-                  scoreLevel={monthlyLives?.[i][j]?.score}
-                  selected={isSelectedDate(day)}
-                  onClick={() => onDayClick?.(day)}
-                  disabled={future || monthlyLives == null}
-                  css={cellCss}
-                />
-              );
-            })}
-          </CompositeGroup>
-        ))}
-      </Composite>
-    );
-  },
-);
+            return (
+              <DateSelectDayItem
+                {...composite}
+                key={id}
+                id={id}
+                title={id}
+                readOnly={true}
+                aria-label=""
+                scoreLevel={monthlyLives?.[i][j]?.score}
+                selected={isSelectedDate(day)}
+                disabled={future || monthlyLives == null}
+                css={cellCss}
+              />
+            );
+          })}
+        </CompositeGroup>
+      ))}
+    </Composite>
+  );
+});
 
 const WeekView = React.memo(
   (props: {
@@ -105,6 +100,7 @@ const WeekView = React.memo(
                 {...composite}
                 key={id}
                 id={id}
+                title={id}
                 aria-label=""
                 scoreLevel={weeklyLives?.[index]?.score}
                 selected={isSelectedDate(day)}
@@ -120,7 +116,11 @@ const WeekView = React.memo(
   },
 );
 
-export default function DateSelect() {
+type Props = HTMLProps<HTMLDivElement> & {
+  showBorder?: boolean;
+};
+
+export default function DateSelect(props: Props) {
   const dispatch = useDispatch();
   const date = useSelector(selectors.date);
   const dateAsFormatted = useSelector(selectors.dateAsFormatted);
@@ -147,12 +147,12 @@ export default function DateSelect() {
       case DateDisplayType.Weekly:
         return <WeekView date={date} weeklyLives={weeklyLives} onDayClick={handleDayClick} />;
       case DateDisplayType.Monthly:
-        return <MonthView date={date} monthlyLives={monthlyLives} onDayClick={handleDayClick} />;
+        return <MonthView date={date} monthlyLives={monthlyLives} />;
     }
   }, [dateDisplayType, date, handleDayClick, weeklyLives, monthlyLives]);
 
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <Top>
         <Title>{dateAsFormatted}</Title>
         <ButtonToggleGroup
@@ -174,8 +174,9 @@ export default function DateSelect() {
   );
 }
 
-const Wrapper = styled.header`
-  border-bottom: 1px solid ${selectForeground('divider')};
+const Wrapper = styled.header<{ showBorder?: boolean }>`
+  ${({ showBorder }) =>
+    Boolean(showBorder) ? `border-bottom: 1px solid ${selectForeground('divider')}` : ''};
 `;
 
 const Top = styled.div`

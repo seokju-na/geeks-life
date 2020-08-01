@@ -3,6 +3,8 @@ import { DailyLife, DailyLogCategory, Emoji } from './domain';
 export const ipcChannels = {
   closeCurrentWindow: 'close-current-window',
   windowFocused: 'window-focused',
+  windowSizeChanged: 'window-size-changed',
+  restoreWindowSize: 'restore-window-size',
   emojiRequest: 'emoji-request',
   emojiResponse: 'emoji-response',
   loadDailyLifeRequest: 'load-daily-life-request',
@@ -18,6 +20,10 @@ export const ipcChannels = {
   loadDailyLogCategoriesRequest: 'load-daily-log-categories-request',
   loadDailyLogCategoriesResponse: 'load-daily-log-categories-response',
 } as const;
+
+export interface WindowSizeChangedPayload {
+  height: number;
+}
 
 type DailyLifeRequestType = 'week' | 'month';
 type DailyLivesResponseByDay = DailyLife | null;

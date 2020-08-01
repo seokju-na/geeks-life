@@ -10,15 +10,25 @@ type Props = Omit<ComponentProps<typeof Button>, 'size' | 'variant' | 'color'> &
     'aria-label': string;
     scoreLevel?: DailyScore;
     selected?: boolean;
+    readOnly?: boolean;
   };
 
-export default function DateSelectDayItem({ scoreLevel, onClick, selected, ...props }: Props) {
+export default function DateSelectDayItem({
+  scoreLevel,
+  onClick,
+  selected,
+  readOnly = false,
+  ...props
+}: Props) {
   return (
     <CompositeItem
       as={Item}
-      style={{ backgroundColor: dailyScoreColorMap[scoreLevel ?? DailyScore.None] }}
-      aria-current={selected}
-      onClick={onClick}
+      style={{
+        backgroundColor: dailyScoreColorMap[scoreLevel ?? DailyScore.None],
+        cursor: readOnly ? 'default' : undefined,
+      }}
+      aria-current={readOnly ? undefined : selected}
+      onClick={readOnly ? undefined : onClick}
       {...props}
     />
   );
