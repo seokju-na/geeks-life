@@ -6,9 +6,7 @@
 
 1 year is 52 weeks. Avoid pointless days with logging your daily life.
 
-Inspired from https://twitter.com/John_Grib/status/1282167911101030400?s=20
-
-(And also https://youtu.be/arj7oStGLkU)
+Inspired from [this twitter](https://twitter.com/John_Grib/status/1282167911101030400?s=20) and also [youtube clip](https://youtu.be/arj7oStGLkU).
 
 ## License
 MIT Licensed
