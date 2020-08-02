@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "sourceMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2017"],
+    "types": ["node"]
+  }
+}
