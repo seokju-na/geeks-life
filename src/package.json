@@ -5,6 +5,7 @@
   "appId": "me.seokju.GeeksLife",
   "description": "Geek's life",
   "main": "./main.js",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/seokju-na/geeks-life.git"
@@ -15,10 +16,5 @@
     "url": "https://seokju.me"
   },
   "dependencies": {
-  },
-  "mac": {
-    "extendInfo": {
-      "LSUIElement": 1
-    }
   }
 }
