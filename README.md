@@ -2,7 +2,7 @@
 
 **IN-DEVELOPMENT**
 
-https://user-images.githubusercontent.com/13250888/89126557-60a0a800-d521-11ea-95e9-80a78a186586.png
+<img alt="Main screenshot" width="320" src="https://user-images.githubusercontent.com/13250888/89126557-60a0a800-d521-11ea-95e9-80a78a186586.png" />
 
 1 year is 52 weeks. Avoid pointless days with logging your daily life.
 
