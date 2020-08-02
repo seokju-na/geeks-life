@@ -1,5 +1,6 @@
 import { DailyLife, DailyLogCategory, Emoji } from './domain';
 
+// LONG LIVE TODO: Cleanup ipc channels
 export const ipcChannels = {
   closeCurrentWindow: 'close-current-window',
   windowFocused: 'window-focused',
@@ -19,6 +20,12 @@ export const ipcChannels = {
   gitUserConfigSetResponse: 'git-user-config-set-response',
   loadDailyLogCategoriesRequest: 'load-daily-log-categories-request',
   loadDailyLogCategoriesResponse: 'load-daily-log-categories-response',
+  menu: 'menu',
+  menuOnMonthlyView: 'menu-on-monthly-view',
+  menuOnWeeklyView: 'menu-on-weekly-view',
+  menuOnFocusLog: 'menu-on-focus-log',
+  menuOnBlurLog: 'menu-on-blur-log',
+  menuOnCommitChangesFlagChange: 'menu-on-commit-changes-flag-change',
 } as const;
 
 export interface WindowSizeChangedPayload {
@@ -87,6 +94,24 @@ export interface EmojisResponse {
 
 export interface LoadDailyLogCategoriesResponse {
   categories: DailyLogCategory[];
+}
+
+export enum MenuMessage {
+  ShowAbout = 'showAbout',
+  NewDailyLifeLog = 'newDailyLifeLog',
+  EditDailyLifeLog = 'editDailyLifeLog',
+  DeleteDailyLifeLog = 'deleteDailyLifeLog',
+  CommitDailyLifeChanges = 'commitDailyLifeChanges',
+  WeeklyView = 'weeklyView',
+  MonthlyView = 'monthlyView',
+}
+
+export interface MenuMessagePayload {
+  message: MenuMessage;
+}
+
+export interface MenuOnCommitChangesFlagChangePayload {
+  enabled: boolean;
 }
 
 export function serializePayload<T>(payload: T) {

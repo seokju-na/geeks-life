@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React, { HTMLProps, useCallback, useMemo } from 'react';
+import React, { HTMLProps, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toolbar, ToolbarItem, usePopoverState, useToolbarState } from 'reakit';
 import { styled } from '../colors/theming';
@@ -17,6 +17,7 @@ export default function DailyLogsSection(props: HTMLProps<HTMLDivElement>) {
   const isDateToday = useSelector(selectors.isDateToday);
   const categories = useSelector(selectors.dailyLogCategories);
   const emojis = useSelector(selectors.emojis);
+  const showAddPopover = useSelector(selectors.showAddDailyLifeLogPopover);
 
   const toolbar = useToolbarState({ loop: true });
   const popover = usePopoverState({ animated: true, placement: 'bottom-end' });
@@ -43,6 +44,18 @@ export default function DailyLogsSection(props: HTMLProps<HTMLDivElement>) {
     },
     [dispatch, popover],
   );
+
+  useEffect(() => {
+    if (showAddPopover) {
+      popover.show();
+    }
+  }, [showAddPopover, popover]);
+
+  useEffect(() => {
+    if (!popover.visible) {
+      dispatch(actions.addDailyLifeLogPopover.hide());
+    }
+  }, [popover, dispatch]);
 
   return (
     <Section {...props}>

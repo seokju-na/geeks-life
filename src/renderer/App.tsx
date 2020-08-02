@@ -8,15 +8,17 @@ import {
   ipcChannels,
   LoadDailyLifeModifiedFlagResponse,
   LoadDailyLifeResponse,
+  MenuMessage,
+  MenuMessagePayload,
   Nullable,
   WindowSizeChangedPayload,
 } from '../core';
 import { darkTheme, lightTheme, styled } from './colors/theming';
 import GlobalStyles from './components/GlobalStyles';
 import { eventKeys } from './constants/event-keys';
+import BottomToolbar from './containers/BottomToolbar';
 import DateSelect from './containers/DateSelect';
 import DayScoreSection from './containers/DayScoreSection';
-import BottomToolbar from './containers/BottomToolbar';
 import GitUserSettingDialog from './containers/GitUserSettingDialog';
 import useIpcListener, { sendIpcMessage } from './hooks/useIpcListener';
 import useKeyboardCapture from './hooks/useKeyboardCapture';
@@ -107,6 +109,39 @@ function App() {
     [dispatch],
   );
 
+  const handleMenuMessage = useCallback(
+    (payload: Nullable<MenuMessagePayload>) => {
+      if (payload == null) {
+        return;
+      }
+
+      switch (payload.message) {
+        case MenuMessage.ShowAbout:
+          // TODO
+          break;
+        case MenuMessage.NewDailyLifeLog:
+          dispatch(actions.addDailyLifeLogPopover.show());
+          break;
+        case MenuMessage.EditDailyLifeLog:
+          dispatch(actions.editDailyLifeLogPopover.show());
+          break;
+        case MenuMessage.DeleteDailyLifeLog:
+          dispatch(actions.dailyLifeLogs.deleteFocused());
+          break;
+        case MenuMessage.WeeklyView:
+          dispatch(actions.changeDateDisplayType({ value: DateDisplayType.Weekly }));
+          break;
+        case MenuMessage.MonthlyView:
+          dispatch(actions.changeDateDisplayType({ value: DateDisplayType.Monthly }));
+          break;
+        case MenuMessage.CommitDailyLifeChanges:
+          dispatch(actions.commitDailyLife.request());
+          break;
+      }
+    },
+    [dispatch],
+  );
+
   const handleDailyLifeSaveResponse = useCallback(() => {
     dispatch(actions.requestDailyLifeModifiedFlag());
   }, [dispatch]);
@@ -117,6 +152,7 @@ function App() {
     handleDailyLifeModifiedFlagResponse,
   );
   useIpcListener(ipcChannels.saveDailyLifeResponse, handleDailyLifeSaveResponse);
+  useIpcListener<MenuMessagePayload>(ipcChannels.menu, handleMenuMessage);
 
   const showOnlyDateSelect = dateDisplayType !== DateDisplayType.Monthly;
 

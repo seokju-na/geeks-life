@@ -13,6 +13,7 @@ import {
   LoadDailyLifeRequest,
   LoadDailyLifeResponse,
   LoadDailyLogCategoriesResponse,
+  MenuOnCommitChangesFlagChangePayload,
   parsePayload,
   SaveDailyLifeRequest,
   serializePayload,
@@ -21,7 +22,7 @@ import {
 import { sort, SortingType } from '../core/sorting';
 import { globalShortcuts, windowBackgroundColors } from './constants';
 import { env } from './env';
-import { DailyLogService, EmojiService, GitService } from './services';
+import { DailyLogService, EmojiService, GitService, MenuService } from './services';
 import { Storage } from './storage';
 import { encodePathAsUrl } from './util';
 import { Window, WindowEvents } from './window';
@@ -33,6 +34,7 @@ const storage = new Storage();
 const emojiService = new EmojiService();
 const gitService = new GitService();
 const dailyLogService = new DailyLogService(workspaceUrl, [gitService]);
+const menuService = new MenuService();
 let tray: Tray | null = null;
 let window: Window | null = null;
 let willQuit = false;
@@ -42,7 +44,7 @@ type Theme = 'dark' | 'light';
 async function bootstrap() {
   console.time('bootstrap');
 
-  await Promise.all([storage.initialize(), dailyLogService.initialize()]);
+  await Promise.all([storage.initialize(), dailyLogService.initialize(), menuService.initialize()]);
   await app.whenReady();
 
   const theme = storage.get<Theme>('theme') ?? (nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
@@ -222,6 +224,30 @@ async function bootstrap() {
     };
 
     window?.sendEvent(ipcChannels.loadDailyLogCategoriesResponse, payload);
+  });
+
+  ipcMain.on(ipcChannels.menuOnWeeklyView, () => {
+    menuService.updateView('weekly');
+  });
+
+  ipcMain.on(ipcChannels.menuOnMonthlyView, () => {
+    menuService.updateView('monthly');
+  });
+
+  ipcMain.on(ipcChannels.menuOnCommitChangesFlagChange, (_, arg) => {
+    const payload = parsePayload<MenuOnCommitChangesFlagChangePayload>(arg);
+
+    if (payload != null) {
+      menuService.updateCommitChangesFlag(payload.enabled);
+    }
+  });
+
+  ipcMain.on(ipcChannels.menuOnFocusLog, () => {
+    menuService.updateLogMenu(true);
+  });
+
+  ipcMain.on(ipcChannels.menuOnBlurLog, () => {
+    menuService.updateLogMenu(false);
   });
 
   console.timeEnd('bootstrap');

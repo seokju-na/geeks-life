@@ -22,6 +22,7 @@ import {
   LoadDailyLogCategoriesResponse,
   match,
   SaveDailyLifeRequest,
+  MenuOnCommitChangesFlagChangePayload,
 } from '../../core';
 import { listenIpc, sendIpcMessage } from '../hooks/useIpcListener';
 import { actions } from './actions';
@@ -237,6 +238,60 @@ const requestDailyLogCategoriesEpic: Epic = (action$) =>
     }),
   );
 
+const updateMenuWhenDateDisplayTypeChangeEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.changeDateDisplayType),
+    tap((action) => {
+      switch (action.value) {
+        case DateDisplayType.Weekly:
+          sendIpcMessage(ipcChannels.menuOnWeeklyView);
+          break;
+        case DateDisplayType.Monthly:
+          sendIpcMessage(ipcChannels.menuOnMonthlyView);
+          break;
+      }
+    }),
+    ignoreElements(),
+  );
+
+const updateMenuWhenDailyLifeModifiedFlagChangeEpic: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(actions.updateDailyLifeModifiedFlag, actions.commitDailyLife.response),
+    withLatestFrom(state$),
+    map(([, state]) => state.modifiedAtDate),
+    tap((enabled) => {
+      if (enabled === null) {
+        return;
+      }
+
+      sendIpcMessage<MenuOnCommitChangesFlagChangePayload>(
+        ipcChannels.menuOnCommitChangesFlagChange,
+        {
+          enabled,
+        },
+      );
+    }),
+    ignoreElements(),
+  );
+
+const updateMenuWhenDailyLifeLogFocusEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.dailyLifeLogs.focus),
+    tap(() => {
+      sendIpcMessage(ipcChannels.menuOnFocusLog);
+    }),
+    ignoreElements(),
+  );
+
+const updateMenuWhenDailyLifeLogBlurEpic: Epic = (action$) =>
+  action$.pipe(
+    ofType(actions.dailyLifeLogs.blur),
+    tap(() => {
+      sendIpcMessage(ipcChannels.menuOnBlurLog);
+    }),
+    ignoreElements(),
+  );
+
 export const epic = combineEpics(
   requestDailyLivesEpic,
   requestDailyLifeModifiedFlagEpic,
@@ -245,4 +300,8 @@ export const epic = combineEpics(
   gitUserConfigSettingEpic,
   requestEmojiEpic,
   requestDailyLogCategoriesEpic,
+  updateMenuWhenDateDisplayTypeChangeEpic,
+  updateMenuWhenDailyLifeModifiedFlagChangeEpic,
+  updateMenuWhenDailyLifeLogFocusEpic,
+  updateMenuWhenDailyLifeLogBlurEpic,
 );

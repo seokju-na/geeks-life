@@ -153,15 +153,39 @@ export const reducer = createReducer<Readonly<State>, Action>(
       });
     }),
   ),
-  on(actions.dailyLifeLogs.delete, (state, action) =>
+  on(actions.dailyLifeLogs.delete, actions.dailyLifeLogs.deleteFocused, (state, action) =>
     produce(state, (draft) => {
       updateCurrentDailyLife(draft, (dailyLife) => {
-        const index = dailyLife.logs?.findIndex((log) => log.id === action.id) ?? -1;
+        const id =
+          action.type === actions.dailyLifeLogs.delete.type ? action.id : draft.focusedDailyLogId;
+        const index = dailyLife.logs?.findIndex((log) => log.id === id) ?? -1;
 
         if (index > -1) {
           dailyLife.logs?.splice(index, 1);
         }
       });
+    }),
+  ),
+  on(actions.dailyLifeLogs.focus, (state, action) =>
+    produce(state, (draft) => {
+      draft.focusedDailyLogId = action.id;
+    }),
+  ),
+  on(actions.dailyLifeLogs.blur, (state, action) =>
+    produce(state, (draft) => {
+      if (draft.focusedDailyLogId === action.id) {
+        draft.focusedDailyLogId = null;
+      }
+    }),
+  ),
+  on(actions.addDailyLifeLogPopover.show, (state) =>
+    produce(state, (draft) => {
+      draft.showAddDailyLifeLogPopover = true;
+    }),
+  ),
+  on(actions.addDailyLifeLogPopover.hide, (state) =>
+    produce(state, (draft) => {
+      draft.showAddDailyLifeLogPopover = false;
     }),
   ),
 );
