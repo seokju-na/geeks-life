@@ -47,6 +47,9 @@ export const actions = {
       }>(),
     ),
     delete: createAction('dailyLifeLogs.delete', props<{ id: string }>()),
+    deleteFocused: createAction('dailyLifeLogs.deleteFocused'),
+    focus: createAction('dailyLifeLogs.focus', props<{ id: string }>()),
+    blur: createAction('dailyLifeLogs.blur', props<{ id: string }>()),
   },
   commitDailyLife: {
     request: createAction('commitDailyLife.request'),
@@ -57,5 +60,13 @@ export const actions = {
     request: createAction('gitUserConfigSetting.request', props<{ name: string; email: string }>()),
     response: createAction('gitUserConfigSetting.response'),
     error: createAction('gitUserConfigSetting.error', props<{ errorCode: string }>()),
+  },
+  addDailyLifeLogPopover: {
+    show: createAction('addDailyLifeLogPopover.show'),
+    hide: createAction('addDailyLifeLogPopover.hide'),
+  },
+  editDailyLifeLogPopover: {
+    show: createAction('editDailyLifeLogPopover.show'),
+    hide: createAction('editDailyLifeLogPopover.hide'),
   },
 } as const;

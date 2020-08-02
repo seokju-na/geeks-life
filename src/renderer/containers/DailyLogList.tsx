@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  FocusEvent,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeItem, useCompositeState, usePopoverState } from 'reakit';
@@ -179,6 +180,24 @@ function DailyLogList() {
     [popover, composite, dispatch],
   );
 
+  const handleFocus = useCallback(
+    (event: FocusEvent<HTMLElement>) => {
+      if (event.currentTarget != null) {
+        dispatch(actions.dailyLifeLogs.focus({ id: event.currentTarget.id }));
+      }
+    },
+    [dispatch],
+  );
+
+  const handleBlur = useCallback(
+    (event: FocusEvent<HTMLElement>) => {
+      if (event.currentTarget != null) {
+        dispatch(actions.dailyLifeLogs.blur({ id: event.currentTarget.id }));
+      }
+    },
+    [dispatch],
+  );
+
   if (logs.length === 0) {
     return <Empty>No Logs</Empty>;
   }
@@ -220,6 +239,8 @@ function DailyLogList() {
               category={category}
               emoji={emoji}
               onContextMenu={handleContextMenu}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               {...composite}
             />
           );

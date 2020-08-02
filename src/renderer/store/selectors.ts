@@ -12,6 +12,8 @@ const selectCommitting = (state: State) => state.committing;
 const selectCommitErrorCode = (state: State) => state.commitErrorCode;
 const selectEmojis = (state: State) => state.emojis;
 const selectDailyLogCategories = (state: State) => state.dailyLogCategories;
+const selectShowAddDailyLifeLogPopover = (state: State) => state.showAddDailyLifeLogPopover;
+const selectShowEditDailyLifeLogPopover = (state: State) => state.showEditDailyLifeLogPopover;
 
 const selectDateAsFormatted = createSelector(
   [selectDate, selectDateDisplayType],
@@ -67,4 +69,6 @@ export const selectors = {
   commitErrorCode: selectCommitErrorCode,
   emojis: selectEmojis,
   dailyLogCategories: selectDailyLogCategories,
+  showAddDailyLifeLogPopover: selectShowAddDailyLifeLogPopover,
+  showEditDailyLifeLogPopover: selectShowEditDailyLifeLogPopover,
 } as const;

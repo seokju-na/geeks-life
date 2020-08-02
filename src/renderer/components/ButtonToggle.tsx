@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import React, { ComponentProps, createContext, useCallback, useContext } from 'react';
+import React, { ComponentProps, createContext, useCallback, useContext, useEffect } from 'react';
 import { Group, useRadioState } from 'reakit';
 import { useTheme } from '../colors/theming';
 import { Button, buttonFontSizes, ButtonProps, ButtonSize } from './Button';
@@ -39,6 +39,10 @@ export function ButtonToggleGroup({
     },
     [radio, onChange],
   );
+
+  useEffect(() => {
+    radio.setState(value);
+  }, [radio, value]);
 
   return (
     <ButtonGroupContext.Provider
