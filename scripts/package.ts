@@ -6,6 +6,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import { spawnAsync } from './util';
 
+const { PUBLISH } = process.env;
+const env = {
+  publish: PUBLISH?.toLowerCase() === 'true',
+} as const;
+
 const ROOT_PATH = path.resolve(__dirname, '../');
 const paths = {
   root: ROOT_PATH,
@@ -57,7 +62,6 @@ async function packageProduct() {
 
   // Package product
   // TODO: icon
-  // TODO: code signing
   // TODO: win32, linux
   await build({
     config: {
@@ -79,8 +83,12 @@ async function packageProduct() {
           LSUIElement: 1,
         },
       },
+      publish: {
+        provider: 'github',
+      },
     },
     mac: ['dmg'],
+    publish: env.publish ? 'onTagOrDraft' : 'never',
   });
 }
 
