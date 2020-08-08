@@ -1,0 +1,24 @@
+name: CD
+on:
+  push:
+    branches:
+      - master
+jobs:
+  cd:
+    name: Releases
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Node v12.14.1
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.14.1'
+      - name: Installing
+        run: yarn install
+      - name: Package
+        run: yarn package
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+          PUBLISH: true
+          CSC_LINK: ${{secrets.CSC_LINK}}
+          CSC_KEY_PASSWORD: ${{secrets.CSC_KEY_PASSWORD}}
