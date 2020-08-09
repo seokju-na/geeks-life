@@ -63,6 +63,12 @@ export default function GitUserSettingDialog() {
   }, [dialog.visible]);
 
   useEffect(() => {
+    if (!dialog.visible) {
+      dispatch(actions.gitUserConfigSetting.dismiss());
+    }
+  }, [dialog.visible, dispatch]);
+
+  useEffect(() => {
     if (commitErrorCode === CommitDailyLifeErrorCode.MissingNameError) {
       dialog.show();
     } else {
@@ -73,6 +79,7 @@ export default function GitUserSettingDialog() {
   return (
     <Dialog
       dialog={dialog}
+      hideOnClickOutside={false}
       css={css`
         width: 85vw;
         max-width: 320px;

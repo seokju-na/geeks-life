@@ -1,15 +1,5 @@
 import { combineEpics, Epic as EpicType } from 'redux-observable';
-import { concat, EMPTY, of } from 'rxjs';
-import {
-  exhaustMap,
-  filter,
-  ignoreElements,
-  map,
-  mergeMap,
-  share,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { exhaustMap, filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators';
 import {
   CommitDailyLifeRequest,
   CommitDailyLifeResponse,
@@ -21,14 +11,15 @@ import {
   LoadDailyLifeRequest,
   LoadDailyLogCategoriesResponse,
   match,
-  SaveDailyLifeRequest,
   MenuOnCommitChangesFlagChangePayload,
+  SaveDailyLifeRequest,
 } from '../../core';
-import { listenIpc, sendIpcMessage } from '../hooks/useIpcListener';
+import { sendIpcMessage } from '../hooks/useIpcListener';
 import { actions } from './actions';
 import { Action, ofType } from './core';
 import { selectors } from './selectors';
 import { DateDisplayType, State } from './state';
+import { createIpcRequestAndResponse } from './utils';
 
 export type Epic = EpicType<Action, Action, Readonly<State>>;
 
@@ -108,9 +99,10 @@ const saveDailyLifeEpic: Epic = (action$, state$) =>
     ignoreElements(),
   );
 
-const commitDailyLifeResponse$ = listenIpc<CommitDailyLifeResponse>(
-  ipcChannels.commitDailyLifeResponse,
-).pipe(share());
+const requestDailyLife = createIpcRequestAndResponse<
+  CommitDailyLifeRequest,
+  CommitDailyLifeResponse
+>(ipcChannels.commitDailyLifeRequest, ipcChannels.commitDailyLifeResponse);
 
 const commitDailyLifeEpic: Epic = (action$, state$) =>
   action$.pipe(
@@ -118,124 +110,75 @@ const commitDailyLifeEpic: Epic = (action$, state$) =>
     withLatestFrom(state$),
     map(([, state]) => state),
     filter((state) => state.modifiedAtDate === true),
-    exhaustMap((state) => {
-      const request$ = of(null).pipe(
-        tap(() => {
-          sendIpcMessage<CommitDailyLifeRequest>(ipcChannels.commitDailyLifeRequest, {
-            date: state.date,
-          });
-        }),
-        ignoreElements(),
-      );
-
-      const response$ = commitDailyLifeResponse$.pipe(
-        mergeMap((payload) => {
-          if (payload == null) {
-            return EMPTY;
-          }
-
+    exhaustMap((state) =>
+      requestDailyLife({
+        date: state.date,
+      }).pipe(
+        map((payload) => {
           if (payload.errorCode != null) {
-            return of(actions.commitDailyLife.error({ errorCode: payload.errorCode }));
+            return actions.commitDailyLife.error({ errorCode: payload.errorCode });
           }
 
-          return of(actions.commitDailyLife.response({ date: payload.date }));
+          return actions.commitDailyLife.response({ date: payload.date });
         }),
-      );
-
-      return concat(request$, response$);
-    }),
+      ),
+    ),
   );
 
-const gitUserConfigSetResponse$ = listenIpc<GitUserConfigSetResponse>(
-  ipcChannels.gitUserConfigSetResponse,
-).pipe(share());
+const requestGitUserConfigSet = createIpcRequestAndResponse<
+  GitUserConfigSetRequest,
+  GitUserConfigSetResponse
+>(ipcChannels.gitUserConfigSetRequest, ipcChannels.gitUserConfigSetResponse);
 
 const gitUserConfigSettingEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.gitUserConfigSetting.request),
-    exhaustMap((action) => {
-      const request$ = of(null).pipe(
-        tap(() => {
-          sendIpcMessage<GitUserConfigSetRequest>(ipcChannels.gitUserConfigSetRequest, {
-            name: action.name,
-            email: action.email,
-          });
-        }),
-        ignoreElements(),
-      );
-
-      const response$ = gitUserConfigSetResponse$.pipe(
-        mergeMap((payload) => {
-          if (payload == null) {
-            return EMPTY;
-          }
-
+    exhaustMap((action) =>
+      requestGitUserConfigSet({
+        name: action.name,
+        email: action.email,
+      }).pipe(
+        map((payload) => {
           if (payload.errorCode != null) {
-            return of(actions.gitUserConfigSetting.error({ errorCode: payload.errorCode }));
+            return actions.gitUserConfigSetting.error({ errorCode: payload.errorCode });
           }
 
-          return of(actions.gitUserConfigSetting.response());
+          return actions.gitUserConfigSetting.response();
         }),
-      );
-
-      return concat(request$, response$);
-    }),
+      ),
+    ),
   );
 
-const emojisResponse$ = listenIpc<EmojisResponse>(ipcChannels.emojiResponse).pipe(share());
+const requestEmojis = createIpcRequestAndResponse<void, EmojisResponse>(
+  ipcChannels.emojiRequest,
+  ipcChannels.emojiResponse,
+);
 
 const requestEmojiEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.emojis.request),
-    exhaustMap(() => {
-      const request$ = of(null).pipe(
-        tap(() => {
-          sendIpcMessage(ipcChannels.emojiRequest);
-        }),
-        ignoreElements(),
-      );
-
-      const response$ = emojisResponse$.pipe(
-        mergeMap((payload) => {
-          if (payload == null) {
-            return EMPTY;
-          }
-
-          return of(actions.emojis.response({ emojis: payload.emojis }));
-        }),
-      );
-
-      return concat(request$, response$);
-    }),
+    exhaustMap(() =>
+      requestEmojis().pipe(
+        map((payload) => ({ emojis: payload.emojis })),
+        map(actions.emojis.response),
+      ),
+    ),
   );
 
-const dailyLogCategoriesResponse$ = listenIpc<LoadDailyLogCategoriesResponse>(
+const requestDailyLogCategories = createIpcRequestAndResponse<void, LoadDailyLogCategoriesResponse>(
+  ipcChannels.loadDailyLogCategoriesRequest,
   ipcChannels.loadDailyLogCategoriesResponse,
-).pipe(share());
+);
 
 const requestDailyLogCategoriesEpic: Epic = (action$) =>
   action$.pipe(
     ofType(actions.dailyLogCategories.request),
-    exhaustMap(() => {
-      const request$ = of(null).pipe(
-        tap(() => {
-          sendIpcMessage(ipcChannels.loadDailyLogCategoriesRequest);
-        }),
-        ignoreElements(),
-      );
-
-      const response$ = dailyLogCategoriesResponse$.pipe(
-        mergeMap((payload) => {
-          if (payload == null) {
-            return EMPTY;
-          }
-
-          return of(actions.dailyLogCategories.response({ categories: payload.categories }));
-        }),
-      );
-
-      return concat(request$, response$);
-    }),
+    exhaustMap(() =>
+      requestDailyLogCategories().pipe(
+        map((payload) => ({ categories: payload.categories })),
+        map(actions.dailyLogCategories.response),
+      ),
+    ),
   );
 
 const updateMenuWhenDateDisplayTypeChangeEpic: Epic = (action$) =>

@@ -60,6 +60,7 @@ export const actions = {
     request: createAction('gitUserConfigSetting.request', props<{ name: string; email: string }>()),
     response: createAction('gitUserConfigSetting.response'),
     error: createAction('gitUserConfigSetting.error', props<{ errorCode: string }>()),
+    dismiss: createAction('gitUserConfigSetting.dismiss'),
   },
   addDailyLifeLogPopover: {
     show: createAction('addDailyLifeLogPopover.show'),

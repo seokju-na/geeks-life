@@ -115,6 +115,11 @@ export const reducer = createReducer<Readonly<State>, Action>(
       }
     }),
   ),
+  on(actions.gitUserConfigSetting.dismiss, (state) =>
+    produce(state, (draft) => {
+      draft.commitErrorCode = null;
+    }),
+  ),
   on(actions.emojis.response, (state, action) =>
     produce(state, (draft) => {
       draft.emojis = action.emojis;

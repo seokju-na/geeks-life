@@ -7,7 +7,6 @@ import React, {
   ComponentProps,
   createContext,
   FunctionComponentElement,
-  HTMLProps,
   useMemo,
 } from 'react';
 import {
@@ -27,7 +26,9 @@ interface DialogContextValue {
 
 const DialogContext = createContext<DialogContextValue>({});
 
-export type DialogProps = Omit<HTMLProps<HTMLDivElement>, 'as'> & {
+type DialogState = ReturnType<typeof useDialogState>;
+
+export type DialogProps = Omit<ComponentProps<typeof BaseDialog>, 'as' | keyof DialogState> & {
   role?: 'alertdialog' | 'dialog';
   dialog: ReturnType<typeof useDialogState>;
   disclosure?: FunctionComponentElement<any> | ComponentElement<any, any>;
