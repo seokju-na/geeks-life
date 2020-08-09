@@ -1,14 +1,5 @@
 import { css } from '@emotion/core';
-import React, {
-  ComponentProps,
-  memo,
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  FocusEvent,
-} from 'react';
+import React, { ComponentProps, memo, MouseEvent, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Composite, CompositeItem, useCompositeState, usePopoverState } from 'reakit';
 import { DailyLog, DailyLogCategory, Emoji as EmojiModel } from '../../core/domain';
@@ -105,63 +96,64 @@ function DailyLogList() {
   const logs = useSelector(selectors.currentDailyLifeLogs);
   const categories = useSelector(selectors.dailyLogCategories);
   const emojis = useSelector(selectors.emojis);
+  const showEditPopover = useSelector(selectors.showEditDailyLifeLogPopover);
 
-  const popover = usePopoverState({
+  const editPopover = usePopoverState({
     animated: true,
     placement: 'bottom',
   });
   const composite = useCompositeState({ wrap: 'vertical', loop: 'vertical' });
 
-  const [editingLogId, setEditingLogId] = useState<DailyLog['id']>();
-  const editingLog = useMemo(() => logs.find((log) => log.id === editingLogId), [
+  const currentLog = useMemo(() => logs.find((log) => log.id === composite.currentId), [
     logs,
-    editingLogId,
+    composite,
   ]);
+
+  useEffect(() => {
+    const target = composite.items.find((item) => item.id === composite.currentId);
+
+    if (target != null) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (editPopover.unstable_referenceRef as any).current = target.ref.current;
+    }
+  }, [editPopover, composite]);
+
   const handleLogEdit = useCallback(
     (value: DailyLogModifyFormValue) => {
-      if (editingLog == null) {
+      if (currentLog == null) {
         return;
       }
 
-      dispatch(actions.dailyLifeLogs.edit({ id: editingLog.id, payload: value }));
-      setEditingLogId(undefined);
+      dispatch(actions.dailyLifeLogs.edit({ id: currentLog.id, payload: value }));
+      editPopover.hide();
     },
-    [dispatch, editingLog],
+    [dispatch, currentLog, editPopover],
   );
 
   useEffect(() => {
-    if (editingLog != null) {
-      popover.show();
-    } else {
-      popover.hide();
+    if (currentLog != null && showEditPopover) {
+      editPopover.show();
     }
-  }, [editingLogId, editingLog, popover]);
+  }, [currentLog, showEditPopover, editPopover]);
 
   useEffect(() => {
-    if (!popover.visible) {
-      setEditingLogId(undefined);
+    if (!editPopover.visible) {
+      dispatch(actions.editDailyLifeLogPopover.hide());
     }
-  }, [popover.visible]);
+  }, [editPopover, dispatch]);
 
   const handleContextMenu = useCallback(
     (event: MouseEvent<HTMLElement>) => {
-      const id = event.currentTarget.id;
-      const target = composite.items.find((item) => item.id === id);
-
-      if (target == null) {
-        return;
-      }
-
       event.preventDefault();
+
+      const id = event.currentTarget.id;
       const menu = new Menu();
 
       menu.append(
         new MenuItem({
           label: 'Edit',
           click() {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (popover.unstable_referenceRef as any).current = target.ref.current;
-            setEditingLogId(id);
+            dispatch(actions.editDailyLifeLogPopover.show());
           },
         }),
       );
@@ -177,24 +169,6 @@ function DailyLogList() {
 
       menu.popup();
     },
-    [popover, composite, dispatch],
-  );
-
-  const handleFocus = useCallback(
-    (event: FocusEvent<HTMLElement>) => {
-      if (event.currentTarget != null) {
-        dispatch(actions.dailyLifeLogs.focus({ id: event.currentTarget.id }));
-      }
-    },
-    [dispatch],
-  );
-
-  const handleBlur = useCallback(
-    (event: FocusEvent<HTMLElement>) => {
-      if (event.currentTarget != null) {
-        dispatch(actions.dailyLifeLogs.blur({ id: event.currentTarget.id }));
-      }
-    },
     [dispatch],
   );
 
@@ -205,11 +179,11 @@ function DailyLogList() {
   return (
     <ListWrapper>
       <DailyLogModifyPopover
-        popover={popover}
+        popover={editPopover}
         categories={categories}
         emojis={emojis}
-        initialCategoryId={editingLog?.categoryId}
-        initialLogContent={editingLog?.content}
+        initialCategoryId={currentLog?.categoryId}
+        initialLogContent={currentLog?.content}
         ctaIcon="pencil"
         ctaTitle="Edit Log"
         onSubmit={handleLogEdit}
@@ -239,8 +213,6 @@ function DailyLogList() {
               category={category}
               emoji={emoji}
               onContextMenu={handleContextMenu}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               {...composite}
             />
           );

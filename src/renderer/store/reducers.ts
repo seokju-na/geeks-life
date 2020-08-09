@@ -188,4 +188,14 @@ export const reducer = createReducer<Readonly<State>, Action>(
       draft.showAddDailyLifeLogPopover = false;
     }),
   ),
+  on(actions.editDailyLifeLogPopover.show, (state) =>
+    produce(state, (draft) => {
+      draft.showEditDailyLifeLogPopover = true;
+    }),
+  ),
+  on(actions.editDailyLifeLogPopover.hide, (state) =>
+    produce(state, (draft) => {
+      draft.showEditDailyLifeLogPopover = false;
+    }),
+  ),
 );
