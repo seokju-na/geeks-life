@@ -72,6 +72,8 @@ async function bootstrap() {
   tray.on('click', () => {
     window?.toggle();
   });
+  tray.setTitle(env.productName);
+  tray.setToolTip(env.productName);
 
   app.on('window-all-closed', () => {
     if (!env.platform.darwin) {
