@@ -35,7 +35,7 @@
     "emotion-theming": "^10.0.27",
     "file-url": "^3.0.0",
     "fs-extra": "^9.0.1",
-    "immer": "^7.0.5",
+    "immer": "^9.0.6",
     "isomorphic-git": "^1.7.1",
     "lodash.chunk": "^4.2.0",
     "observable-hooks": "^3.0.0",
