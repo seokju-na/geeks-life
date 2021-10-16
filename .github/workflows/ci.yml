@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+    branches-ignore:
+      - "main"
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+      - uses: actions/checkout@v2
+      - name: use node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: cache .pnpm-store
+        uses: actions/cache@v1
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: cache lint & typecheck
+        uses: actions/cache@v1
+        with:
+          path: |
+            **/*.tsbuildinfo
+            **/.eslintcache
+          key: typecheck-lint-cache-${{ hashFiles('**/*.tsbuildinfo') }}-${{ hashFiles('**/.eslintcache') }}
+          restore-keys: |
+            typecheck-lint-cache-
+      - name: pnpm
+        run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
+      - name: pnpm install
+        run: pnpm install
+      - name: lint
+        run: pnpm run lint
+      - name: typecheck
+        run: pnpm run typecheck
