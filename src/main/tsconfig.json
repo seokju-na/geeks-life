@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist",
+    "target": "ES2019",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
+  }
+}
