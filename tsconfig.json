@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noPropertyAccessFromIndexSignature": true,
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

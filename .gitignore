@@ -9,3 +9,5 @@ build/
 .next/
 
 .npm-debug.log
+*.tsbuildinfo
+.eslintcache
