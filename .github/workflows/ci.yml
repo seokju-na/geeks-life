@@ -4,7 +4,7 @@ on:
     branches-ignore:
       - "main"
 jobs:
-  ci:
+  'lint_and_typecheck':
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
