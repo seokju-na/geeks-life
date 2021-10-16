@@ -12,8 +12,8 @@
     "build": "pnpm run build:main && pnpm run build:renderer",
     "build:main": "node scripts/build-main.js",
     "build:renderer": "next build src/renderer && next export src/renderer",
-    "typecheck": "tsc -p tsconfig.typecheck.json --noEmit --incremental",
-    "lint": "eslint --cache -c .eslintrc.js 'src/**/*.{ts,tsx}'",
+    "typecheck": "tsc -p tsconfig.typecheck.json --noEmit --incremental --tsBuildInfoFile cache/.tsbuildinfo",
+    "lint": "eslint --cache --cache-location cache/.eslintcache -c .eslintrc.js 'src/**/*.{ts,tsx}'",
     "postinstall": "electron-builder install-app-deps"
   },
   "repository": {

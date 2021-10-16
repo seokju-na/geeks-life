@@ -21,16 +21,11 @@ jobs:
         with:
           path: "~/.pnpm-store"
           key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - name: cache lint
+      - name: cache lint & typecheck
         uses: actions/cache@v1
         with:
-          path: ".eslintcache"
-          key: lint-cache-${{ hashFiles('**/.eslintcache') }}
-      - name: cache typecheck
-        uses: actions/cache@v1
-        with:
-          path: "*.tsbuildinfo"
-          key: typecheck-cache-${{ hashFiles('**/*.tsbuildinfo') }}
+          path: "cache/"
+          key: lint-and-typecheck-cache-${{ hashFiles('cache/.eslintcache') }}-${{ hashFiles('cache/.tsbuildinfo') }}
       - name: pnpm
         run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
       - name: pnpm install
