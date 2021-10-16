@@ -9,3 +9,4 @@ build/
 .next/
 
 .npm-debug.log
+cache/

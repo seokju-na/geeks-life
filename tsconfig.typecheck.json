@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["**/node_modules", "**/dist", "**/esm", "**/.next", "**/out", "**/build"],
+  "compilerOptions": {
+    "module": "esnext",
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  }
+}
