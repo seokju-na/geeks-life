@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "private": true,
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "dev:main": "nodemon",
     "dev:renderer": "next dev src/renderer",
@@ -14,11 +15,11 @@
     "build:renderer": "next build src/renderer && next export src/renderer",
     "typecheck": "tsc -p tsconfig.typecheck.json --noEmit --incremental --tsBuildInfoFile cache/.tsbuildinfo",
     "lint": "eslint --cache --cache-location cache/.eslintcache -c .eslintrc.js 'src/**/*.{ts,tsx}'",
-    "postinstall": "electron-builder install-app-deps"
+    "release": "ts-node -T scripts/release.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seokju-na/geeks-life.git"
+    "url": "https://github.com/seokju-na/geeks-life"
   },
   "author": "Seokju Na <seokju.me@gmail.com>",
   "license": "MIT",
@@ -44,6 +45,7 @@
     "@types/node": "^16.11.0",
     "@types/react": "^17.0.30",
     "@types/react-dom": "^17.0.9",
+    "@types/semver": "^7.3.8",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "electron-builder": "^22.13.1",
@@ -55,9 +57,11 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "execa": "^5.1.1",
     "jest": "^27.2.5",
     "nodemon": "^2.0.13",
     "prettier": "^2.4.1",
+    "semver": "^7.3.5",
     "ts-jest": "^27.0.6",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4"
