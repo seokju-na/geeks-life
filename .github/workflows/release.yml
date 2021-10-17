@@ -1,0 +1,50 @@
+name: release
+on:
+  push:
+    branches:
+      - "main"
+      - "release/*"
+
+jobs:
+  release:
+    name: ${{ matrix.friendlyName }} ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    permissions: read-all
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [16]
+        os: [macos-10.15, windows-2019]
+        arch: [x64]
+        include:
+          - os: macos-10.15
+            friendlyName: macOS
+          - os: windows-2019
+            friendlyName: Windows
+    timeout-minutes: 60
+    env:
+      # Needed for macOS arm64 until hosted macos-11.0 runners become available
+      SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
+    steps:
+      - uses: actions/checkout@v2
+      - name: use node.js v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: cache .pnpm-store
+        uses: actions/cache@v1
+        with:
+          path: "~/.pnpm-store"
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: pnpm
+        run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
+      - name: pnpm install
+        run: pnpm install
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+      - name: release
+        run: pnpm run release
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

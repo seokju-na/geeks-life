@@ -8,6 +8,7 @@ specifiers:
   '@types/node': ^16.11.0
   '@types/react': ^17.0.30
   '@types/react-dom': ^17.0.9
+  '@types/semver': ^7.3.8
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
   electron: ^15.2.0
@@ -22,6 +23,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-react: ^7.26.1
   eslint-plugin-react-hooks: ^4.2.0
+  execa: ^5.1.1
   jest: ^27.2.5
   next: ^11.1.2
   nodemon: ^2.0.13
@@ -29,6 +31,7 @@ specifiers:
   prettier: ^2.4.1
   react: ^17.0.2
   react-dom: ^17.0.2
+  semver: ^7.3.5
   ts-jest: ^27.0.6
   ts-node: ^10.3.0
   typescript: ^4.4.4
@@ -50,6 +53,7 @@ devDependencies:
   '@types/node': 16.11.0
   '@types/react': 17.0.30
   '@types/react-dom': 17.0.9
+  '@types/semver': 7.3.8
   '@typescript-eslint/eslint-plugin': 5.0.0_6ba17f843b80f9635cca52a4b13c685c
   '@typescript-eslint/parser': 5.0.0_eslint@7.32.0+typescript@4.4.4
   electron-builder: 22.13.1
@@ -61,9 +65,11 @@ devDependencies:
   eslint-plugin-prettier: 4.0.0_6e975bd57c7acf028c1a9ddbbf60c898
   eslint-plugin-react: 7.26.1_eslint@7.32.0
   eslint-plugin-react-hooks: 4.2.0_eslint@7.32.0
+  execa: 5.1.1
   jest: 27.2.5_ts-node@10.3.0
   nodemon: 2.0.13
   prettier: 2.4.1
+  semver: 7.3.5
   ts-jest: 27.0.6_e75146ce8d32198733565fba5ed78d4e
   ts-node: 10.3.0_036181877a83ed913a2bbec8dcc74354
   typescript: 4.4.4
@@ -1046,6 +1052,10 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
+    dev: true
+
+  /@types/semver/7.3.8:
+    resolution: {integrity: sha512-D/2EJvAlCEtYFEYmmlGwbGXuK886HzyCc3nZX/tkFTQdEU8jZDAgiv08P162yB17y4ZXZoq7yFAnW4GDBb9Now==}
     dev: true
 
   /@types/stack-utils/2.0.1:
