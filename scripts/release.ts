@@ -171,6 +171,7 @@ async function pack({
         output: 'build/',
       },
     },
+    publish: null,
   };
 
   if (publish) {
