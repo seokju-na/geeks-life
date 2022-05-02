@@ -1,0 +1,43 @@
+{
+  "name": "geeks-life",
+  "packageManager": "yarn@3.2.0",
+  "engines": {
+    "node": ">=16.14.1 <17.0.0",
+    "yarn": "^3.2.0"
+  },
+  "scripts": {
+    "dev": "tauri dev",
+    "dev:webview": "vite",
+    "build": "tauri build",
+    "build:webview": "tsc && vite build",
+    "test": "yarn test:tauri && yarn test:webview",
+    "test:tauri": "cargo test --manifest-path ./src-tauri/Cargo.toml --workspace",
+    "test:webview": "jest",
+    "postinstall": "husky install",
+    "lint": "eslint --cache -c .eslintrc.js 'src/**/*.{ts,tsx}'",
+    "typecheck": "tsc --noEmit --incremental"
+  },
+  "dependencies": {
+    "@types/react": "^18.0.8",
+    "@types/react-dom": "^18.0.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.0-rc.9",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "@vitejs/plugin-react": "^1.3.1",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "husky": "^7.0.4",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.4",
+    "vite": "^2.9.6"
+  }
+}
