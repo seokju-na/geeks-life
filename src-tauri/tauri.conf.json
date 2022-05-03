@@ -7,13 +7,13 @@
     "distDir": "../dist",
     "devPath": "http://localhost:3000",
     "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "beforeBuildCommand": "yarn build:webview"
   },
   "tauri": {
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "io.geeks.life",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -43,19 +43,28 @@
         "timestampUrl": ""
       }
     },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    },
     "updater": {
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": false
     },
     "windows": [
       {
+        "label": "main",
         "title": "Geek&#x27;s Life",
         "width": 800,
         "height": 600,
-        "resizable": true,
-        "fullscreen": false
+        "resizable": false,
+        "fullscreen": false,
+        "alwaysOnTop": true,
+        "focus": true,
+        "skipTaskbar": true,
+        "visible": false
       }
     ],
     "security": {
