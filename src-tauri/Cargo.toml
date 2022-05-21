@@ -18,6 +18,15 @@ tauri-build = { version = "1.0.0-rc.6", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0-rc.7", features = ["system-tray"] }
+git2 = "0.14.3"
+thiserror = "1.0.31"
+chrono = "0.4.19"
+geeks_git = "0.2.0"
+geeks_event_sourcing = "0.2.0"
+geeks_event_sourcing_git = "0.2.0"
+
+[dev-dependencies]
+geeks_git_testing = "0.2.0"
 
 [features]
 # by default Tauri runs in production mode
