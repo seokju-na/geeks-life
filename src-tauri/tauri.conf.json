@@ -57,8 +57,8 @@
       {
         "label": "main",
         "title": "Geek&#x27;s Life",
-        "width": 800,
-        "height": 600,
+        "width": 320,
+        "height": 480,
         "resizable": false,
         "fullscreen": false,
         "alwaysOnTop": true,
