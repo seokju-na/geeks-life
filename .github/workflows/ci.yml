@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 16
       - name: check peer deps
-        run: scripts/check_peer_deps.sh
+        run: scripts/check-peer-deps.sh
   test-build:
     strategy:
       fail-fast: false
