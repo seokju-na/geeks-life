@@ -4,52 +4,25 @@
 )]
 
 use std::error::Error;
-use tauri::{
-  App, AppHandle, CustomMenuItem, Manager, Runtime, SystemTray, SystemTrayEvent, SystemTrayMenu,
-  WindowEvent,
-};
 
-fn tray() -> SystemTray {
-  let open = CustomMenuItem::new("open".to_string(), "Open").accelerator("CmdOrCtrl+O");
-  let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("CmdOrCtrl+Q");
-  let menu = SystemTrayMenu::new().add_item(open).add_item(quit);
+use tauri::{App, Manager, Runtime, WindowEvent};
 
-  SystemTray::new().with_menu(menu)
-}
+use crate::tray::{handle_tray, tray};
 
-fn handle_tray<R>(app: &AppHandle<R>, event: SystemTrayEvent)
-where
-  R: Runtime,
-{
-  match event {
-    SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-      "open" => {
-        if let Some(win) = app.get_window("main") {
-          win.show().unwrap();
-          win.set_focus().unwrap();
-        }
-      }
-      "quit" => {
-        std::process::exit(0);
-      }
-      _ => {}
-    },
-    _ => {}
-  }
-}
+mod domain;
+mod tray;
 
 fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
   R: Runtime,
 {
   if let Some(win) = app.get_window("main") {
-    win.clone().on_window_event(move |event| match event {
-      WindowEvent::Focused(focused) => {
-        if win.is_visible().unwrap() && !*focused {
+    win.clone().on_window_event(move |event| {
+      if let WindowEvent::Focused(focused) = event {
+        if win.is_visible().unwrap() && !(*focused) {
           win.hide().unwrap()
         }
       }
-      _ => {}
     })
   }
 
