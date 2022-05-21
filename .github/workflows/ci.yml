@@ -1,0 +1,105 @@
+name: CI
+on: [pull_request]
+env:
+  RUST_BACKTRACE: 1
+  CARGO_INCREMENTAL: 0 # This is set to 0 by the https://github.com/Swatinem/rust-cache
+  CARGO_PROFILE_DEV_DEBUG: 0 # This would add unnecessary bloat to the target folder, decreasing cache efficiency.
+jobs:
+  typecheck-lint:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use nodejs v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/*.tsbuildinfo
+            **/.eslintcache
+          key: typecheck-lint-cache-${{ hashFiles('**/*.tsbuildinfo') }}-${{ hashFiles('**/.eslintcache') }}
+          restore-keys: |
+            typecheck-lint-cache-
+      - name: run yarn install
+        run: yarn install --immutable --immutable-cache
+      - name: lint
+        run: yarn lint
+      - name: typecheck
+        run: yarn typecheck
+  check-peer-deps:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use nodejs v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: check peer deps
+        run: scripts/check_peer_deps.sh
+  test-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use nodejs v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: setup git
+        run: |
+          git config --global user.name "Seokju Na"
+          git config --global user.email "seokju.me@gmail.com"
+      - name: use rust nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: install webkit2gtk (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webkit2gtk-4.0
+      - name: cache cargo
+        uses: actions/cache@v2
+        env:
+          cache-name: cargo
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: ${{ matrix.platform }}-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
+          restore-keys: |
+            ${{ matrix.platform }}-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
+            ${{ matrix.platform }}-${{ env.cache-name }}-
+            ${{ matrix.platform }}-
+      - name: cache target
+        uses: actions/cache@v2
+        env:
+          cache-name: target
+        with:
+          path: target
+          key: ${{ matrix.platform }}-stable-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
+          restore-keys: |
+            ${{ matrix.platform }}-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
+            ${{ matrix.platform }}-${{ env.cache-name }}-
+            ${{ matrix.platform }}-
+      - name: run yarn install
+        run: yarn install --immutable --immutable-cache
+      - name: build
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: test
+        run: yarn test
