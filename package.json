@@ -12,7 +12,7 @@
     "build:webview": "tsc && vite build",
     "test": "yarn test:tauri && yarn test:webview",
     "test:tauri": "cargo test --manifest-path ./src-tauri/Cargo.toml --workspace",
-    "test:webview": "jest",
+    "test:webview": "jest --passWithNoTests",
     "postinstall": "husky install",
     "lint": "eslint --cache -c .eslintrc.js 'src/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit --incremental"

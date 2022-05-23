@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn install --immutable --immutable-cache > /dev/null 2>&1 || (echo "please run yarn"; exit 1)
