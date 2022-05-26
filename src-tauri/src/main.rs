@@ -9,8 +9,10 @@ use tauri::{App, Manager, Runtime, WindowEvent};
 
 use crate::tray::{handle_tray, tray};
 
+mod application;
 mod domain;
 mod tray;
+mod utils;
 
 fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
