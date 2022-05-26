@@ -1,3 +1,5 @@
+use std::fmt::Formatter;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -10,6 +12,18 @@ pub enum Score {
   High,
   #[serde(rename = "excellent")]
   Excellent,
+}
+
+impl ToString for Score {
+  fn to_string(&self) -> String {
+    let str = match self {
+      Score::Low => "low",
+      Score::Medium => "medium",
+      Score::High => "high",
+      Score::Excellent => "excellent",
+    };
+    String::from(str)
+  }
 }
 
 #[cfg(test)]
