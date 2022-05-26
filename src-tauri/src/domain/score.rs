@@ -12,6 +12,18 @@ pub enum Score {
   Excellent,
 }
 
+impl ToString for Score {
+  fn to_string(&self) -> String {
+    let str = match self {
+      Score::Low => "low",
+      Score::Medium => "medium",
+      Score::High => "high",
+      Score::Excellent => "excellent",
+    };
+    String::from(str)
+  }
+}
+
 #[cfg(test)]
 mod tests {
   use serde_json::{from_str, to_string};
