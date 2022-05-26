@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::domain::{DailyLog, Score};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct DailyLife {
   /// %Y-%m-%d formatted.
   /// example: '2022-05-21'
