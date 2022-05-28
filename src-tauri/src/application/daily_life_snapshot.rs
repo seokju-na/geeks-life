@@ -31,6 +31,14 @@ pub enum DailyLifeSnapshotError {
   ParseFail,
 }
 
+impl DailyLifeSnapshot {
+  pub fn new(workspace_dir: &Path) -> Self {
+    Self {
+      workspace_dir: workspace_dir.to_path_buf(),
+    }
+  }
+}
+
 #[async_trait]
 impl Snapshot<DailyLife> for DailyLifeSnapshot {
   type Error = DailyLifeSnapshotError;
