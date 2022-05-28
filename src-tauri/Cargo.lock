@@ -66,6 +66,7 @@ dependencies = [
  "git2",
  "pulldown-cmark",
  "regex",
+ "run_script",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -935,9 +936,9 @@ dependencies = [
 
 [[package]]
 name = "geeks_event_sourcing"
-version = "0.2.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "682aaa2da35b8f20d2d2ff34acf0bacb54ce0ce9b3e2f683d8182b585534d911"
+checksum = "0c129a31f2311640f438093549c038405e00384c93ee09c01666451f50a11539"
 dependencies = [
  "async-trait",
  "chrono",
@@ -949,9 +950,9 @@ dependencies = [
 
 [[package]]
 name = "geeks_event_sourcing_git"
-version = "0.2.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "454212a5c9fff8830abff3228a5f6d4b6efc399ee58f8525d646776bdb19a6bc"
+checksum = "8d4fd48cb0dda13dd868f43f236e22b898e270d1c61d5b26287edbdb3dd51c2d"
 dependencies = [
  "async-trait",
  "geeks_event_sourcing",
