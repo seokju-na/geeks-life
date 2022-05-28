@@ -5,19 +5,31 @@
 
 use std::error::Error;
 
+use tauri::api::path::local_data_dir;
 use tauri::{App, Manager, Runtime, WindowEvent};
 
+use crate::app_state::AppState;
 use crate::tray::{handle_tray, tray};
+use crate::workspace::init_workspace;
 
+mod app_state;
 mod application;
 mod domain;
 mod tray;
 mod utils;
+mod workspace;
 
 fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
   R: Runtime,
 {
+  let handle = app.handle();
+  let workspace_dir = init_workspace(&local_data_dir().unwrap());
+
+  tauri::async_runtime::spawn(async move {
+    handle.manage(AppState::init(&workspace_dir).await);
+  });
+
   if let Some(win) = app.get_window("main") {
     win.clone().on_window_event(move |event| {
       if let WindowEvent::Focused(focused) = event {
