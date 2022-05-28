@@ -15,7 +15,7 @@ pub struct DailyLife {
   pub updated_at: i64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(tag = "name")]
 pub enum DailyLifeEvent {
   #[serde(rename = "DailyLifeEvent.Created")]
