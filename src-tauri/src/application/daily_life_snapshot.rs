@@ -160,8 +160,8 @@ impl DailyLifeFile {
 #[cfg(test)]
 mod tests {
   use chrono::Utc;
-  use tempfile::tempdir;
-  use tokio::fs::{create_dir, write};
+  use testing::TempDir;
+  use tokio::fs::{create_dir_all, write};
 
   use crate::domain::{DailyLog, Score};
 
@@ -169,9 +169,8 @@ mod tests {
 
   #[tokio::test]
   async fn read_files_from_dir() {
-    let dir = tempdir().unwrap();
-    create_dir(dir.path().join("2022")).await.unwrap();
-    create_dir(dir.path().join("2022/04")).await.unwrap();
+    let dir = TempDir::new("test-fixtures").unwrap();
+    create_dir_all(dir.path().join("2022/04")).await.unwrap();
     write(dir.path().join("2022/04/22.md"), "content")
       .await
       .unwrap();
@@ -189,7 +188,7 @@ mod tests {
 
   #[tokio::test]
   async fn save_and_parse_file() {
-    let dir = tempdir().unwrap();
+    let dir = TempDir::new("test-fixtures").unwrap();
     let timestamp = Utc::now().timestamp();
     let state = DailyLife {
       id: "2022-04-22".to_string(),
