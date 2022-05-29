@@ -950,9 +950,9 @@ dependencies = [
 
 [[package]]
 name = "geeks_event_sourcing_git"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d4fd48cb0dda13dd868f43f236e22b898e270d1c61d5b26287edbdb3dd51c2d"
+checksum = "eda82058eb1a12325aa47511743fe3214888d62be1cde790d1137fc1c7071b3c"
 dependencies = [
  "async-trait",
  "geeks_event_sourcing",

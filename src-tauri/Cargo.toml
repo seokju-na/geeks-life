@@ -30,7 +30,7 @@ pulldown-cmark = "0.9.1"
 
 geeks_git = "0.2.0"
 geeks_event_sourcing = "0.3.1"
-geeks_event_sourcing_git = "0.6.0"
+geeks_event_sourcing_git = "0.7.0"
 
 [dev-dependencies]
 tempfile = "3.3.0"
