@@ -33,9 +33,7 @@ geeks_event_sourcing = "0.3.1"
 geeks_event_sourcing_git = "0.7.0"
 
 [dev-dependencies]
-tempfile = "3.3.0"
-run_script = "0.9.0"
-
+testing = { path = "./testing" }
 geeks_git_testing = "0.2.0"
 
 [features]
@@ -45,3 +43,6 @@ default = [ "custom-protocol" ]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
 custom-protocol = [ "tauri/custom-protocol" ]
+
+[workspace]
+members = ["testing"]

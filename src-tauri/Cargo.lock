@@ -66,13 +66,12 @@ dependencies = [
  "git2",
  "pulldown-cmark",
  "regex",
- "run_script",
  "serde",
  "serde_json",
  "serde_yaml",
  "tauri",
  "tauri-build",
- "tempfile",
+ "testing",
  "thiserror",
  "tokio",
  "walkdir",
@@ -2986,6 +2985,13 @@ dependencies = [
  "futf",
  "mac",
  "utf-8",
+]
+
+[[package]]
+name = "testing"
+version = "0.1.0"
+dependencies = [
+ "nanoid",
 ]
 
 [[package]]
