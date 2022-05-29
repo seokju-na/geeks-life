@@ -27,7 +27,10 @@ where
   let workspace_dir = init_workspace(&local_data_dir().unwrap());
 
   tauri::async_runtime::spawn(async move {
-    handle.manage(AppState::init(&workspace_dir).await);
+    let app_state = AppState::init(&workspace_dir)
+      .await
+      .expect("fail to init app state");
+    handle.manage(app_state);
   });
 
   if let Some(win) = app.get_window("main") {

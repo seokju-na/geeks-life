@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use crate::application::SnapshotMetadata;
 use async_trait::async_trait;
 use geeks_event_sourcing::{AggregateRoot, Snapshot, Version};
 use regex::Regex;
@@ -10,6 +9,7 @@ use tokio::fs::{create_dir_all, read_to_string, write};
 use tokio::io;
 use walkdir::WalkDir;
 
+use crate::application::SnapshotMetadata;
 use crate::domain::DailyLife;
 use crate::utils::parse_frontmatter;
 
@@ -21,13 +21,13 @@ pub struct DailyLifeSnapshot {
 #[derive(thiserror::Error, Debug)]
 pub enum DailyLifeSnapshotError {
   #[error("io error: {0}")]
-  Io(#[source] io::Error),
+  Io(#[from] io::Error),
 
   #[error("invalid path")]
   InvalidPath,
 
-  #[error("parse fail")]
-  ParseFail,
+  #[error("parse fail: {0}")]
+  ParseFail(#[from] serde_yaml::Error),
 }
 
 impl DailyLifeSnapshot {
@@ -112,11 +112,8 @@ impl DailyLifeFile {
 
   /// parse file to serialize aggregate state.
   pub async fn parse(&self) -> Result<SnapshotMetadata<DailyLife>, DailyLifeSnapshotError> {
-    let raw = read_to_string(&self.file_path)
-      .await
-      .map_err(DailyLifeSnapshotError::Io)?;
-    let metadata = parse_frontmatter::<SnapshotMetadata<DailyLife>>(&raw)
-      .map_err(|_| DailyLifeSnapshotError::ParseFail)?;
+    let raw = read_to_string(&self.file_path).await?;
+    let metadata = parse_frontmatter::<SnapshotMetadata<DailyLife>>(&raw)?;
 
     Ok(metadata)
   }
@@ -155,19 +152,18 @@ impl DailyLifeFile {
     );
 
     create_dir_all(&self.dir).await.unwrap_or(());
-    write(&self.file_path, contents)
-      .await
-      .map_err(DailyLifeSnapshotError::Io)?;
+    write(&self.file_path, contents).await?;
     Ok(())
   }
 }
 
 #[cfg(test)]
 mod tests {
-  use crate::domain::{DailyLog, Score};
   use chrono::Utc;
   use tempfile::tempdir;
   use tokio::fs::{create_dir, write};
+
+  use crate::domain::{DailyLog, Score};
 
   use super::*;
 
