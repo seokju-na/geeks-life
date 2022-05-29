@@ -56,7 +56,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Geek&#x27;s Life",
+        "title": "Geek's Life",
         "width": 320,
         "height": 480,
         "resizable": false,

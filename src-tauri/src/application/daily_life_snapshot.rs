@@ -1,13 +1,12 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use std::str::from_utf8;
 
 use crate::application::SnapshotMetadata;
 use async_trait::async_trait;
 use geeks_event_sourcing::{AggregateRoot, Snapshot, Version};
 use regex::Regex;
 use serde_yaml::to_string;
-use tokio::fs::{read, write};
+use tokio::fs::{create_dir_all, read_to_string, write};
 use tokio::io;
 use walkdir::WalkDir;
 
@@ -29,6 +28,14 @@ pub enum DailyLifeSnapshotError {
 
   #[error("parse fail")]
   ParseFail,
+}
+
+impl DailyLifeSnapshot {
+  pub fn new(workspace_dir: &Path) -> Self {
+    Self {
+      workspace_dir: workspace_dir.to_path_buf(),
+    }
+  }
 }
 
 #[async_trait]
@@ -61,16 +68,19 @@ impl Snapshot<DailyLife> for DailyLifeSnapshot {
 
 #[derive(Debug, PartialEq)]
 struct DailyLifeFile {
-  path: PathBuf,
+  dir: PathBuf,
+  file_path: PathBuf,
 }
 
 impl DailyLifeFile {
   pub fn new(state: &DailyLife, dir_path: &Path) -> Self {
     let date = state.date();
+    let dir = date.format("%Y/%m").to_string();
     let file_path = date.format("%Y/%m/%d.md").to_string();
 
     Self {
-      path: dir_path.join(file_path),
+      dir: dir_path.join(dir),
+      file_path: dir_path.join(file_path),
     }
   }
 
@@ -81,7 +91,8 @@ impl DailyLifeFile {
 
     match re.captures(path_str) {
       Some(_) => Ok(Self {
-        path: path.to_path_buf(),
+        dir: path.parent().unwrap().to_path_buf(),
+        file_path: path.to_path_buf(),
       }),
       None => Err(DailyLifeSnapshotError::InvalidPath),
     }
@@ -101,9 +112,10 @@ impl DailyLifeFile {
 
   /// parse file to serialize aggregate state.
   pub async fn parse(&self) -> Result<SnapshotMetadata<DailyLife>, DailyLifeSnapshotError> {
-    let raw = read(&self.path).await.map_err(DailyLifeSnapshotError::Io)?;
-    let raw_str = from_utf8(&raw).map_err(|_| DailyLifeSnapshotError::ParseFail)?;
-    let metadata = parse_frontmatter::<SnapshotMetadata<DailyLife>>(raw_str)
+    let raw = read_to_string(&self.file_path)
+      .await
+      .map_err(DailyLifeSnapshotError::Io)?;
+    let metadata = parse_frontmatter::<SnapshotMetadata<DailyLife>>(&raw)
       .map_err(|_| DailyLifeSnapshotError::ParseFail)?;
 
     Ok(metadata)
@@ -142,7 +154,8 @@ impl DailyLifeFile {
         .join("\n")
     );
 
-    write(&self.path, contents)
+    create_dir_all(&self.dir).await.unwrap_or(());
+    write(&self.file_path, contents)
       .await
       .map_err(DailyLifeSnapshotError::Io)?;
     Ok(())
@@ -172,7 +185,8 @@ mod tests {
     assert_eq!(
       files[0],
       DailyLifeFile {
-        path: dir.path().join("2022/04/22.md"),
+        dir: dir.path().join("2022/04"),
+        file_path: dir.path().join("2022/04/22.md"),
       }
     );
   }
@@ -180,8 +194,6 @@ mod tests {
   #[tokio::test]
   async fn save_and_parse_file() {
     let dir = tempdir().unwrap();
-    create_dir(dir.path().join("2022")).await.unwrap();
-    create_dir(dir.path().join("2022/04")).await.unwrap();
     let timestamp = Utc::now().timestamp();
     let state = DailyLife {
       id: "2022-04-22".to_string(),
