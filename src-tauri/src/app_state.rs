@@ -1,10 +1,11 @@
 use std::path::{Path, PathBuf};
+use tokio::sync::Mutex;
 
 use crate::application::{Application, ApplicationError};
 
 pub struct AppState {
   pub workspace_dir: PathBuf,
-  pub application: Application,
+  pub application: Mutex<Application>,
 }
 
 impl AppState {
@@ -13,7 +14,7 @@ impl AppState {
 
     Ok(Self {
       workspace_dir: workspace_dir.to_path_buf(),
-      application,
+      application: Mutex::new(application),
     })
   }
 }
