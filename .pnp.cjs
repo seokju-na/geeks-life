@@ -41,6 +41,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@stitches/react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.2.8"],\
             ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
             ["@tauri-apps/cli", "npm:1.0.0-rc.9"],\
+            ["@types/node", "npm:17.0.39"],\
             ["@types/react", "npm:17.0.45"],\
             ["@types/react-dom", "npm:17.0.17"],\
             ["@typescript-eslint/eslint-plugin", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
@@ -2135,6 +2136,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-17.0.31-d8d26aa013-704618350f.zip/node_modules/@types/node/",\
           "packageDependencies": [\
             ["@types/node", "npm:17.0.31"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:17.0.39", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-17.0.39-3285e4fbfd-1258561d0a.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:17.0.39"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4600,6 +4608,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@stitches/react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.2.8"],\
             ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
             ["@tauri-apps/cli", "npm:1.0.0-rc.9"],\
+            ["@types/node", "npm:17.0.39"],\
             ["@types/react", "npm:17.0.45"],\
             ["@types/react-dom", "npm:17.0.17"],\
             ["@typescript-eslint/eslint-plugin", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
