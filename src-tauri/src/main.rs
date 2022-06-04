@@ -10,6 +10,7 @@ use tauri::{App, Manager, Runtime, WindowEvent};
 
 use crate::app_state::AppState;
 use crate::commands::execute_daily_life_command;
+use crate::patches::MacOSTitlebar;
 use crate::tray::{handle_tray, tray};
 use crate::workspace::init_workspace;
 
@@ -17,6 +18,7 @@ mod app_state;
 mod application;
 mod commands;
 mod domain;
+mod patches;
 mod tray;
 mod utils;
 mod workspace;
@@ -35,15 +37,15 @@ where
     handle.manage(app_state);
   });
 
-  if let Some(win) = app.get_window("main") {
-    win.clone().on_window_event(move |event| {
-      if let WindowEvent::Focused(focused) = event {
-        if win.is_visible().unwrap() && !(*focused) {
-          win.hide().unwrap()
-        }
+  let main_win = app.get_window("main").expect("cannot get main window");
+  main_win.set_transparent_titlebar(true, true);
+  main_win.clone().on_window_event(move |event| {
+    if let WindowEvent::Focused(focused) = event {
+      if main_win.is_visible().unwrap() && !(*focused) {
+        main_win.hide().unwrap();
       }
-    })
-  }
+    }
+  });
 
   Ok(())
 }
