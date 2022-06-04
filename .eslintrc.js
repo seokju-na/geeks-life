@@ -9,7 +9,12 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'prettier', 'react', 'react-hooks'],
   settings: { 'import/resolver': { typescript: {} } },
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'no-implicit-coercion': 'error',
     'no-undef': 'off',
     semi: 'off',
