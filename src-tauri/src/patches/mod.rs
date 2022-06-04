@@ -1,3 +1,3 @@
-pub use crate::patches::macos_titlebar::*;
+pub use crate::patches::titlebar::*;
 
-mod macos_titlebar;
+mod titlebar;

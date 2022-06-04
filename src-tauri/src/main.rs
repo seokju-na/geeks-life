@@ -10,7 +10,7 @@ use tauri::{App, Manager, Runtime, WindowEvent};
 
 use crate::app_state::AppState;
 use crate::commands::execute_daily_life_command;
-use crate::patches::MacOSTitlebar;
+use crate::patches::TransparentTitlebar;
 use crate::tray::{handle_tray, tray};
 use crate::workspace::init_workspace;
 
