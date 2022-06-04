@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@radix-ui/react-toggle", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
             ["@radix-ui/react-toggle-group", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.5"],\
             ["@stitches/react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.2.8"],\
+            ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
             ["@tauri-apps/cli", "npm:1.0.0-rc.9"],\
             ["@types/react", "npm:17.0.45"],\
             ["@types/react-dom", "npm:17.0.17"],\
@@ -1874,6 +1875,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/react",\
             "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@tauri-apps/api", [\
+        ["npm:1.0.0-rc.6", {\
+          "packageLocation": "./.yarn/cache/@tauri-apps-api-npm-1.0.0-rc.6-0c8b6a7b78-92bbfa9ea0.zip/node_modules/@tauri-apps/api/",\
+          "packageDependencies": [\
+            ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
+            ["type-fest", "npm:2.12.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4587,6 +4598,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@radix-ui/react-toggle", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
             ["@radix-ui/react-toggle-group", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.5"],\
             ["@stitches/react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.2.8"],\
+            ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
             ["@tauri-apps/cli", "npm:1.0.0-rc.9"],\
             ["@types/react", "npm:17.0.45"],\
             ["@types/react-dom", "npm:17.0.17"],\
@@ -7674,6 +7686,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/type-fest-npm-0.21.3-5ff2a9c6fd-e6b32a3b38.zip/node_modules/type-fest/",\
           "packageDependencies": [\
             ["type-fest", "npm:0.21.3"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.12.2", {\
+          "packageLocation": "./.yarn/cache/type-fest-npm-2.12.2-5ce8e0a551-ee69676da1.zip/node_modules/type-fest/",\
+          "packageDependencies": [\
+            ["type-fest", "npm:2.12.2"]\
           ],\
           "linkType": "HARD"\
         }]\
