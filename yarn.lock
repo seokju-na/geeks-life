@@ -3341,7 +3341,6 @@ __metadata:
     typescript: ^4.6.4
     vite: ^2.9.6
     webpack: ^5.72.1
-    ~: "link:./src"
   languageName: unknown
   linkType: soft
 
@@ -6314,9 +6313,3 @@ __metadata:
   checksum: e9012322870d7e4e912a6ae1f63b203e365f911c0cf158be92c36edefddfb3bd38ce17eb9ef0d18858a4777f047c50589ea22dacb44bd949169ba37dc6d34bee
   languageName: node
   linkType: hard
-
-"~@link:./src::locator=geeks-life%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "~@link:./src::locator=geeks-life%40workspace%3A."
-  languageName: node
-  linkType: soft
