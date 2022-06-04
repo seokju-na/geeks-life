@@ -59,6 +59,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "chrono",
+ "cocoa",
  "geeks_event_sourcing",
  "geeks_event_sourcing_git",
  "geeks_git",
