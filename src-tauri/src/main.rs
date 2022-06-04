@@ -9,11 +9,13 @@ use tauri::api::path::local_data_dir;
 use tauri::{App, Manager, Runtime, WindowEvent};
 
 use crate::app_state::AppState;
+use crate::commands::execute_daily_life_command;
 use crate::tray::{handle_tray, tray};
 use crate::workspace::init_workspace;
 
 mod app_state;
 mod application;
+mod commands;
 mod domain;
 mod tray;
 mod utils;
@@ -51,6 +53,7 @@ fn main() {
     .system_tray(tray())
     .on_system_tray_event(handle_tray)
     .setup(setup)
+    .invoke_handler(tauri::generate_handler![execute_daily_life_command])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
