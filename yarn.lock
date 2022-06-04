@@ -1126,6 +1126,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/api@npm:^1.0.0-rc.6":
+  version: 1.0.0-rc.6
+  resolution: "@tauri-apps/api@npm:1.0.0-rc.6"
+  dependencies:
+    type-fest: 2.12.2
+  checksum: 92bbfa9ea0d2fac765f23655e2225280c484d7dea445f3bdf175967c45df02f4ef607708583ce5cbbeacc89556a2950990d9a8235f8308a517b0699f9619337d
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/cli-darwin-arm64@npm:1.0.0-rc.9":
   version: 1.0.0-rc.9
   resolution: "@tauri-apps/cli-darwin-arm64@npm:1.0.0-rc.9"
@@ -1354,6 +1363,13 @@ __metadata:
   version: 17.0.31
   resolution: "@types/node@npm:17.0.31"
   checksum: 704618350f8420d5c47db0f7778398e821b7724369946f5c441a7e6b9343295553936400eb8309f0b07d5e39c240988ab3456b983712ca86265dabc9aee4ad3d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^17.0.39":
+  version: 17.0.39
+  resolution: "@types/node@npm:17.0.39"
+  checksum: 1258561d0af920e52a64cdebb58534ba6cf82fd58697d12a55a11a3747b211f98d316a05fb59cd5b453af5305682dade835ec27666d7fe557156080ea645efb8
   languageName: node
   linkType: hard
 
@@ -3302,7 +3318,9 @@ __metadata:
     "@radix-ui/react-toggle": ^0.1.4
     "@radix-ui/react-toggle-group": ^0.1.5
     "@stitches/react": ^1.2.8
+    "@tauri-apps/api": ^1.0.0-rc.6
     "@tauri-apps/cli": ^1.0.0-rc.9
+    "@types/node": ^17.0.39
     "@types/react": ^17.0.45
     "@types/react-dom": ^17.0.17
     "@typescript-eslint/eslint-plugin": ^5.21.0
@@ -5974,6 +5992,13 @@ __metadata:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 62b5628bff67c0eb0b66afa371bd73e230399a8d2ad30d852716efcc4656a7516904570cd8631a49a3ce57c10225adf5d0cbdcb47f6b0255fe6557c453925a15
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:2.12.2":
+  version: 2.12.2
+  resolution: "type-fest@npm:2.12.2"
+  checksum: ee69676da1f69d2b14bbec28c7b95220a3221ab14093f54bde179c59e185a80470859553eada535ec35d8637a245c2f0efe9d7c99cc46a43f3b4c7ef64db7957
   languageName: node
   linkType: hard
 
