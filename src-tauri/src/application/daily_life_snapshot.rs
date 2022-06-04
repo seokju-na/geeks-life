@@ -86,7 +86,7 @@ impl DailyLifeFile {
 
   /// get file from path.
   pub fn from_path(path: &Path) -> Result<Self, DailyLifeSnapshotError> {
-    let re = Regex::new(r"(\d{4})/(\d{2})/(\d{2})\.md$").unwrap();
+    let re = Regex::new(r"(\d{4})[/|\\](\d{2})[/|\\](\d{2})\.md$").unwrap();
     let path_str = path.to_str().unwrap_or("");
 
     match re.captures(path_str) {
