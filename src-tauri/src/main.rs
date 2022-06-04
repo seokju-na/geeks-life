@@ -10,6 +10,7 @@ use tauri::{App, Manager, Runtime, WindowEvent};
 
 use crate::app_state::AppState;
 use crate::commands::execute_daily_life_command;
+#[cfg(target_os = "macos")]
 use crate::patches::TransparentTitlebar;
 use crate::tray::{handle_tray, tray};
 use crate::workspace::init_workspace;
@@ -38,7 +39,9 @@ where
   });
 
   let main_win = app.get_window("main").expect("cannot get main window");
+  #[cfg(target_os = "macos")]
   main_win.set_transparent_titlebar(true, true);
+
   main_win.clone().on_window_event(move |event| {
     if let WindowEvent::Focused(focused) = event {
       if main_win.is_visible().unwrap() && !(*focused) {

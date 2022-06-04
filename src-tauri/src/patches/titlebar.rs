@@ -1,4 +1,3 @@
-#[cfg(target_os = "macos")]
 use cocoa::appkit::{NSWindow, NSWindowStyleMask, NSWindowTitleVisibility};
 use tauri::{Runtime, Window};
 
@@ -10,10 +9,6 @@ pub trait TransparentTitlebar {
 
 impl<R: Runtime> TransparentTitlebar for Window<R> {
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
-    if !cfg!(target_os = "macos") {
-      return;
-    }
-
     unsafe {
       let id = self.ns_window().unwrap() as cocoa::base::id;
       NSWindow::setTitlebarAppearsTransparent_(id, cocoa::base::YES);
