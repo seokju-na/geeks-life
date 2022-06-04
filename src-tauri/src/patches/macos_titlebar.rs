@@ -1,5 +1,7 @@
-use cocoa::appkit::{NSWindow, NSWindowStyleMask, NSWindowTitleVisibility};
 use tauri::{Runtime, Window};
+
+#[cfg(target_os = "macos")]
+use cocoa::appkit::{NSWindow, NSWindowStyleMask, NSWindowTitleVisibility};
 
 // sources from https://github.com/tauri-apps/tauri/issues/2663#issuecomment-1123696703
 
@@ -7,6 +9,7 @@ pub trait TransparentTitlebar {
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
 }
 
+#[cfg(target_os = "macos")]
 impl<R: Runtime> TransparentTitlebar for Window<R> {
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
     unsafe {
