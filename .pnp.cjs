@@ -61,7 +61,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:17.0.2"],\
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.6"],\
-            ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"]\
+            ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"],\
+            ["~", "link:./src::locator=geeks-life%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -4628,7 +4629,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:17.0.2"],\
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.6"],\
-            ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"]\
+            ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"],\
+            ["~", "link:./src::locator=geeks-life%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8036,6 +8038,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["yargs-parser", "npm:21.0.1"]\
           ],\
           "linkType": "HARD"\
+        }]\
+      ]],\
+      ["~", [\
+        ["link:./src::locator=geeks-life%40workspace%3A.", {\
+          "packageLocation": "./src/",\
+          "packageDependencies": [\
+            ["~", "link:./src::locator=geeks-life%40workspace%3A."]\
+          ],\
+          "linkType": "SOFT",\
+          "discardFromLookup": true\
         }]\
       ]]\
     ]\
