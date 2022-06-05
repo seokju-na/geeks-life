@@ -5,14 +5,12 @@
 
 use std::error::Error;
 
-use tauri::api::path::local_data_dir;
-use tauri::{App, Manager, Runtime, WindowEvent};
+use tauri::{ActivationPolicy, App, Runtime};
 
-use crate::app_state::AppState;
+use crate::app_state::{setup_app_state, AppState};
 use crate::commands::execute_daily_life_command;
-#[cfg(target_os = "macos")]
-use crate::patches::TransparentTitlebar;
 use crate::tray::{handle_tray, tray};
+use crate::window::setup_windows;
 use crate::workspace::init_workspace;
 
 mod app_state;
@@ -22,33 +20,19 @@ mod domain;
 mod patches;
 mod tray;
 mod utils;
+mod window;
 mod workspace;
 
 fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
 where
   R: Runtime,
 {
-  let handle = app.handle();
-  let workspace_dir = init_workspace(&local_data_dir().unwrap());
-
-  tauri::async_runtime::spawn(async move {
-    let app_state = AppState::init(&workspace_dir)
-      .await
-      .expect("fail to init app state");
-    handle.manage(app_state);
-  });
-
-  let main_win = app.get_window("main").expect("cannot get main window");
+  // https://github.com/tauri-apps/tauri/discussions/2684#discussioncomment-1433069
   #[cfg(target_os = "macos")]
-  main_win.set_transparent_titlebar(true, true);
+  app.set_activation_policy(ActivationPolicy::Accessory);
 
-  main_win.clone().on_window_event(move |event| {
-    if let WindowEvent::Focused(focused) = event {
-      if main_win.is_visible().unwrap() && !(*focused) {
-        main_win.hide().unwrap();
-      }
-    }
-  });
+  setup_app_state(app);
+  setup_windows(app);
 
   Ok(())
 }
