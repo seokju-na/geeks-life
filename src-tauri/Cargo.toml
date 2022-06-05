@@ -32,6 +32,9 @@ geeks_git = "0.2.0"
 geeks_event_sourcing = "0.3.1"
 geeks_event_sourcing_git = "0.7.0"
 
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.24.0"
+
 [dev-dependencies]
 testing = { path = "./testing" }
 geeks_git_testing = "0.2.0"
