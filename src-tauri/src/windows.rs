@@ -1,15 +1,15 @@
-use tauri::{App, Manager, Result, Runtime, Window, WindowEvent};
+use tauri::{App, AppHandle, Manager, Result, Runtime, Window, WindowEvent};
 
 #[cfg(target_os = "macos")]
 use crate::patches::TransparentTitlebar;
 
-pub const MAIN_WIN: &str = "main";
+const MAIN_WIN: &str = "main";
 
 pub fn setup_windows<R>(app: &mut App<R>)
 where
   R: Runtime,
 {
-  let main_win = app.get_window(MAIN_WIN).expect("cannot get main window");
+  let main_win = app.get_main_window();
   #[cfg(target_os = "macos")]
   main_win.set_transparent_titlebar(true, true);
 
@@ -20,6 +20,28 @@ where
       }
     }
   });
+}
+
+pub trait AppExtra<R: Runtime> {
+  fn get_main_window(&self) -> Window<R>;
+}
+
+impl<R> AppExtra<R> for App<R>
+where
+  R: Runtime,
+{
+  fn get_main_window(&self) -> Window<R> {
+    self.get_window(MAIN_WIN).expect("cannot get main window")
+  }
+}
+
+impl<R> AppExtra<R> for AppHandle<R>
+where
+  R: Runtime,
+{
+  fn get_main_window(&self) -> Window<R> {
+    self.get_window(MAIN_WIN).expect("cannot get main window")
+  }
 }
 
 pub trait WindowExtra {
