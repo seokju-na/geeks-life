@@ -5,7 +5,7 @@
 
 use std::error::Error;
 
-use tauri::{ActivationPolicy, App, Runtime};
+use tauri::{App, Runtime};
 
 use crate::app_state::{setup_app_state, AppState};
 use crate::commands::execute_daily_life_command;
@@ -29,7 +29,7 @@ where
 {
   // https://github.com/tauri-apps/tauri/discussions/2684#discussioncomment-1433069
   #[cfg(target_os = "macos")]
-  app.set_activation_policy(ActivationPolicy::Accessory);
+  app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
   setup_app_state(app);
   setup_windows(app);
