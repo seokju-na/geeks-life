@@ -5,6 +5,7 @@
 body, html {
   margin: 0;
   padding: 0;
+  font-family: system-ui;
 }
 
 @media (prefers-color-scheme: light) {
@@ -15,6 +16,6 @@ body, html {
 
 @media (prefers-color-scheme: dark) {
   body, html {
-    background-color: #232323;
+    background-color: #303030;
   }
 }
