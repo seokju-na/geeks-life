@@ -1,6 +1,6 @@
-use tauri::{AppHandle, Manager, Runtime, SystemTray, SystemTrayEvent};
+use tauri::{AppHandle, Runtime, SystemTray, SystemTrayEvent};
 
-use crate::window::{WindowExtra, MAIN_WIN};
+use crate::windows::{AppExtra, WindowExtra};
 
 pub fn tray() -> SystemTray {
   SystemTray::new()
@@ -11,8 +11,6 @@ where
   R: Runtime,
 {
   if let SystemTrayEvent::LeftClick { .. } = event {
-    if let Some(win) = app.get_window(MAIN_WIN) {
-      win.toggle().unwrap();
-    }
+    app.get_main_window().toggle().unwrap();
   }
 }
