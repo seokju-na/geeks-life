@@ -9,18 +9,20 @@ use tauri::{App, Runtime};
 
 use crate::app_state::{setup_app_state, AppState};
 use crate::commands::execute_daily_life_command;
+use crate::global_shortcuts::setup_global_shortcuts;
 use crate::tray::{handle_tray, tray};
-use crate::window::setup_windows;
+use crate::windows::setup_windows;
 use crate::workspace::init_workspace;
 
 mod app_state;
 mod application;
 mod commands;
 mod domain;
+mod global_shortcuts;
 mod patches;
 mod tray;
 mod utils;
-mod window;
+mod windows;
 mod workspace;
 
 fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
@@ -33,6 +35,7 @@ where
 
   setup_app_state(app);
   setup_windows(app);
+  setup_global_shortcuts(app);
 
   Ok(())
 }
