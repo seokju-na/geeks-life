@@ -1,21 +1,48 @@
 import { createStitches } from '@stitches/react';
-import { blue, blueDark, grass, grassDark, gray, grayDark, red, redDark } from '@radix-ui/colors';
 import { detectDarkMode } from './utils/detectDarkMode';
+import { colors } from './colors';
 
 const { styled, createTheme } = createStitches({
   theme: {
     colors: {
-      ...gray,
-      ...blue,
-      ...red,
-      ...grass,
+      ...colors,
+      background: '#f3f3f3',
+      backgroundHighlighted: 'white',
+      hover: 'rgba(0,0,0, 0.04)',
+      divider: 'rgba(0,0,0, 0.12)',
+      icon: 'rgba(0,0,0, 0.54)',
+      text: 'rgba(0,0,0, 0.87)',
+      raisedButton: 'white',
+      selectedButton: colors.gray300,
+      selectedDisabledButton: colors.gray400,
+      focusRing: colors.blue500,
     },
     space: {
-      xs: 2,
-      sm: 4,
-      md: 8,
-      lg: 12,
-      xl: 16,
+      xs: '2px',
+      sm: '4px',
+      md: '8px',
+      lg: '12px',
+      xl: '16px',
+    },
+    fontSizes: {
+      xs: '11px',
+      sm: '12px',
+      md: '14px',
+      lg: '16px',
+      xl: '20px',
+    },
+    lineHeights: {
+      condensed: 1.2,
+      normal: 1.4,
+    },
+    fontWeights: {
+      light: 300,
+      regular: 400,
+      semibold: 500,
+      bold: 700,
+    },
+    radii: {
+      normal: '0.25rem',
     },
   },
 });
@@ -23,10 +50,15 @@ const { styled, createTheme } = createStitches({
 export { styled };
 export const darkTheme = createTheme('dark-theme', {
   colors: {
-    ...grayDark,
-    ...blueDark,
-    ...redDark,
-    ...grassDark,
+    background: '#303030',
+    backgroundHighlighted: colors.gray800,
+    hover: 'rgba(255,255,255, 0.04)',
+    divider: 'rgba(255,255,255, 0.12)',
+    icon: 'white',
+    text: 'white',
+    raisedButton: colors.gray800,
+    selectedButton: colors.gray900,
+    selectedDisabledButton: colors.gray800,
   },
 });
 
