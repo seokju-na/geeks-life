@@ -60,10 +60,10 @@ jobs:
         run: |
           git config --global user.name "Seokju Na"
           git config --global user.email "seokju.me@gmail.com"
-      - name: use rust nightly
+      - name: use rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
       - name: install webkit2gtk (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
