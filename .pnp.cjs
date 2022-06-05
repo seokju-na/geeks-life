@@ -33,7 +33,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
-            ["@radix-ui/colors", "npm:0.1.8"],\
             ["@radix-ui/react-icons", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.1.1"],\
             ["@radix-ui/react-scroll-area", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
             ["@radix-ui/react-toggle", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
@@ -1382,15 +1381,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@npmcli/move-file", "npm:2.0.0"],\
             ["mkdirp", "npm:1.0.4"],\
             ["rimraf", "npm:3.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@radix-ui/colors", [\
-        ["npm:0.1.8", {\
-          "packageLocation": "./.yarn/cache/@radix-ui-colors-npm-0.1.8-351c651cab-35fb8e48b1.zip/node_modules/@radix-ui/colors/",\
-          "packageDependencies": [\
-            ["@radix-ui/colors", "npm:0.1.8"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4600,7 +4590,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["geeks-life", "workspace:."],\
-            ["@radix-ui/colors", "npm:0.1.8"],\
             ["@radix-ui/react-icons", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:1.1.1"],\
             ["@radix-ui/react-scroll-area", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
             ["@radix-ui/react-toggle", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.1.4"],\
