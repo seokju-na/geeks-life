@@ -11,3 +11,4 @@ node_modules/
 dist/
 **/.eslintcache
 **/*.tsbuildinfo
+**/.vitest-result.json
