@@ -1,15 +1,10 @@
-import { getUnixTime, format } from 'date-fns';
-import fc from 'fast-check';
+import { getUnixTime, format, addDays } from 'date-fns';
+import * as Factory from 'factory.ts';
 import { DailyLife } from '../../models';
-import { dummyDailyLog } from './dummyDailyLog';
-import { dummyScore } from './dummyScore';
 
-export const dummyDailyLifeId = fc.date().map(d => format(d, 'yyyy-MM-dd'));
-
-export const dummyDailyLife = fc.record<DailyLife>({
-  id: dummyDailyLifeId,
-  score: fc.option(dummyScore),
-  logs: fc.array(dummyDailyLog),
-  createdAt: fc.date().map(getUnixTime),
-  updatedAt: fc.date().map(getUnixTime),
+export const dummyDailyLife = Factory.Sync.makeFactory<DailyLife>({
+  id: Factory.each(x => format(addDays(new Date(), x), 'yyyy-MM-dd')),
+  logs: [],
+  createdAt: Factory.each(x => getUnixTime(addDays(new Date(), x))),
+  updatedAt: Factory.each(x => getUnixTime(addDays(new Date(), x))),
 });

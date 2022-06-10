@@ -1,8 +1,7 @@
-import fc from 'fast-check';
+import * as Factory from 'factory.ts';
 import { DailyLog } from '../../models';
 
-export const dummyDailyLog = fc.record<DailyLog>({
-  id: fc.uuid(),
-  emoji: fc.option(fc.string()),
-  content: fc.option(fc.unicodeString()),
+export const dummyDailyLog = Factory.Sync.makeFactory<DailyLog>({
+  id: Factory.each(x => `id-${x}`),
+  content: Factory.each(x => `content-${x}`),
 });
