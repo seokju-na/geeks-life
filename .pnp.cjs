@@ -49,6 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
             ["@typescript-eslint/parser", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
             ["@vitejs/plugin-react", "npm:1.3.1"],\
+            ["date-fns", "npm:2.28.0"],\
             ["eslint", "npm:8.14.0"],\
             ["eslint-config-prettier", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:8.5.0"],\
             ["eslint-import-resolver-typescript", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.7.1"],\
@@ -56,6 +57,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:4.0.0"],\
             ["eslint-plugin-react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:7.29.4"],\
             ["eslint-plugin-react-hooks", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:4.5.0"],\
+            ["fast-check", "npm:3.0.0"],\
             ["happy-dom", "npm:5.0.0"],\
             ["husky", "npm:7.0.4"],\
             ["prettier", "npm:2.6.2"],\
@@ -2534,6 +2536,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["date-fns", [\
+        ["npm:2.28.0", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-2.28.0-c19c5add1b-a0516b2e4f.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:2.28.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["debug", [\
         ["npm:2.6.9", {\
           "packageLocation": "./.yarn/cache/debug-npm-2.6.9-7d4cb597dc-d2f51589ca.zip/node_modules/debug/",\
@@ -3468,6 +3479,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["fast-check", [\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/fast-check-npm-3.0.0-ab349f6aba-894f60127c.zip/node_modules/fast-check/",\
+          "packageDependencies": [\
+            ["fast-check", "npm:3.0.0"],\
+            ["pure-rand", "npm:5.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["fast-deep-equal", [\
         ["npm:3.1.3", {\
           "packageLocation": "./.yarn/cache/fast-deep-equal-npm-3.1.3-790edcfcf5-e21a9d8d84.zip/node_modules/fast-deep-equal/",\
@@ -3684,6 +3705,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
             ["@typescript-eslint/parser", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.21.0"],\
             ["@vitejs/plugin-react", "npm:1.3.1"],\
+            ["date-fns", "npm:2.28.0"],\
             ["eslint", "npm:8.14.0"],\
             ["eslint-config-prettier", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:8.5.0"],\
             ["eslint-import-resolver-typescript", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.7.1"],\
@@ -3691,6 +3713,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:4.0.0"],\
             ["eslint-plugin-react", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:7.29.4"],\
             ["eslint-plugin-react-hooks", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:4.5.0"],\
+            ["fast-check", "npm:3.0.0"],\
             ["happy-dom", "npm:5.0.0"],\
             ["husky", "npm:7.0.4"],\
             ["prettier", "npm:2.6.2"],\
@@ -5235,6 +5258,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/punycode-npm-2.1.1-26eb3e15cf-823bf443c6.zip/node_modules/punycode/",\
           "packageDependencies": [\
             ["punycode", "npm:2.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["pure-rand", [\
+        ["npm:5.0.1", {\
+          "packageLocation": "./.yarn/cache/pure-rand-npm-5.0.1-ac773e158e-2b05a6d801.zip/node_modules/pure-rand/",\
+          "packageDependencies": [\
+            ["pure-rand", "npm:5.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\
