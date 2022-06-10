@@ -8,7 +8,7 @@ use std::error::Error;
 use tauri::{App, Runtime};
 
 use crate::app_state::{setup_app_state, AppState};
-use crate::commands::execute_daily_life_command;
+use crate::commands::{execute_daily_life_command, get_daily_lifes};
 use crate::global_shortcuts::setup_global_shortcuts;
 use crate::tray::{handle_tray, tray};
 use crate::windows::setup_windows;
@@ -45,7 +45,10 @@ fn main() {
     .system_tray(tray())
     .on_system_tray_event(handle_tray)
     .setup(setup)
-    .invoke_handler(tauri::generate_handler![execute_daily_life_command])
+    .invoke_handler(tauri::generate_handler![
+      execute_daily_life_command,
+      get_daily_lifes
+    ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

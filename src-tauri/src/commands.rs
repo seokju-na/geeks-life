@@ -2,8 +2,10 @@ use geeks_git::GitError;
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
-use crate::application::{ApplicationError, CommandHandler, DailyLifeSnapshotError};
-use crate::domain::{DailyLifeCommand, DailyLifeError};
+use crate::application::{
+  ApplicationError, CommandHandler, DailyLifeSnapshotError, GetDailyLifesParams, QueryHandler,
+};
+use crate::domain::{DailyLife, DailyLifeCommand, DailyLifeError};
 use crate::AppState;
 
 #[tauri::command]
@@ -19,6 +21,15 @@ pub async fn execute_daily_life_command(
     .await?;
 
   Ok(())
+}
+
+#[tauri::command]
+pub async fn get_daily_lifes(
+  params: GetDailyLifesParams,
+  app_state: State<'_, AppState>,
+) -> Result<Vec<DailyLife>, CommandError> {
+  let result = app_state.application.lock().await.get_daily_lifes(params);
+  Ok(result)
 }
 
 // TODO: how to remove this
