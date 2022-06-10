@@ -1,13 +1,11 @@
 use std::path::{Path, PathBuf};
 
-use async_trait::async_trait;
-
-use geeks_event_sourcing::{AggregateRoot, Command, Eventstore, Snapshot};
+use geeks_event_sourcing::{AggregateRoot, Snapshot};
 use geeks_event_sourcing_git::{commit_snapshot, GitEventstore};
 use geeks_git::GitError;
 
 use crate::application::{DailyLifeSnapshot, DailyLifeSnapshotError};
-use crate::domain::{DailyLife, DailyLifeCommand, DailyLifeError};
+use crate::domain::{DailyLife, DailyLifeError};
 
 #[derive(thiserror::Error, Debug)]
 pub enum ApplicationError {
@@ -54,24 +52,5 @@ impl Application {
     snapshot.save(root.clone()).await?;
 
     Ok(root)
-  }
-}
-
-#[async_trait]
-pub trait CommandHandler<T>
-where
-  T: Command,
-{
-  async fn handle_command(&mut self, command: T) -> Result<(), ApplicationError>;
-}
-
-#[async_trait]
-impl CommandHandler<DailyLifeCommand> for Application {
-  async fn handle_command(&mut self, command: DailyLifeCommand) -> Result<(), ApplicationError> {
-    let event = self.daily_life.execute_command(command)?;
-    let eventstore = GitEventstore::new(&self.workspace_dir);
-    eventstore.append(vec![event]).await?;
-
-    Ok(())
   }
 }
