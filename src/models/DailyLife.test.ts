@@ -1,15 +1,11 @@
-import { parse } from 'date-fns';
-import fc from 'fast-check';
+import { parseISO } from 'date-fns';
 import { test, it } from 'vitest';
 import { dummyDailyLife } from '../testing/dummies';
 import { getDailyLifeDate } from './DailyLife';
 
 test('getDailyLifeDate', () => {
   it('parse date from id', () => {
-    fc.assert(
-      fc.property(dummyDailyLife, data => {
-        expect(getDailyLifeDate(data)).toEqual(parse(data.id, 'yyyy-MM-dd', new Date()));
-      })
-    );
+    const dailyLife = dummyDailyLife.build({ id: '2022-06-10' });
+    expect(getDailyLifeDate(dailyLife)).toEqual(parseISO('2022-06-10T00:00:00Z'));
   });
 });
