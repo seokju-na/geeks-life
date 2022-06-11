@@ -1,5 +1,6 @@
+import { CSS } from '@stitches/react';
 import { addDays, subDays } from 'date-fns';
-import { KeyboardEvent, useCallback } from 'react';
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { styled } from '../../styles';
 import { Switch } from '../Switch';
 import { Week } from './Week';
@@ -8,13 +9,19 @@ interface Props {
   view: 'week' | 'month';
   selectedDate: Date;
   onSelectDate: (date: Date) => void;
+  css?: CSS;
 }
 
-export function DailyLifeCalendar({ view, ...props }: Props) {
+export function DailyLifeCalendar({ view, css, ...props }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   const { handleKeyboard } = useSelectionController(props);
 
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
+
   return (
-    <Wrapper role="group" tabIndex={0} onKeyDown={handleKeyboard}>
+    <Wrapper ref={ref} role="group" tabIndex={0} onKeyDown={handleKeyboard} css={css}>
       <Switch
         value={view}
         caseBy={{
