@@ -28,9 +28,11 @@
     "@types/react": "^17.0.45",
     "@types/react-dom": "^17.0.17",
     "date-fns": "^2.28.0",
+    "observable-hooks": "^4.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-query": "^3.39.1"
+    "react-query": "^3.39.1",
+    "rxjs": "^7.5.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-rc.9",
