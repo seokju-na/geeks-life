@@ -19,7 +19,6 @@ export function Day({ selected, item, onClick }: Props) {
 }
 
 const Wrapper = styled('div', {
-  backgroundColor: '$backgroundHighlighted',
   height: 36,
   border: `1px solid $divider`,
   borderRadius: '$normal',
@@ -33,7 +32,7 @@ const Wrapper = styled('div', {
 
 function getBackgroundColor(item: DailyLife) {
   if (item.score == null) {
-    return undefined;
+    return '$backgroundHighlighted';
   }
 
   switch (item.score) {
