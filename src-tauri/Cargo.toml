@@ -19,7 +19,7 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8.24"
 tauri = { version = "1.0.0-rc.7", features = ["global-shortcut", "gtk-tray", "system-tray", "window-start-dragging"] }
-git2 = "0.14.3"
+git2 = "0.14.4"
 thiserror = "1.0.31"
 chrono = "0.4.19"
 tokio = { version = "1.18.2", features = ["full"] }
@@ -31,6 +31,10 @@ pulldown-cmark = "0.9.1"
 geeks_git = "0.2.0"
 geeks_event_sourcing = "0.3.1"
 geeks_event_sourcing_git = "0.7.0"
+
+[dependencies.tauri-plugin-store]
+git = "https://github.com/tauri-apps/tauri-plugin-store"
+branch = "dev"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 cocoa = "0.24.0"

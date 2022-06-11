@@ -704,7 +704,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/api@npm:^1.0.0-rc.6":
+"@tauri-apps/api@npm:1.0.0-rc.6, @tauri-apps/api@npm:^1.0.0-rc.6":
   version: 1.0.0-rc.6
   resolution: "@tauri-apps/api@npm:1.0.0-rc.6"
   dependencies:
@@ -2907,6 +2907,7 @@ __metadata:
     react-dom: ^17.0.2
     react-query: ^3.39.1
     rxjs: ^7.5.5
+    tauri-plugin-store-api: "github:tauri-apps/tauri-plugin-store#ff1556a88025a9eff16e91e9790773cf600eabf1"
     typescript: ^4.6.4
     vite: ^2.9.9
     vitest: ^0.13.1
@@ -4981,6 +4982,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tauri-plugin-store-api@github:tauri-apps/tauri-plugin-store#ff1556a88025a9eff16e91e9790773cf600eabf1":
+  version: 0.1.0
+  resolution: "tauri-plugin-store-api@https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"
+  dependencies:
+    "@tauri-apps/api": 1.0.0-rc.6
+    tslib: 2.4.0
+  checksum: e3059ab74b50671e26f960aae8bf57306e84bca720b1c803679bcb104000e4b8514b73f8c97b962faec2baaeeb661347ff5e05f9eed5c7053dc987077e738f78
+  languageName: node
+  linkType: hard
+
 "terser-webpack-plugin@npm:^5.1.3":
   version: 5.3.1
   resolution: "terser-webpack-plugin@npm:5.3.1"
@@ -5101,17 +5112,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.4.0, tslib@npm:^2.1.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.1.0":
-  version: 2.4.0
-  resolution: "tslib@npm:2.4.0"
-  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
   languageName: node
   linkType: hard
 

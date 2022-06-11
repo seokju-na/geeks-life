@@ -32,7 +32,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.39.1",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#ff1556a88025a9eff16e91e9790773cf600eabf1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-rc.9",

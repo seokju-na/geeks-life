@@ -67,6 +67,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:17.0.2"],\
             ["react-query", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:3.39.1"],\
             ["rxjs", "npm:7.5.5"],\
+            ["tauri-plugin-store-api", "https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"],\
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.9"],\
             ["vitest", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.13.1"],\
@@ -3807,6 +3808,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:17.0.2"],\
             ["react-query", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:3.39.1"],\
             ["rxjs", "npm:7.5.5"],\
+            ["tauri-plugin-store-api", "https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"],\
             ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.9"],\
             ["vitest", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.13.1"],\
@@ -6183,6 +6185,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["minizlib", "npm:2.1.2"],\
             ["mkdirp", "npm:1.0.4"],\
             ["yallist", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["tauri-plugin-store-api", [\
+        ["https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1", {\
+          "packageLocation": "./.yarn/cache/tauri-plugin-store-api-https-f7115389ca-e3059ab74b.zip/node_modules/tauri-plugin-store-api/",\
+          "packageDependencies": [\
+            ["tauri-plugin-store-api", "https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"],\
+            ["@tauri-apps/api", "npm:1.0.0-rc.6"],\
+            ["tslib", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\
