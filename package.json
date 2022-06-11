@@ -33,13 +33,16 @@
     "react-dom": "^17.0.2",
     "react-query": "^3.39.1",
     "rxjs": "^7.5.5",
-    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#ff1556a88025a9eff16e91e9790773cf600eabf1"
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#ff1556a88025a9eff16e91e9790773cf600eabf1",
+    "ts-pattern": "^4.0.3"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.0.0-rc.9",
+    "@tauri-apps/cli": "^1.0.0-rc.13",
+    "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@testing-library/react-hooks": "^8.0.0",
+    "@testing-library/user-event": "^14.2.0",
     "@types/testing-library__jest-dom": "^5",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
