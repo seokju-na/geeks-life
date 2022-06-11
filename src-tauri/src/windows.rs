@@ -22,6 +22,7 @@ where
   win.clone().on_window_event(move |event| {
     if let WindowEvent::Focused(focused) = event {
       if win.is_visible().unwrap() && !(*focused) {
+        #[cfg(not(debug_assertions))]
         win.hide().unwrap();
       }
     }
