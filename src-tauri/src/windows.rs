@@ -9,14 +9,20 @@ pub fn setup_windows<R>(app: &mut App<R>)
 where
   R: Runtime,
 {
-  let main_win = app.get_main_window();
+  let win = app.get_main_window();
   #[cfg(target_os = "macos")]
-  main_win.set_transparent_titlebar(true, true);
+  win.set_transparent_titlebar(true, true);
 
-  main_win.clone().on_window_event(move |event| {
+  let win = app.get_main_window();
+  win.clone().listen("hide", move |_| {
+    win.hide().unwrap();
+  });
+
+  let win = app.get_main_window();
+  win.clone().on_window_event(move |event| {
     if let WindowEvent::Focused(focused) = event {
-      if main_win.is_visible().unwrap() && !(*focused) {
-        main_win.hide().unwrap();
+      if win.is_visible().unwrap() && !(*focused) {
+        win.hide().unwrap();
       }
     }
   });
