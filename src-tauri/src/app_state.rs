@@ -1,8 +1,8 @@
 use std::path::{Path, PathBuf};
 
 use tauri::api::path::local_data_dir;
+use tauri::async_runtime::{block_on, Mutex};
 use tauri::{App, Manager, Runtime};
-use tokio::sync::Mutex;
 
 use crate::application::{Application, ApplicationError};
 use crate::init_workspace;
@@ -30,10 +30,6 @@ where
   let handle = app.handle();
   let workspace_dir = init_workspace(&local_data_dir().unwrap());
 
-  tauri::async_runtime::spawn(async move {
-    let app_state = AppState::init(&workspace_dir)
-      .await
-      .expect("fail to init app state");
-    handle.manage(app_state);
-  });
+  let app_state = block_on(AppState::init(&workspace_dir)).expect("fail to init app state");
+  handle.manage(app_state);
 }
