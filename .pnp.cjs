@@ -68,7 +68,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-query", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:3.39.1"],\
             ["rxjs", "npm:7.5.5"],\
             ["tauri-plugin-store-api", "https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.9"],\
             ["vitest", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.13.1"],\
             ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"]\
@@ -1538,7 +1538,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["regexpp", "npm:3.2.0"],\
             ["semver", "npm:7.3.7"],\
             ["tsutils", "virtual:538806730841f5c1e3ecab73fada603bd865214151433b4c3b410d3f54662d8f3f7f70951ba057d7067c158e670959b871d73a54bb01a28141b2d945f053060e#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -1570,7 +1570,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/typescript-estree", "virtual:eb5c15d3023ef64dac78a5a074fed1a7ca0caf71c563150afd1571b63790090db797e0d2f81de4208edaa4019fd08b30983bef617cdccd93c5f29cf49c3d022d#npm:5.21.0"],\
             ["debug", "virtual:c61bddeb28ff5847f1a465b4dddb837a3d099a22e15a9fe3124a47a7e2d4ac1c2af811c54e48451d4f63d1957aae19762d202c1b452ad077e0fae6b219584389#npm:4.3.4"],\
             ["eslint", "npm:8.14.0"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -1610,7 +1610,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:c61bddeb28ff5847f1a465b4dddb837a3d099a22e15a9fe3124a47a7e2d4ac1c2af811c54e48451d4f63d1957aae19762d202c1b452ad077e0fae6b219584389#npm:4.3.4"],\
             ["eslint", "npm:8.14.0"],\
             ["tsutils", "virtual:538806730841f5c1e3ecab73fada603bd865214151433b4c3b410d3f54662d8f3f7f70951ba057d7067c158e670959b871d73a54bb01a28141b2d945f053060e#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -1670,7 +1670,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-glob", "npm:4.0.3"],\
             ["semver", "npm:7.3.7"],\
             ["tsutils", "virtual:538806730841f5c1e3ecab73fada603bd865214151433b4c3b410d3f54662d8f3f7f70951ba057d7067c158e670959b871d73a54bb01a28141b2d945f053060e#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -3809,7 +3809,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-query", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:3.39.1"],\
             ["rxjs", "npm:7.5.5"],\
             ["tauri-plugin-store-api", "https://github.com/tauri-apps/tauri-plugin-store.git#commit=ff1556a88025a9eff16e91e9790773cf600eabf1"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"],\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"],\
             ["vite", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:2.9.9"],\
             ["vitest", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:0.13.1"],\
             ["webpack", "virtual:eeb978c976c21d481adc2f50c5c578ebe5420d15d6cc4558cb5d77c6881fdc0174eea85643df7888ca312d12efe811b64178300c751015d073d0ba283f423d68#npm:5.72.1"]\
@@ -6378,7 +6378,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tsutils", "virtual:538806730841f5c1e3ecab73fada603bd865214151433b4c3b410d3f54662d8f3f7f70951ba057d7067c158e670959b871d73a54bb01a28141b2d945f053060e#npm:3.21.0"],\
             ["@types/typescript", null],\
             ["tslib", "npm:1.14.1"],\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -6446,10 +6446,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["typescript", [\
-        ["patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367", {\
-          "packageLocation": "./.yarn/cache/typescript-patch-044c37f428-1cb434fbc6.zip/node_modules/typescript/",\
+        ["patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-e50fdcf519-1cb434fbc6.zip/node_modules/typescript/",\
           "packageDependencies": [\
-            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=bda367"]\
+            ["typescript", "patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10722,9 +10722,13 @@ function patchFs(patchedFs, fakeFs) {
     }
   }
   {
-    patchedFs.read[nodeUtils.promisify.custom] = async (p, buffer, ...args) => {
-      const res = fakeFs.readPromise(p, buffer, ...args);
+    patchedFs.read[nodeUtils.promisify.custom] = async (fd, buffer, ...args) => {
+      const res = fakeFs.readPromise(fd, buffer, ...args);
       return {bytesRead: await res, buffer};
+    };
+    patchedFs.write[nodeUtils.promisify.custom] = async (fd, buffer, ...args) => {
+      const res = fakeFs.writePromise(fd, buffer, ...args);
+      return {bytesWritten: await res, buffer};
     };
   }
 }
@@ -15181,11 +15185,11 @@ Require stack:
     }
     originalExtensionJSFunction.call(this, module, filename);
   };
-  const originalEmitWarning = process.emitWarning;
-  process.emitWarning = function(warning, name, ctor) {
-    if (name === `ExperimentalWarning` && typeof warning === `string` && warning.includes(`--experimental-loader`))
-      return;
-    originalEmitWarning.apply(process, arguments);
+  const originalEmit = process.emit;
+  process.emit = function(name, data, ...args) {
+    if (name === `warning` && typeof data === `object` && data.name === `ExperimentalWarning` && (data.message.includes(`--experimental-loader`) || data.message.includes(`Custom ESM Loaders is an experimental feature`)))
+      return false;
+    return originalEmit.apply(process, arguments);
   };
   patchFs(fs__default.default, new PosixFS(opts.fakeFs));
 }
