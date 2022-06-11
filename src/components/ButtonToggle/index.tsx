@@ -1,13 +1,13 @@
-import * as Primitives from '@radix-ui/react-toggle-group';
+import { Root, Item } from '@radix-ui/react-toggle-group';
 import { styled } from '../../styles';
 
-export const ToggleGroup = styled(Primitives.Root, {
+export const ButtonToggle = styled(Root, {
   display: 'inline-flex',
   borderRadius: '$normal',
   border: `1px solid $divider`,
 });
 
-export const ToggleGroupItem = styled(Primitives.Item, {
+export const ButtonToggleItem = styled(Item, {
   all: 'unset',
   backgroundColor: '$raisedButton',
   color: '$text',
