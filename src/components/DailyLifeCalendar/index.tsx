@@ -1,31 +1,25 @@
-import { CSS } from '@stitches/react';
 import { addDays, subDays } from 'date-fns';
-import { KeyboardEvent, useCallback, useEffect, useRef } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
+import { useSelectedDateState, useDailyLifeViewState } from '../../hooks';
 import { styled } from '../../styles';
 import { Switch } from '../Switch';
 import { Week } from './Week';
 
-interface Props {
-  view: 'week' | 'month';
-  selectedDate: Date;
-  onSelectDate: (date: Date) => void;
-  css?: CSS;
-}
-
-export function DailyLifeCalendar({ view, css, ...props }: Props) {
+export function DailyLifeCalendar() {
   const ref = useRef<HTMLDivElement>(null);
-  const { handleKeyboard } = useSelectionController(props);
+  const { value: selectedDate, setValue: setSelectedDate } = useSelectedDateState();
+  const { value: view } = useDailyLifeViewState();
 
   useEffect(() => {
     ref.current?.focus();
   }, []);
 
   return (
-    <Wrapper ref={ref} role="group" tabIndex={0} onKeyDown={handleKeyboard} css={css}>
+    <Wrapper ref={ref} role="group" tabIndex={0} onKeyDown={useKeyboardHandler()}>
       <Switch
         value={view}
         caseBy={{
-          week: <Week {...props} />,
+          week: <Week selectedDate={selectedDate} onSelectDate={setSelectedDate} />,
           month: <Todo />,
         }}
       />
@@ -39,6 +33,7 @@ function Todo() {
 }
 
 const Wrapper = styled('div', {
+  padding: '$sm $lg',
   '&:focus': {
     border: 'none',
     outline: 0,
@@ -50,30 +45,27 @@ const Wrapper = styled('div', {
   },
 });
 
-function useSelectionController({ selectedDate, onSelectDate }: Pick<Props, 'selectedDate' | 'onSelectDate'>) {
-  const handleKeyboard = useCallback(
-    (event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'ArrowUp':
-          onSelectDate(subDays(selectedDate, 7));
-          event.preventDefault();
-          return;
-        case 'ArrowRight':
-          onSelectDate(addDays(selectedDate, 1));
-          event.preventDefault();
-          return;
-        case 'ArrowDown':
-          onSelectDate(addDays(selectedDate, 7));
-          event.preventDefault();
-          return;
-        case 'ArrowLeft':
-          onSelectDate(subDays(selectedDate, 1));
-          event.preventDefault();
-          return;
-      }
-    },
-    [selectedDate, onSelectDate]
-  );
+function useKeyboardHandler() {
+  const { value, setValue } = useSelectedDateState();
 
-  return { handleKeyboard };
+  return (event: KeyboardEvent) => {
+    switch (event.key) {
+      case 'ArrowUp':
+        event.preventDefault();
+        setValue(subDays(value, 7));
+        return;
+      case 'ArrowRight':
+        event.preventDefault();
+        setValue(addDays(value, 1));
+        return;
+      case 'ArrowDown':
+        event.preventDefault();
+        setValue(addDays(value, 7));
+        return;
+      case 'ArrowLeft':
+        event.preventDefault();
+        setValue(subDays(value, 1));
+        return;
+    }
+  };
 }
