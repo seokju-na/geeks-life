@@ -31,6 +31,6 @@ export function Week({ selectedDate, onSelectDate }: Props) {
 
 const Wrapper = styled('div', {
   display: 'grid',
-  gridGap: '$sm',
+  gridGap: '6px',
   gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
 });
