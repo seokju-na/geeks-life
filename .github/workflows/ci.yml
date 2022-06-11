@@ -89,7 +89,7 @@ jobs:
         env:
           cache-name: target
         with:
-          path: target
+          path: src-tauri/target
           key: ${{ matrix.platform }}-stable-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
           restore-keys: |
             ${{ matrix.platform }}-${{ env.cache-name }}-${{ hashFiles('**/Cargo.toml') }}
