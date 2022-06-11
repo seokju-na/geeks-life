@@ -42,6 +42,7 @@ where
 
 fn main() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_store::PluginBuilder::default().build())
     .system_tray(tray())
     .on_system_tray_event(handle_tray)
     .setup(setup)
