@@ -28,8 +28,7 @@ export function DailyLifeCalendar() {
 }
 
 function Todo() {
-  throw new Error('TODO');
-  return <></>;
+  return <>todo</>;
 }
 
 const Wrapper = styled('div', {
