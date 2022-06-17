@@ -1,4 +1,5 @@
-use tauri::{App, AppHandle, Manager, Result, Runtime, Window, WindowEvent};
+use serde_json::from_str;
+use tauri::{App, AppHandle, LogicalSize, Manager, Result, Runtime, Size, Window, WindowEvent};
 
 #[cfg(target_os = "macos")]
 use crate::patches::TransparentTitlebar;
@@ -16,6 +17,12 @@ where
   let win = app.get_main_window();
   win.clone().listen("hide", move |_| {
     win.hide().unwrap();
+  });
+
+  let win = app.get_main_window();
+  win.clone().listen("geeks-life://resize", move |event| {
+    let size = from_str::<LogicalSize<f64>>(event.payload().unwrap()).unwrap();
+    win.set_size(Size::Logical(size)).unwrap();
   });
 
   let win = app.get_main_window();
