@@ -6,6 +6,6 @@ export function useDailyLifeViewState() {
 
   return {
     ...state,
-    value: state.value ?? 'week',
+    value: (state.value ?? 'week') as DailyLifeView,
   };
 }
