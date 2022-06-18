@@ -1,4 +1,4 @@
-import { DailyLife } from '../../models';
+import { DailyLife, getScoreColor } from '../../models';
 import { styled } from '../../styles';
 
 interface Props {
@@ -35,14 +35,5 @@ function getBackgroundColor(item: DailyLife) {
     return '$backgroundHighlighted';
   }
 
-  switch (item.score) {
-    case 'low':
-      return '#9be9a8';
-    case 'medium':
-      return '#40c463';
-    case 'high':
-      return '#30a14e';
-    case 'excellent':
-      return '#216e39';
-  }
+  return getScoreColor(item.score);
 }
