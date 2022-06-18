@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { render } from 'react-dom';
 import { QueryClientProvider } from 'react-query';
 import App from './App';
@@ -11,7 +11,9 @@ injectTheme();
 render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <Suspense fallback={null}>
+        <App />
+      </Suspense>
     </QueryClientProvider>
   </StrictMode>,
   document.getElementById('root')
