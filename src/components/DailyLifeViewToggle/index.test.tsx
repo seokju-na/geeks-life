@@ -41,4 +41,15 @@ describe('<DailyLifeViewToggle />', () => {
     });
     expect(store.get('dailyLifeView')).toEqual('month');
   });
+
+  it('not un-toggled when click toggled state.', async () => {
+    const store = mockStore('.local').set('dailyLifeView', 'week');
+    renderWithTestBed(<DailyLifeViewToggle />);
+
+    const toggle = await screen.findByRole('radio', { name: 'Weekly' });
+    await userEvent.click(toggle);
+
+    expect(await screen.findByRole('radio', { name: 'Weekly' })).toBeChecked();
+    expect(store.get('dailyLifeView')).toEqual('week');
+  });
 });
