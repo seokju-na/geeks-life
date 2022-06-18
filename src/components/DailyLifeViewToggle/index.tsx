@@ -2,17 +2,19 @@ import { useDailyLifeViewState } from '../../hooks';
 import { DailyLifeView } from '../../models';
 import { ButtonToggleItem, ButtonToggle } from '../ButtonToggle';
 
-const options: Array<{ name: string; value: DailyLifeView }> = [
-  { name: 'Weekly', value: 'week' },
-  { name: 'Monthly', value: 'month' },
-];
-
 export function DailyLifeViewToggle() {
   const { value, setValue } = useDailyLifeViewState();
+  const handleValueChange = (val: string) => {
+    try {
+      setValue(DailyLifeView.parse(val));
+    } catch (error: unknown) {
+      //
+    }
+  };
 
   return (
-    <ButtonToggle type="single" value={value} onValueChange={val => setValue(val as DailyLifeView)}>
-      {options.map(({ name, value }) => (
+    <ButtonToggle type="single" value={value} onValueChange={handleValueChange}>
+      {Object.entries(DailyLifeView.enum).map(([name, value]) => (
         <ButtonToggleItem key={value} value={value}>
           {name}
         </ButtonToggleItem>

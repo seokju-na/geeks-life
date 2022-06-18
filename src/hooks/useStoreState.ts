@@ -7,7 +7,7 @@ const baseQueryKey = 'store';
 const queryKey = (name: string, key: string) => [baseQueryKey, name, key];
 
 export function useStoreState<T>(name: string, key: string) {
-  const { data: value } = useQuery(queryKey(name, key), () => {
+  const query = useQuery(queryKey(name, key), () => {
     const store = new Store(name);
     return store.get<T>(key);
   });
@@ -32,7 +32,7 @@ export function useStoreState<T>(name: string, key: string) {
   }, [name, key]);
 
   return {
-    value,
+    value: query.data as T | null,
     setValue,
     deleteValue,
   };
