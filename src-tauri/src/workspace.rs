@@ -3,13 +3,8 @@ use std::path::{Path, PathBuf};
 use geeks_git::commit;
 use git2::Repository;
 
-#[cfg(debug_assertions)]
-const WORKSPACE_NAME: &str = "geeks-life-dev";
-#[cfg(not(debug_assertions))]
-const WORKSPACE_NAME: &str = "geeks-life";
-
-pub fn init_workspace(local_data_dir: &Path) -> PathBuf {
-  let workspace_dir = local_data_dir.join(WORKSPACE_NAME);
+pub fn init_workspace(app_dir: &Path) -> PathBuf {
+  let workspace_dir = app_dir.join("workspace");
 
   if Repository::open(&workspace_dir).is_err() {
     Repository::init(&workspace_dir).expect("fail to initialize git");
@@ -41,6 +36,6 @@ mod tests {
       .collect();
     assert_eq!(commits.len(), 1);
     assert_eq!(commits[0].message, "initial".into());
-    assert_eq!(workspace_dir, dir.path().join("geeks-life-dev"));
+    assert_eq!(workspace_dir, dir.path().join("workspace"));
   }
 }
