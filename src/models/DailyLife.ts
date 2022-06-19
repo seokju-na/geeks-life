@@ -1,4 +1,4 @@
-import { parse } from 'date-fns';
+import { parse, format } from 'date-fns';
 import { DailyLog } from './DailyLog';
 import { Score } from './Score';
 
@@ -11,6 +11,12 @@ export interface DailyLife {
   updatedAt: number;
 }
 
+const idPattern = 'yyyy-MM-dd';
+
 export function getDailyLifeDate(life: DailyLife): Date {
-  return parse(life.id, 'yyyy-MM-dd', new Date());
+  return parse(life.id, idPattern, new Date());
+}
+
+export function getDailyLifeId(date: Date): string {
+  return format(date, idPattern);
 }
