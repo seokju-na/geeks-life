@@ -26,7 +26,7 @@ tokio = { version = "1.18.2", features = ["full"] }
 async-trait = "0.1.53"
 regex = "1.5.5"
 walkdir = "2.3.2"
-pulldown-cmark = "0.9.1"
+url = "2.2.2"
 
 geeks_git = "0.2.0"
 geeks_event_sourcing = "0.3.1"
