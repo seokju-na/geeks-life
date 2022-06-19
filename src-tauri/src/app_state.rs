@@ -1,6 +1,5 @@
 use std::path::{Path, PathBuf};
 
-use tauri::api::path::local_data_dir;
 use tauri::async_runtime::{block_on, Mutex};
 use tauri::{App, Manager, Runtime};
 
@@ -28,7 +27,11 @@ where
   R: Runtime,
 {
   let handle = app.handle();
-  let workspace_dir = init_workspace(&local_data_dir().unwrap());
+  let app_dir = handle
+    .path_resolver()
+    .app_dir()
+    .expect("fail to resolve app dir");
+  let workspace_dir = init_workspace(&app_dir);
 
   let app_state = block_on(AppState::init(&workspace_dir)).expect("fail to init app state");
   handle.manage(app_state);
