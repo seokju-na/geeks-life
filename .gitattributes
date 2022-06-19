@@ -1,0 +1,4 @@
+.yarn/releases/*.js binary linguist-generated=true
+.yarn/plugins/**/*.cjs binary linguist-generated=true
+yarn.lock binary
+src-tauri/resources/emoji/**/* binary linguist-generated=true
