@@ -1,3 +1,4 @@
+export * from './useDailyLife';
 export * from './useDailyLifes';
 export * from './useStoreState';
 export * from './useDailyLifeViewState';
