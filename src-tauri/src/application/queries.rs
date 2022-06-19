@@ -11,10 +11,15 @@ pub struct GetDailyLifesParams {
 }
 
 pub trait QueryHandler {
+  fn get_daily_life(&self, id: String) -> Option<DailyLife>;
   fn get_daily_lifes(&self, params: GetDailyLifesParams) -> Vec<DailyLife>;
 }
 
 impl QueryHandler for Application {
+  fn get_daily_life(&self, id: String) -> Option<DailyLife> {
+    self.daily_life.states.get(&id).cloned()
+  }
+
   fn get_daily_lifes(&self, params: GetDailyLifesParams) -> Vec<DailyLife> {
     let start = params.start.map(|x| x.parse::<DateTime<Utc>>());
     let end = params.end.map(|x| x.parse::<DateTime<Utc>>());
