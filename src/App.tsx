@@ -2,8 +2,7 @@ import { emit } from '@tauri-apps/api/event';
 import { useSubscription } from 'observable-hooks';
 import { useEffect } from 'react';
 import { fromEvent, filter } from 'rxjs';
-import { DailyLifeCalendar } from './components';
-import { Titlebar } from './components/Titlebar';
+import { DailyLifeCalendar, DailyLifeEditor, Titlebar } from './components';
 import { useDailyLifeViewState } from './hooks';
 import { resizeWindow } from './remotes';
 
@@ -15,6 +14,7 @@ export default function App() {
     <main>
       <Titlebar />
       <DailyLifeCalendar />
+      <DailyLifeEditor />
     </main>
   );
 }
