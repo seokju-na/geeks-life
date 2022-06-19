@@ -24,6 +24,15 @@ pub async fn execute_daily_life_command(
 }
 
 #[tauri::command]
+pub async fn get_daily_life(
+  id: String,
+  app_state: State<'_, AppState>,
+) -> Result<Option<DailyLife>, CommandError> {
+  let result = app_state.application.lock().await.get_daily_life(id);
+  Ok(result)
+}
+
+#[tauri::command]
 pub async fn get_daily_lifes(
   params: GetDailyLifesParams,
   app_state: State<'_, AppState>,
