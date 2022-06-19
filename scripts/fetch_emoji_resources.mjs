@@ -25,7 +25,7 @@ const response = await got.get('https://api.github.com/emojis', {
   },
 }).json();
 
-const data = {};
+const data = [];
 const githubEmojis = Object.entries(response);
 let i = 1;
 
@@ -39,9 +39,10 @@ for (const [name, url] of githubEmojis) {
     got.stream(url),
     fs.createWriteStream(file),
   );
-  data[name] = {
-    local_path: `emoji/github/${name}${ext}`,
-  };
+  data.push({
+    name,
+    path: `resources/emoji/github/${name}${ext}`,
+  });
   console.log(`(${i}/${githubEmojis.length}) ${file}`);
   i += 1;
 }
