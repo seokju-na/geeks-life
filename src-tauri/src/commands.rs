@@ -6,6 +6,7 @@ use crate::application::{
   ApplicationError, CommandHandler, DailyLifeSnapshotError, GetDailyLifesParams, QueryHandler,
 };
 use crate::domain::{DailyLife, DailyLifeCommand, DailyLifeError};
+use crate::emojis::Emojis;
 use crate::AppState;
 
 #[tauri::command]
@@ -39,6 +40,11 @@ pub async fn get_daily_lifes(
 ) -> Result<Vec<DailyLife>, CommandError> {
   let result = app_state.application.lock().await.get_daily_lifes(params);
   Ok(result)
+}
+
+#[tauri::command]
+pub async fn get_emojis(app_state: State<'_, AppState>) -> Result<Emojis, CommandError> {
+  Ok(app_state.emojis.clone())
 }
 
 // TODO: how to remove this

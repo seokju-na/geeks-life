@@ -8,7 +8,7 @@ use std::error::Error;
 use tauri::{App, Runtime};
 
 use crate::app_state::{setup_app_state, AppState};
-use crate::commands::{execute_daily_life_command, get_daily_life, get_daily_lifes};
+use crate::commands::{execute_daily_life_command, get_daily_life, get_daily_lifes, get_emojis};
 use crate::global_shortcuts::setup_global_shortcuts;
 use crate::tray::{handle_tray, tray};
 use crate::windows::setup_windows;
@@ -18,6 +18,7 @@ mod app_state;
 mod application;
 mod commands;
 mod domain;
+mod emojis;
 mod global_shortcuts;
 mod patches;
 mod tray;
@@ -25,10 +26,7 @@ mod utils;
 mod windows;
 mod workspace;
 
-fn setup<R>(app: &mut App<R>) -> Result<(), Box<dyn Error>>
-where
-  R: Runtime,
-{
+fn setup<R: Runtime>(app: &mut App<R>) -> Result<(), Box<dyn Error>> {
   // https://github.com/tauri-apps/tauri/discussions/2684#discussioncomment-1433069
   #[cfg(target_os = "macos")]
   app.set_activation_policy(tauri::ActivationPolicy::Accessory);
@@ -49,7 +47,8 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       execute_daily_life_command,
       get_daily_life,
-      get_daily_lifes
+      get_daily_lifes,
+      get_emojis
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
