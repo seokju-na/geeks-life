@@ -17,7 +17,7 @@ pub struct Emoji {
 
 impl Emojis {
   pub async fn init(path_resolver: &PathResolver) -> Emojis {
-    let github = load_github_emojis(&path_resolver).await;
+    let github = load_github_emojis(path_resolver).await;
 
     Emojis { github }
   }
