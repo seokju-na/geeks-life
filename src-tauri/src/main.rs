@@ -18,7 +18,6 @@ mod app_state;
 mod application;
 mod commands;
 mod domain;
-mod emojis;
 mod global_shortcuts;
 mod patches;
 mod tray;
@@ -48,7 +47,6 @@ fn main() {
       execute_daily_life_command,
       get_daily_life,
       get_daily_lifes,
-      get_emojis
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

@@ -222,7 +222,6 @@ mod tests {
         id: "2022-05-21".to_string(),
         logs: vec![DailyLog {
           id: "log1".to_string(),
-          emoji: None,
           content: "coding".to_string(),
         }],
       })

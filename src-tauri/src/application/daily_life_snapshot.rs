@@ -196,12 +196,10 @@ mod tests {
       logs: vec![
         DailyLog {
           id: "log1".to_string(),
-          emoji: None,
           content: "content1".to_string(),
         },
         DailyLog {
           id: "log2".to_string(),
-          emoji: None,
           content: "content2".to_string(),
         },
       ],
