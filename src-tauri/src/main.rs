@@ -8,7 +8,7 @@ use std::error::Error;
 use tauri::{App, Runtime};
 
 use crate::app_state::{setup_app_state, AppState};
-use crate::commands::{execute_daily_life_command, get_daily_life, get_daily_lifes, get_emojis};
+use crate::commands::{execute_daily_life_command, get_daily_life, get_daily_lifes};
 use crate::global_shortcuts::setup_global_shortcuts;
 use crate::tray::{handle_tray, tray};
 use crate::windows::setup_windows;
