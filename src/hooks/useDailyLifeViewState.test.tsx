@@ -5,12 +5,9 @@ import { renderHookWithTestBed } from '../testing/render';
 import { useDailyLifeViewState } from './useDailyLifeViewState';
 
 it('default daily life view is "week"', async () => {
-  mockStore('.local');
-
-  const { result, waitFor } = renderHookWithTestBed(() => useDailyLifeViewState());
-  await waitFor(() => {
-    expect(result.current.value).toEqual('week');
-  });
+  const { result, waitForNextUpdate } = renderHookWithTestBed(() => useDailyLifeViewState());
+  await waitForNextUpdate();
+  expect(result.current.value).toEqual('week');
 });
 
 it('get daily life view from ".local" store', async () => {
