@@ -15,9 +15,5 @@ afterEach(() => {
 });
 
 export function mockIPC(command: string, handler: Handler) {
-  if (handlers.has(command)) {
-    throw new Error(`"${command}" handler already exists!`);
-  }
-
   handlers.set(command, handler);
 }
