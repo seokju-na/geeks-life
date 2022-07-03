@@ -22,7 +22,7 @@ const Wrapper = styled('div', {
   height: 36,
   border: `1px solid $divider`,
   borderRadius: '$normal',
-  transition: 'background-color 0.15s ease-in-out 0s, box-shadow 0.2s ease',
+  transition: 'background-color 0.15s ease-in-out 0s',
   $$selectedColor: '$colors$blue400',
   "&[aria-checked='true']": {
     position: 'relative',
