@@ -6,10 +6,7 @@ pub fn tray() -> SystemTray {
   SystemTray::new()
 }
 
-pub fn handle_tray<R>(app: &AppHandle<R>, event: SystemTrayEvent)
-where
-  R: Runtime,
-{
+pub fn handle_tray<R: Runtime>(app: &AppHandle<R>, event: SystemTrayEvent) {
   if let SystemTrayEvent::LeftClick { .. } = event {
     app.get_main_window().toggle().unwrap();
   }
