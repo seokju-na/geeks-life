@@ -55,6 +55,9 @@
     "allowlist": {
       "window": {
         "startDragging": true
+      },
+      "os": {
+        "all": true
       }
     },
     "windows": [
