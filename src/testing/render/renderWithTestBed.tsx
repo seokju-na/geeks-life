@@ -1,15 +1,12 @@
 import { queries, Queries, render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, Suspense } from 'react';
 import { QueryClientProvider } from 'react-query';
+import { beforeEach } from 'vitest';
 import { queryClient } from '../../queryClient';
 
-queryClient.setDefaultOptions({
-  queries: {
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-    retry: false,
-  },
+beforeEach(() => {
+  queryClient.clear();
 });
 
 export function renderWithTestBed<
@@ -42,5 +39,9 @@ interface Props {
 }
 
 function Provider({ children }: Props) {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={null}>{children}</Suspense>
+    </QueryClientProvider>
+  );
 }
