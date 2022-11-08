@@ -18,7 +18,7 @@ tauri-build = { version = "1.0.0", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8.24"
-tauri = { version = "1.0.0", features = ["global-shortcut", "os-all", "system-tray", "window-start-dragging"] }
+tauri = { version = "1.0.6", features = ["global-shortcut", "os-all", "system-tray", "window-start-dragging"] }
 git2 = "0.14.4"
 thiserror = "1.0.31"
 chrono = "0.4.19"
