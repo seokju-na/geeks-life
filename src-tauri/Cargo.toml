@@ -22,7 +22,7 @@ tauri = { version = "1.0.0", features = ["global-shortcut", "os-all", "system-tr
 git2 = "0.14.4"
 thiserror = "1.0.31"
 chrono = "0.4.19"
-tokio = { version = "1.18.2", features = ["full"] }
+tokio = { version = "1.20.4", features = ["full"] }
 async-trait = "0.1.53"
 regex = "1.5.5"
 walkdir = "2.3.2"
